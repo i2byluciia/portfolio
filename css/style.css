@@ -1,0 +1,47 @@
+/*VARIABLES*/
+
+:root {
+    /* Colores */
+    --paper: #F5F1E8;
+    --charcoal: #202139;
+    --amber-glow: #E88300;
+    --golden-beam: #FFC451;
+    --deep-gold: #B47A21;
+    --soft-grey: #D6D6D6;
+    --velvet-purple: #514575;
+    --royal-violet: #7166A6;
+    --soft-lavender: #A79DDA;
+
+    /* Tipografías */
+    --font-title: "Cormorant Garamond", serif;
+    --font-text: "Inter", sans-serif;
+    --font-note: "Caveat", cursive;
+    --font-code: "JetBrains Mono", monospace;
+}
+
+/*RESET*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*BASE*/
+
+/*HEADER*/
+
+/*HOME*/
+
+/*ABOUT*/
+
+/*LIGHT*/
+
+/*LOGIC*/
+
+/*CREATE*/
+
+/*CONTACT*/
+
+/*FOOTER*/
+
+/*RESPONSIVE*/
