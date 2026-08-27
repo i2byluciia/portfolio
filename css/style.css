@@ -227,6 +227,7 @@ nav a:hover::after {
 
 .about-text {
     flex: 1;
+    max-width: 700px;
     font-family: var(--font-text);
     font-size: 18px;
     line-height: 1.6;
@@ -243,6 +244,95 @@ nav a:hover::after {
 }
 
 /*LIGHT*/
+#light {
+    min-height: 100vh;
+    padding: 100px 200px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 60px;
+}
+
+.light-content {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.light-text {
+    flex: 1;
+    max-width: 700px;
+    font-family: var(--font-text);
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.light-img {
+    border: 2px solid var(--charcoal);
+}
+
+.light-img img {
+    width: 400px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
+.light-process {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    font-family: var(--font-note);
+    font-size: 40px;
+    color: var(--amber-glow);
+}
+
+.light-process span {
+    position: relative;
+}
+
+.light-process span:not(:last-child)::after {
+    content: "→";
+    margin-left: 100px;
+}
+
+.light-img-2 {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.light-img-2 img {
+    width: 700px;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.light-works {
+    margin-top: 60px;
+}
+
+.light-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.light-card {
+    overflow: hidden;
+}
+
+.light-card img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+}
 
 /*LOGIC*/
 
