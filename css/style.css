@@ -237,7 +237,7 @@ nav a:hover::after {
 }
 
 .about-img img {
-    min-height: 60vh;
+    width: 400px;
     aspect-ratio: 4 / 5;
     object-fit: cover;
 }
