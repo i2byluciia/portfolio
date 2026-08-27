@@ -80,6 +80,13 @@ main {
     padding-top: 60px;
 }
 
+h2 {
+    font-family: var(--font-title);
+    font-size: 60px;
+    font-weight: 500;
+    color: var(--charcoal);
+}
+
 /*HEADER*/
 header {
     position: fixed;
@@ -90,6 +97,8 @@ header {
 
     display: flex;
     align-items: center;
+
+    padding: 0 40px;
 }
 
 nav {
@@ -155,9 +164,83 @@ nav a:hover::after {
     transform: translateY(-50%) translateX(0);
 }
 
+/* ---------- Logo ---------- */
+
+.logo {
+    font-family: var(--font-title);
+    font-size: 42px;
+    font-weight: 600;
+    color: var(--charcoal);
+    line-height: 1;
+
+    transition: color 0.2s ease;
+}
+
+.logo sup {
+    font-size: 0.55em;
+    vertical-align: top;
+}
+
+.logo:hover {
+    color: var(--amber-glow);
+}
+
 /*HOME*/
+#home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 200px;
+    gap: 20px;
+}
+
+#home h1 {
+    font-family: var(--font-title);
+    font-size: 80px;
+    line-height: 1.2;
+}
+
+#home p {
+    font-family: var(--font-note);
+    font-size: 40px;
+    line-height: 1.5;
+    max-width: 600px;
+}
 
 /*ABOUT*/
+#about {
+    min-height: 100vh;
+    padding: 100px 200px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.about-text {
+    flex: 1;
+    font-family: var(--font-text);
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.about-img {
+    border: 2px solid var(--charcoal);
+}
+
+.about-img img {
+    min-height: 60vh;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
 
 /*LIGHT*/
 
