@@ -1,5 +1,7 @@
 :root {
+
     /* Colores */
+
     --paper: #F5F1E8;
     --charcoal: #202139;
     --amber-glow: #E88300;
@@ -10,7 +12,9 @@
     --royal-violet: #7166A6;
     --soft-lavender: #A79DDA;
 
+
     /* Tipografías */
+
     --font-title: "Cormorant Garamond", serif;
     --font-text: "Inter", sans-serif;
     --font-note: "Caveat", cursive;
@@ -18,37 +22,47 @@
 }
 
 
-/* FUENTES */
+/* =========================================================
+   FUENTES
+   ========================================================= */
 
 @font-face {
     font-family: "Cormorant Garamond";
-    src: url("../assets/fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf") format("truetype");
+    src: url("../assets/fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf")
+        format("truetype");
     font-weight: 100 700;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Inter";
-    src: url("../assets/fonts/Inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+    src: url("../assets/fonts/Inter/Inter-VariableFont_opsz,wght.ttf")
+        format("truetype");
     font-weight: 100 900;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Caveat";
-    src: url("../assets/fonts/Caveat/Caveat-VariableFont_wght.ttf") format("truetype");
+    src: url("../assets/fonts/Caveat/Caveat-VariableFont_wght.ttf")
+        format("truetype");
     font-weight: 100 700;
     font-style: normal;
 }
 
 @font-face {
     font-family: "JetBrains Mono";
-    src: url("../assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf") format("truetype");
+    src: url("../assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf")
+        format("truetype");
     font-weight: 100 800;
     font-style: normal;
 }
 
-/*RESET*/
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -59,7 +73,15 @@ nav ul {
     list-style: none;
 }
 
-/*BASE*/
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--paper);
     color: var(--charcoal);
@@ -87,7 +109,25 @@ h2 {
     color: var(--charcoal);
 }
 
-/*HEADER*/
+h3 {
+    font-family: var(--font-title);
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--charcoal);
+}
+
+h4 {
+    font-family: var(--font-note);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--charcoal);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
 header {
     position: fixed;
     top: 0;
@@ -99,17 +139,19 @@ header {
     align-items: center;
 
     padding: 0 40px;
+
+    z-index: 1000;
 }
 
 nav {
     position: fixed;
     right: 20px;
     top: 50%;
+
     transform: translateY(-50%);
 }
 
 nav ul {
-    list-style: none;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -119,6 +161,7 @@ nav a {
     position: relative;
 
     display: block;
+
     width: 10px;
     height: 10px;
 
@@ -141,6 +184,7 @@ nav a::after {
     content: attr(data-label);
 
     position: absolute;
+
     right: 20px;
     top: 50%;
 
@@ -148,10 +192,13 @@ nav a::after {
 
     font-family: var(--font-text);
     font-size: 14px;
+
     white-space: nowrap;
+
     color: var(--charcoal);
 
     opacity: 0;
+
     transition:
         opacity 0.2s ease,
         transform 0.2s ease;
@@ -164,13 +211,18 @@ nav a:hover::after {
     transform: translateY(-50%) translateX(0);
 }
 
-/* ---------- Logo ---------- */
+
+/* =========================================================
+   LOGO
+   ========================================================= */
 
 .logo {
     font-family: var(--font-title);
     font-size: 42px;
     font-weight: 600;
+
     color: var(--charcoal);
+
     line-height: 1;
 
     transition: color 0.2s ease;
@@ -185,91 +237,157 @@ nav a:hover::after {
     color: var(--amber-glow);
 }
 
-/*HOME*/
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
 #home {
     min-height: 100vh;
+
     display: flex;
     flex-direction: column;
+
     justify-content: center;
     align-items: flex-start;
+
     padding: 0 200px;
+
     gap: 20px;
 }
 
 #home h1 {
     font-family: var(--font-title);
     font-size: 80px;
+
     line-height: 1.2;
 }
 
 #home p {
     font-family: var(--font-note);
     font-size: 40px;
+
     line-height: 1.5;
+
     max-width: 600px;
 }
 
-/*ABOUT*/
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+
 #about {
     min-height: 100vh;
+
     padding: 100px 200px;
 
     display: flex;
     flex-direction: column;
+
     justify-content: center;
+
+    gap: 50px;
+}
+
+#about h2 {
+    align-self: center;
+    text-align: center;
 }
 
 .about-content {
     display: flex;
     align-items: center;
+
+    justify-content: center;
+
     gap: 80px;
 }
 
 .about-text {
     flex: 1;
+
     max-width: 700px;
+
     font-family: var(--font-text);
     font-size: 18px;
+
     line-height: 1.6;
 }
 
 .about-img {
     border: 2px solid var(--charcoal);
+
+    flex-shrink: 0;
 }
 
 .about-img img {
     width: 400px;
+
     aspect-ratio: 4 / 5;
+
     object-fit: cover;
 }
 
-/*LIGHT*/
-#light {
-    min-height: 100vh;
-    padding: 100px 200px;
 
+/* =========================================================
+   LIGHT
+   ========================================================= */
+
+#light {
+    padding: 0 200px 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+
+/* ---------- Primera pantalla ---------- */
+
+.light-content {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 60px;
 }
 
-.light-content {
+
+/* ---------- Texto izquierda + foto derecha ---------- */
+
+.light-intro {
     display: flex;
     align-items: center;
     gap: 80px;
 }
 
-.light-text {
+
+/* ---------- Información ---------- */
+
+.light-info {
+    order: 1;
     flex: 1;
     max-width: 700px;
+}
+
+.light-info h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.light-text {
     font-family: var(--font-text);
     font-size: 18px;
     line-height: 1.6;
 }
 
+
+/* ---------- Foto ---------- */
+
 .light-img {
+    order: 2;
     border: 2px solid var(--charcoal);
+    flex-shrink: 0;
 }
 
 .light-img img {
@@ -278,10 +396,14 @@ nav a:hover::after {
     object-fit: cover;
 }
 
+
+/* =========================================================
+   FLUJO
+   ========================================================= */
+
 .light-process {
     width: 100vw;
     margin-left: calc(50% - 50vw);
-    margin-top: 20px;
 
     display: flex;
     justify-content: space-around;
@@ -301,6 +423,11 @@ nav a:hover::after {
     margin-left: 100px;
 }
 
+
+/* =========================================================
+   SEGUNDA IMAGEN
+   ========================================================= */
+
 .light-img-2 {
     display: flex;
     justify-content: center;
@@ -313,18 +440,34 @@ nav a:hover::after {
     object-fit: cover;
 }
 
+
+/* =========================================================
+   TRABAJOS
+   ========================================================= */
+
 .light-works {
     margin-top: 60px;
 }
 
+.light-works h3 {
+    margin-bottom: 40px;
+}
+
+.light-carousel {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
 .light-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
     gap: 40px;
+    overflow: hidden;
+    flex: 1;
 }
 
 .light-card {
-    overflow: hidden;
+    flex: 0 0 350px;
 }
 
 .light-card img {
@@ -334,12 +477,701 @@ nav a:hover::after {
     display: block;
 }
 
-/*LOGIC*/
+.light-card article {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-/*CREATE*/
 
-/*CONTACT*/
+/* ---------- Flechas ---------- */
 
-/*FOOTER*/
+.light-arrow {
+    border: none;
+    background: none;
+    font-family: var(--font-text);
+    font-size: 32px;
+    color: var(--charcoal);
+    cursor: pointer;
+    padding: 10px;
+}
 
-/*RESPONSIVE*/
+.light-arrow:hover {
+    color: var(--amber-glow);
+}
+
+
+/* ---------- Botón proyecto ---------- */
+
+.light-ver-proyecto {
+    align-self: flex-start;
+    border: none;
+    background: none;
+    font-family: var(--font-text);
+    font-size: 15px;
+    color: var(--charcoal);
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.light-ver-proyecto:hover {
+    color: var(--amber-glow);
+}
+
+
+/* =========================================================
+   HERRAMIENTAS
+   ========================================================= */
+
+.light-tools {
+    margin-top: 80px;
+}
+
+.light-tools h3 {
+    margin-bottom: 50px;
+}
+
+.light-tools h4 {
+    margin-top: 35px;
+    margin-bottom: 10px;
+}
+
+.light-tools ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 25px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.light-tools li {
+    font-family: var(--font-text);
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   LOGIC
+   ========================================================= */
+
+#logic {
+    padding: 0 200px 100px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 60px;
+}
+
+
+/* ---------- Primera pantalla ---------- */
+
+.logic-intro {
+    min-height: calc(100vh - 60px);
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 50px;
+}
+
+
+/* ---------- Foto izquierda + texto derecha ---------- */
+
+.logic-content {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 80px;
+}
+
+.logic-img {
+    border: 2px solid var(--charcoal);
+
+    flex-shrink: 0;
+}
+
+.logic-img img {
+    width: 400px;
+
+    aspect-ratio: 4 / 5;
+
+    object-fit: cover;
+}
+
+.logic-info {
+    flex: 1;
+
+    max-width: 700px;
+}
+
+.logic-info h2 {
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.logic-text {
+    font-family: var(--font-text);
+
+    font-size: 18px;
+
+    line-height: 1.6;
+}
+
+
+/* ---------- Flujo ---------- */
+
+.logic-process {
+    width: 100vw;
+
+    margin-left: calc(50% - 50vw);
+
+    display: flex;
+
+    justify-content: space-around;
+    align-items: center;
+
+    font-family: var(--font-note);
+
+    font-size: 40px;
+
+    color: var(--royal-violet);
+}
+
+.logic-process span {
+    position: relative;
+}
+
+.logic-process span:not(:last-child)::after {
+    content: "→";
+
+    margin-left: 100px;
+}
+
+
+/* ---------- Segunda imagen ---------- */
+
+.logic-img-2 {
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 60px;
+}
+
+.logic-img-2 img {
+    width: 700px;
+
+    max-width: 100%;
+
+    object-fit: cover;
+}
+
+
+/* ---------- Trabajos ---------- */
+
+.logic-works {
+    margin-top: 60px;
+}
+
+.logic-works h3 {
+    margin-bottom: 40px;
+}
+
+.logic-carousel {
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+.logic-grid {
+    display: flex;
+
+    gap: 40px;
+
+    overflow: hidden;
+
+    flex: 1;
+}
+
+.logic-card {
+    flex: 0 0 350px;
+}
+
+.logic-card img {
+    width: 100%;
+
+    aspect-ratio: 16 / 10;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.logic-card article {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+
+/* ---------- Flechas ---------- */
+
+.logic-arrow {
+    border: none;
+
+    background: none;
+
+    font-family: var(--font-text);
+
+    font-size: 32px;
+
+    color: var(--charcoal);
+
+    cursor: pointer;
+
+    padding: 10px;
+}
+
+.logic-arrow:hover {
+    color: var(--royal-violet);
+}
+
+
+/* ---------- Botón proyecto ---------- */
+
+.logic-ver-proyecto {
+    align-self: flex-start;
+
+    border: none;
+
+    background: none;
+
+    font-family: var(--font-text);
+
+    font-size: 15px;
+
+    color: var(--charcoal);
+
+    cursor: pointer;
+
+    padding: 0;
+
+    transition: color 0.2s ease;
+}
+
+.logic-ver-proyecto:hover {
+    color: var(--royal-violet);
+}
+
+
+/* ---------- Herramientas ---------- */
+
+.logic-tools {
+    margin-top: 80px;
+}
+
+.logic-tools h3 {
+    margin-bottom: 50px;
+}
+
+.logic-tools h4 {
+    margin-top: 35px;
+    margin-bottom: 10px;
+}
+
+.logic-tools ul {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px 25px;
+
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+}
+
+.logic-tools li {
+    font-family: var(--font-text);
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   CREATE
+   ========================================================= */
+
+#create {
+    min-height: 100vh;
+
+    padding: 100px 200px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 60px;
+}
+
+#create h2 {
+    align-self: center;
+
+    text-align: center;
+}
+
+.create-text {
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    font-family: var(--font-text);
+
+    font-size: 18px;
+
+    line-height: 1.6;
+}
+
+.create-projects {
+    margin-top: 60px;
+}
+
+.create-projects h3 {
+    margin-bottom: 40px;
+}
+
+.create-carousel {
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+.create-grid {
+    display: flex;
+
+    gap: 40px;
+
+    overflow: hidden;
+
+    flex: 1;
+}
+
+.create-card {
+    flex: 0 0 350px;
+}
+
+.create-card img {
+    width: 100%;
+
+    aspect-ratio: 16 / 10;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.create-card article {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+
+/* ---------- Flechas ---------- */
+
+.create-arrow {
+    border: none;
+
+    background: none;
+
+    font-family: var(--font-text);
+
+    font-size: 32px;
+
+    color: var(--charcoal);
+
+    cursor: pointer;
+
+    padding: 10px;
+}
+
+.create-arrow:hover {
+    color: var(--soft-lavender);
+}
+
+
+/* ---------- Botón proyecto ---------- */
+
+.create-ver-proyecto {
+    align-self: flex-start;
+
+    border: none;
+
+    background: none;
+
+    font-family: var(--font-text);
+
+    font-size: 15px;
+
+    color: var(--charcoal);
+
+    cursor: pointer;
+
+    padding: 0;
+
+    transition: color 0.2s ease;
+}
+
+.create-ver-proyecto:hover {
+    color: var(--soft-lavender);
+}
+
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+
+#contact {
+    min-height: 100vh;
+
+    padding: 100px 200px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 30px;
+
+    text-align: center;
+}
+
+#contact h2 {
+    text-align: center;
+}
+
+#contact p {
+    font-family: var(--font-text);
+
+    font-size: 18px;
+}
+
+.contact-links {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 40px;
+
+    margin-top: 20px;
+}
+
+.contact-links a {
+    font-family: var(--font-text);
+
+    font-size: 16px;
+
+    transition: color 0.2s ease;
+}
+
+.contact-links a:hover {
+    color: var(--amber-glow);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    padding: 30px;
+
+    text-align: center;
+}
+
+footer p {
+    font-family: var(--font-note);
+
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.divider {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    padding: 40px 0;
+}
+
+.divider img {
+    width: 150px;
+
+    max-width: 30%;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    #home,
+    #about,
+    #light,
+    #logic,
+    #create,
+    #contact {
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+
+    .about-content,
+    .light-intro,
+    .logic-content {
+        gap: 40px;
+    }
+
+    .light-img img,
+    .logic-img img {
+        width: 320px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 0 20px;
+    }
+
+    nav {
+        right: 12px;
+    }
+
+    #home,
+    #about,
+    #light,
+    #logic,
+    #create,
+    #contact {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    #home h1 {
+        font-size: 55px;
+    }
+
+    #home p {
+        font-size: 30px;
+    }
+
+    h2 {
+        font-size: 48px;
+    }
+
+
+    /* ---------- About ---------- */
+
+    .about-content {
+        flex-direction: column;
+    }
+
+
+    /* ---------- Light ---------- */
+
+    .light-intro {
+        min-height: auto;
+
+        flex-direction: column;
+
+        padding-top: 100px;
+    }
+
+    .light-info {
+        max-width: 100%;
+    }
+
+    .light-process,
+    .logic-process {
+        font-size: 30px;
+
+        flex-wrap: wrap;
+
+        gap: 20px;
+    }
+
+    .light-process span:not(:last-child)::after,
+    .logic-process span:not(:last-child)::after {
+        margin-left: 30px;
+    }
+
+
+    /* ---------- Logic ---------- */
+
+    .logic-intro {
+        min-height: auto;
+
+        padding-top: 100px;
+    }
+
+    .logic-content {
+        flex-direction: column;
+    }
+
+
+    /* ---------- Carruseles ---------- */
+
+    .light-grid,
+    .logic-grid,
+    .create-grid {
+        gap: 20px;
+    }
+
+    .light-card,
+    .logic-card,
+    .create-card {
+        flex: 0 0 280px;
+    }
+
+
+    /* ---------- Contacto ---------- */
+
+    .contact-links {
+        flex-direction: column;
+
+        gap: 20px;
+    }
+}
