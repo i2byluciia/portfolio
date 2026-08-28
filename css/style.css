@@ -1002,7 +1002,6 @@ nav a:hover::after {
    ========================================================= */
 
 .project-modal {
-    display: flex;
     justify-content: center;
     align-items: center;
 
