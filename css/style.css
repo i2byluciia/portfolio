@@ -946,55 +946,118 @@ nav a:hover::after {
 
 
 /* =========================================================
-   CONTACT
+   CONTACTO
    ========================================================= */
 
 #contact {
-    min-height: 100vh;
-
-    padding: 100px 200px;
+    min-height: 80vh;
 
     display: flex;
-    flex-direction: column;
-
     justify-content: center;
     align-items: center;
 
-    gap: 30px;
+    padding: 80px 40px;
+
+    background: linear-gradient(
+        to bottom,
+        var(--paper) 0%,
+        var(--paper) 65%,
+        #F0ECE4 69%,
+        #E7E2D9 72%,
+        #D8D3CA 75%,
+        #C3BEB6 78%,
+        #AAA59E 81%,
+        #908B84 84%,
+        #75716B 87%,
+        #5D5954 90%,
+        #4A4642 93%,
+        #3D3936 96%,
+        var(--charcoal) 100%
+    );
+}
+
+.contact-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     text-align: center;
+
+    max-width: 700px;
 }
 
-#contact h2 {
-    text-align: center;
+.contact-content h2 {
+    margin-bottom: 15px;
 }
 
-#contact p {
-    font-family: var(--font-text);
+.contact-content p {
+    margin-bottom: 40px;
 
-    font-size: 18px;
+    font-family: "Caveat", cursive;
+    font-size: 1.5rem;
 }
+
+
+ /* =========================================================
+    ICONOS DE CONTACTO
+    ========================================================= */
 
 .contact-links {
     display: flex;
-
     justify-content: center;
-
-    gap: 40px;
-
-    margin-top: 20px;
+    align-items: flex-start;
+    gap: 30px;
 }
 
 .contact-links a {
-    font-family: var(--font-text);
+    position: relative;
 
-    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-    transition: color 0.2s ease;
+    color: inherit;
+    text-decoration: none;
+
+    transition: transform 0.3s ease;
 }
 
+.contact-links svg {
+    width: 28px;
+    height: 28px;
+}
+
+
+/* =========================
+   NOMBRE
+   ========================= */
+
+.contact-links span {
+    margin-top: 8px;
+
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+
+    opacity: 0;
+    transform: translateY(-5px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+/* =========================
+   HOVER
+   ========================= */
+
 .contact-links a:hover {
-    color: var(--amber-glow);
+    transform: translateY(-3px);
+}
+
+.contact-links a:hover span {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* =========================================================
@@ -1136,14 +1199,16 @@ nav a:hover::after {
 
 footer {
     padding: 30px;
-
     text-align: center;
+
+    background: var(--charcoal);
+    color: var(--paper);
 }
 
 footer p {
     font-family: var(--font-note);
-
     font-size: 20px;
+    color: var(--paper);
 }
 
 
