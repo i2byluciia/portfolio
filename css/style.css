@@ -1211,6 +1211,13 @@ footer p {
     color: var(--paper);
 }
 
+footer small {
+    display: block;
+    margin-top: 8px;
+    font-family: var(--font-code);
+    font-size: 11px;
+    opacity: 0.3;
+}
 
 /* =========================================================
    DIVIDER
