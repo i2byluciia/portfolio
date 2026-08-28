@@ -86,6 +86,8 @@ body {
     background-color: var(--paper);
     color: var(--charcoal);
     font-family: var(--font-text);
+    position: relative;
+    overflow-x: hidden;
 }
 
 a {
@@ -99,7 +101,7 @@ img {
 }
 
 main {
-    padding-top: 60px;
+    position: relative;
 }
 
 h2 {
@@ -952,12 +954,13 @@ nav a:hover::after {
 
 #contact {
     min-height: 80vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 80px 40px;
+
+    position: relative;
+    z-index: -1;
 
     background: linear-gradient(
         to bottom,
@@ -1748,4 +1751,45 @@ img {
 .logic-img-2 img {
     aspect-ratio: 16 / 9;
     min-height: 280px;
+}
+
+
+/* =========================================================
+   CABLES SVG DE FONDO (LIGHT / LOGIC)
+   ========================================================= */
+
+.cables-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: ;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.cable-path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.55;
+}
+
+.cable-light {
+    stroke: url(#cable-gradient-light);
+    stroke-width: 3;
+}
+
+.cable-logic {
+    stroke: url(#cable-gradient-logic);
+    stroke-width: 3;
+}
+
+@media (max-width: 1000px) {
+
+    .cable-path {
+        stroke-width: 2.2;
+        opacity: 0.45;
+    }
+
 }

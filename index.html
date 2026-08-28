@@ -12,6 +12,33 @@
 
 <body>
 
+    <!-- =========================================================
+         CABLES SVG DE FONDO (LIGHT / LOGIC)
+         El atributo "d" de cada path se calcula en js/cables.js
+         ========================================================= -->
+
+    <svg id="cables-svg" class="cables-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+
+        <defs>
+
+            <linearGradient id="cable-gradient-light" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:var(--golden-beam)" />
+                <stop offset="100%" style="stop-color:var(--amber-glow)" />
+            </linearGradient>
+
+            <linearGradient id="cable-gradient-logic" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:var(--soft-lavender)" />
+                <stop offset="100%" style="stop-color:var(--royal-violet)" />
+            </linearGradient>
+
+        </defs>
+
+        <path id="light-cable" class="cable-path cable-light"></path>
+        <path id="logic-cable" class="cable-path cable-logic"></path>
+
+    </svg>
+
+
     <header>
 
         <a href="#home" class="logo">
@@ -20,35 +47,17 @@
 
         <nav>
             <ul>
-
-                <li>
-                    <a href="#home" data-label="Inicio">Inicio</a>
-                </li>
-
-                <li>
-                    <a href="#about" data-label="Acerca de">Acerca de</a>
-                </li>
-
-                <li>
-                    <a href="#light" data-label="Light">Light</a>
-                </li>
-
-                <li>
-                    <a href="#logic" data-label="Logic">Logic</a>
-                </li>
-
-                <li>
-                    <a href="#create" data-label="Create">Create</a>
-                </li>
-
-                <li>
-                    <a href="#contact" data-label="Contacto">Contacto</a>
-                </li>
-
+                <li><a href="#home" data-label="Inicio">Inicio</a></li>
+                <li><a href="#about" data-label="Acerca de">Acerca de</a></li>
+                <li><a href="#light" data-label="Light">Light</a></li>
+                <li><a href="#logic" data-label="Logic">Logic</a></li>
+                <li><a href="#create" data-label="Create">Create</a></li>
+                <li><a href="#contact" data-label="Contacto">Contacto</a></li>
             </ul>
         </nav>
 
     </header>
+
 
 
     <main>
@@ -640,8 +649,8 @@
         </div>
 
         <!-- =========================
-                    CONTACT
-                ========================== -->
+             CONTACT
+        ========================== -->
 
         <section id="contact">
 
@@ -748,12 +757,10 @@
         </section>
 
         <!-- =========================
-             PROYECTOS
+             PROYECTOS (MODALES)
         ========================== -->
 
-
         <!-- HOTEL LA FUGA -->
-
         <div class="project-modal" id="modal-la-fuga">
 
             <div class="project-modal-content">
@@ -825,7 +832,6 @@
 
 
         <!-- EL JUEGO DE LA SEPIA -->
-
         <div class="project-modal" id="modal-la-sepia">
 
             <div class="project-modal-content">
@@ -897,7 +903,6 @@
 
 
         <!-- LA HERENCIA -->
-
         <div class="project-modal" id="modal-la-herencia">
 
             <div class="project-modal-content">
@@ -969,7 +974,6 @@
 
 
         <!-- DAILY DOSE -->
-
         <div class="project-modal" id="modal-daily-dose">
 
             <div class="project-modal-content">
@@ -1036,7 +1040,6 @@
 
 
         <!-- ARCHLINUX -->
-
         <div class="project-modal" id="modal-archlinux">
 
             <div class="project-modal-content">
@@ -1237,6 +1240,7 @@
 
 
     <script src="js/script.js"></script>
+    <script src="js/cables.js"></script>
 
 </body>
 
