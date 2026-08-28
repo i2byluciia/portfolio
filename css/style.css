@@ -431,13 +431,16 @@ nav a:hover::after {
 .light-img-2 {
     display: flex;
     justify-content: center;
-    margin-top: 60px;
+    margin-top: 20px;
+    width: 100%;
 }
 
 .light-img-2 img {
-    width: 700px;
+    width: 1000px;
     max-width: 100%;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
+    border: 2px solid var(--charcoal);
 }
 
 
@@ -660,18 +663,16 @@ nav a:hover::after {
 
 .logic-img-2 {
     display: flex;
-
     justify-content: center;
-
-    margin-top: 60px;
+    margin-top: 20px;
 }
 
 .logic-img-2 img {
-    width: 700px;
-
+    width: 1000px;
     max-width: 100%;
-
+    aspect-ratio: 16 / 9;
     object-fit: cover;
+    border: 2px solid var(--charcoal);
 }
 
 
@@ -1687,4 +1688,64 @@ footer small {
     footer small {
         font-size: 10px;
     }
+}
+
+
+/* =========================================================
+   PLACEHOLDERS TEMPORALES (Imágenes pendientes)
+   ========================================================= */
+
+/* Base para cualquier imagen sin cargar o pendiente */
+img {
+    background-color: var(--soft-grey);
+    position: relative;
+}
+
+/* Retrato personal (About) */
+.about-img img {
+    background: linear-gradient(135deg, var(--soft-grey), #e8e3d8);
+}
+
+/* Fotos e imágenes de sección Light */
+.light-img img,
+.light-img-2 img {
+    background: linear-gradient(135deg, rgba(232, 131, 0, 0.12), rgba(255, 196, 81, 0.25));
+}
+
+/* Tarjetas de proyectos Light */
+.light-card img {
+    background: linear-gradient(135deg, #ede7db, rgba(232, 131, 0, 0.18));
+    border: 1px solid rgba(52, 52, 52, 0.1);
+}
+
+/* Fotos e imágenes de sección Logic */
+.logic-img img,
+.logic-img-2 img {
+    background: linear-gradient(135deg, rgba(81, 69, 117, 0.12), rgba(167, 157, 218, 0.25));
+}
+
+/* Tarjetas de proyectos Logic */
+.logic-card img {
+    background: linear-gradient(135deg, #ede7db, rgba(113, 102, 166, 0.18));
+    border: 1px solid rgba(52, 52, 52, 0.1);
+}
+
+/* Tarjetas de proyectos Create */
+.create-card img {
+    background: linear-gradient(135deg, #ede7db, rgba(167, 157, 218, 0.18));
+    border: 1px solid rgba(52, 52, 52, 0.1);
+}
+
+/* Galería dentro del modal de proyectos */
+.project-modal-header img,
+.project-modal-gallery-grid img {
+    background-color: var(--soft-grey);
+    border: 1px solid rgba(52, 52, 52, 0.08);
+}
+
+/* Imagen secundaria horizontal (Light 2 y Logic 2) */
+.light-img-2 img,
+.logic-img-2 img {
+    aspect-ratio: 16 / 9;
+    min-height: 280px;
 }
