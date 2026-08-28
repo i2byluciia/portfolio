@@ -1013,6 +1013,8 @@ nav a:hover::after {
 
     background: rgba(245, 241, 232, 0.35);
     backdrop-filter: blur(8px);
+
+    display: none;
 }
 
 
