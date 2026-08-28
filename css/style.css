@@ -1269,113 +1269,422 @@ footer small {
     }
 }
 
-
 /* =========================================================
-   MOBILE
+   MÓVIL
    ========================================================= */
 
 @media (max-width: 700px) {
 
+    /* ---------- Header ---------- */
+
     header {
+        height: 70px;
         padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 36px;
     }
 
     nav {
         right: 12px;
     }
 
-    #home,
-    #about,
-    #light,
-    #logic,
-    #create,
-    #contact {
-        padding-left: 30px;
-        padding-right: 30px;
+    nav ul {
+        gap: 12px;
     }
 
-    #home h1 {
-        font-size: 55px;
+    nav a {
+        width: 9px;
+        height: 9px;
     }
 
-    #home p {
-        font-size: 30px;
+    /* ---------- Base ---------- */
+
+    main {
+        padding-top: 50px;
     }
 
     h2 {
         font-size: 48px;
     }
 
+    h3 {
+        font-size: 28px;
+    }
 
-    /* ---------- About ---------- */
-
-    .about-content {
-        flex-direction: column;
+    h4 {
+        font-size: 22px;
     }
 
 
-    /* ---------- Light ---------- */
+    /* =========================================================
+       HOME
+       ========================================================= */
 
-    .light-intro {
-        min-height: auto;
-
-        flex-direction: column;
-
-        padding-top: 100px;
+    #home {
+        min-height: 100svh;
+        padding: 0 30px;
+        justify-content: center;
     }
 
-    .light-info {
+    #home h1 {
+        font-size: clamp(48px, 13vw, 65px);
+        line-height: 1.1;
+    }
+
+    #home p {
+        font-size: 30px;
+        line-height: 1.3;
         max-width: 100%;
     }
 
+
+    /* =========================================================
+       ABOUT
+       ========================================================= */
+
+    #about {
+        min-height: auto;
+        padding: 100px 30px;
+        gap: 40px;
+    }
+
+    .about-content {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .about-text {
+        max-width: 100%;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .about-img {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .about-img img {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+    }
+
+
+    /* =========================================================
+       LIGHT
+       ========================================================= */
+
+    #light {
+        padding: 0 30px 80px;
+        gap: 50px;
+    }
+
+    .light-content {
+        min-height: auto;
+        padding-top: 80px;
+        gap: 50px;
+    }
+
+    .light-intro {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .light-info {
+        order: 1;
+        max-width: 100%;
+    }
+
+    .light-info h2 {
+        margin-bottom: 25px;
+    }
+
+    .light-text {
+        font-size: 16px;
+    }
+
+    .light-img {
+        order: 2;
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .light-img img {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+    }
+
+
+    /* ---------- Flujo ---------- */
+
     .light-process,
     .logic-process {
-        font-size: 30px;
-
+        width: 100%;
+        margin-left: 0;
         flex-wrap: wrap;
-
-        gap: 20px;
+        justify-content: center;
+        gap: 10px 25px;
+        font-size: 30px;
+        text-align: center;
     }
 
     .light-process span:not(:last-child)::after,
     .logic-process span:not(:last-child)::after {
-        margin-left: 30px;
+        margin-left: 25px;
     }
 
 
-    /* ---------- Logic ---------- */
+    /* ---------- Segunda imagen ---------- */
 
-    .logic-intro {
-        min-height: auto;
-
-        padding-top: 100px;
+    .light-img-2,
+    .logic-img-2 {
+        margin-top: 30px;
     }
 
-    .logic-content {
-        flex-direction: column;
+    .light-img-2 img,
+    .logic-img-2 img {
+        width: 100%;
+        max-width: 100%;
     }
 
 
-    /* ---------- Carruseles ---------- */
+    /* ---------- Trabajos ---------- */
+
+    .light-works,
+    .logic-works {
+        margin-top: 40px;
+    }
+
+    .light-works h3,
+    .logic-works h3 {
+        margin-bottom: 25px;
+    }
+
+    .light-carousel,
+    .logic-carousel,
+    .create-carousel {
+        gap: 10px;
+    }
 
     .light-grid,
     .logic-grid,
     .create-grid {
         gap: 20px;
+        overflow: hidden;
     }
 
     .light-card,
     .logic-card,
     .create-card {
-        flex: 0 0 280px;
+        flex: 0 0 calc(100vw - 100px);
+        max-width: 300px;
+    }
+
+    .light-arrow,
+    .logic-arrow,
+    .create-arrow {
+        font-size: 26px;
+        padding: 5px;
+        flex-shrink: 0;
     }
 
 
-    /* ---------- Contacto ---------- */
+    /* ---------- Herramientas ---------- */
+
+    .light-tools,
+    .logic-tools {
+        margin-top: 60px;
+    }
+
+    .light-tools h3,
+    .logic-tools h3 {
+        margin-bottom: 35px;
+    }
+
+    .light-tools h4,
+    .logic-tools h4 {
+        margin-top: 30px;
+    }
+
+    .light-tools li,
+    .logic-tools li {
+        font-size: 16px;
+    }
+
+
+    /* =========================================================
+       LOGIC
+       ========================================================= */
+
+    #logic {
+        padding: 0 30px 80px;
+        gap: 50px;
+    }
+
+    .logic-intro {
+        min-height: auto;
+        padding-top: 80px;
+        gap: 40px;
+    }
+
+    .logic-content {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .logic-img {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .logic-img img {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+    }
+
+    .logic-info {
+        max-width: 100%;
+    }
+
+    .logic-info h2 {
+        margin-bottom: 25px;
+    }
+
+    .logic-text {
+        font-size: 16px;
+    }
+
+
+    /* =========================================================
+       CREATE
+       ========================================================= */
+
+    #create {
+        min-height: auto;
+        padding: 100px 30px;
+        gap: 45px;
+    }
+
+    .create-text {
+        max-width: 100%;
+        font-size: 16px;
+    }
+
+    .create-projects {
+        margin-top: 30px;
+    }
+
+    .create-projects h3 {
+        margin-bottom: 25px;
+    }
+
+
+    /* =========================================================
+       CONTACTO
+       ========================================================= */
+
+    #contact {
+        min-height: 75vh;
+        padding: 80px 30px;
+        text-align: center;
+    }
+
+    .contact-content {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .contact-content h2 {
+        font-size: 48px;
+    }
+
+    .contact-content p {
+        font-size: 22px;
+        margin-bottom: 35px;
+    }
 
     .contact-links {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 25px;
+    }
 
-        gap: 20px;
+    .contact-links a {
+        min-width: 60px;
+    }
+
+    .contact-links svg {
+        width: 27px;
+        height: 27px;
+    }
+
+    .contact-links span {
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       MODALES
+       ========================================================= */
+
+    .project-modal {
+        padding: 20px;
+    }
+
+    .project-modal-content {
+        max-height: 90vh;
+        padding: 35px 25px;
+    }
+
+    .project-modal-close {
+        top: 10px;
+        right: 15px;
+        font-size: 26px;
+    }
+
+    .project-modal-main {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .project-modal-header,
+    .project-modal-body {
+        flex: none;
+        width: 100%;
+    }
+
+    .project-modal-header img {
+        margin-top: 15px;
+    }
+
+    .project-modal-gallery {
+        margin-top: 40px;
+        padding-top: 30px;
+    }
+
+    .project-modal-gallery-grid img {
+        flex: 0 0 220px;
+        width: 220px;
+        height: 150px;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    footer {
+        padding: 30px 20px;
+    }
+
+    footer p {
+        font-size: 19px;
+    }
+
+    footer small {
+        font-size: 10px;
     }
 }
