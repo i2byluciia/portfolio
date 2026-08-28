@@ -997,6 +997,137 @@ nav a:hover::after {
     color: var(--amber-glow);
 }
 
+/* =========================================================
+   MODAL DE PROYECTOS
+   ========================================================= */
+
+.project-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    inset: 0;
+
+    padding: 60px;
+
+    background: rgba(245, 241, 232, 0.35);
+    backdrop-filter: blur(8px);
+}
+
+
+/* ---------- CUADRO PRINCIPAL ---------- */
+
+.project-modal-content {
+    position: relative;
+
+    width: 100%;
+    max-width: 1200px;
+    max-height: 90vh;
+
+    padding: 50px;
+
+    background: var(--paper);
+
+    box-shadow: 0 10px 40px rgba(32, 33, 57, 0.15);
+
+    overflow-y: auto;
+}
+
+
+/* ---------- BOTÓN CERRAR ---------- */
+
+.project-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+
+    border: none;
+    background: none;
+
+    padding: 0;
+    margin: 0;
+
+    font: inherit;
+    font-size: 28px;
+
+    color: var(--charcoal);
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.project-modal-close:hover {
+    color: var(--amber-glow);
+}
+
+
+/* ---------- INFORMACIÓN PRINCIPAL ---------- */
+
+.project-modal-main {
+    display: flex;
+    flex-direction: row;
+
+    gap: 60px;
+}
+
+
+/* ---------- IZQUIERDA ---------- */
+
+.project-modal-header {
+    flex: 0.5;
+}
+
+.project-modal-header img {
+    width: 100%;
+    margin-top: 25px;
+
+    object-fit: cover;
+}
+
+
+/* ---------- DERECHA ---------- */
+
+.project-modal-body {
+    flex: 0.5;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 15px;
+}
+
+
+/* ---------- GALERÍA ---------- */
+
+.project-modal-gallery {
+    margin-top: 60px;
+    padding-top: 40px;
+
+    border-top: 1px solid var(--soft-grey);
+}
+
+.project-modal-gallery-grid {
+    display: flex;
+
+    gap: 20px;
+
+    margin-top: 25px;
+
+    overflow-x: auto;
+}
+
+.project-modal-gallery-grid img {
+    flex: 0 0 250px;
+
+    width: 250px;
+    height: 170px;
+
+    object-fit: cover;
+}
 
 /* =========================================================
    FOOTER
