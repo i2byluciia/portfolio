@@ -102,6 +102,13 @@ img {
 
 main {
     position: relative;
+    z-index: 2;
+}
+
+/* Todos los textos se colocan por encima de los cables sin fondos artificiales */
+h1, h2, h3, h4, p, span, li {
+    position: relative;
+    z-index: 2;
 }
 
 h2 {
@@ -151,6 +158,7 @@ nav {
     top: 50%;
 
     transform: translateY(-50%);
+    z-index: 1001;
 }
 
 nav ul {
@@ -228,6 +236,8 @@ nav a:hover::after {
     line-height: 1;
 
     transition: color 0.2s ease;
+    position: relative;
+    z-index: 1001;
 }
 
 .logo sup {
@@ -256,21 +266,20 @@ nav a:hover::after {
     padding: 0 200px;
 
     gap: 20px;
+    position: relative;
+    z-index: 2;
 }
 
 #home h1 {
     font-family: var(--font-title);
     font-size: 80px;
-
     line-height: 1.2;
 }
 
 #home p {
     font-family: var(--font-note);
     font-size: 40px;
-
     line-height: 1.5;
-
     max-width: 600px;
 }
 
@@ -290,6 +299,8 @@ nav a:hover::after {
     justify-content: center;
 
     gap: 50px;
+    position: relative;
+    z-index: 2;
 }
 
 #about h2 {
@@ -300,34 +311,38 @@ nav a:hover::after {
 .about-content {
     display: flex;
     align-items: center;
-
     justify-content: center;
-
     gap: 80px;
+    position: relative;
+    z-index: 2;
+}
+
+.about-info {
+    position: relative;
+    z-index: 2;
 }
 
 .about-text {
     flex: 1;
-
     max-width: 700px;
-
     font-family: var(--font-text);
     font-size: 18px;
-
     line-height: 1.6;
+    position: relative;
+    z-index: 2;
 }
 
 .about-img {
     border: 2px solid var(--charcoal);
-
     flex-shrink: 0;
+    position: relative;
+    z-index: 3;
+    background-color: var(--paper);
 }
 
 .about-img img {
     width: 400px;
-
     aspect-ratio: 4 / 5;
-
     object-fit: cover;
 }
 
@@ -341,6 +356,8 @@ nav a:hover::after {
     display: flex;
     flex-direction: column;
     gap: 60px;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -352,6 +369,8 @@ nav a:hover::after {
     flex-direction: column;
     justify-content: center;
     gap: 60px;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -361,6 +380,8 @@ nav a:hover::after {
     display: flex;
     align-items: center;
     gap: 80px;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -370,6 +391,8 @@ nav a:hover::after {
     order: 1;
     flex: 1;
     max-width: 700px;
+    position: relative;
+    z-index: 2;
 }
 
 .light-info h2 {
@@ -381,6 +404,8 @@ nav a:hover::after {
     font-family: var(--font-text);
     font-size: 18px;
     line-height: 1.6;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -390,6 +415,9 @@ nav a:hover::after {
     order: 2;
     border: 2px solid var(--charcoal);
     flex-shrink: 0;
+    position: relative;
+    z-index: 3;
+    background-color: var(--paper);
 }
 
 .light-img img {
@@ -414,6 +442,8 @@ nav a:hover::after {
     font-family: var(--font-note);
     font-size: 40px;
     color: var(--amber-glow);
+    position: relative;
+    z-index: 2;
 }
 
 .light-process span {
@@ -435,6 +465,8 @@ nav a:hover::after {
     justify-content: center;
     margin-top: 20px;
     width: 100%;
+    position: relative;
+    z-index: 3;
 }
 
 .light-img-2 img {
@@ -443,6 +475,7 @@ nav a:hover::after {
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border: 2px solid var(--charcoal);
+    background-color: var(--paper);
 }
 
 
@@ -452,6 +485,8 @@ nav a:hover::after {
 
 .light-works {
     margin-top: 60px;
+    position: relative;
+    z-index: 2;
 }
 
 .light-works h3 {
@@ -462,6 +497,8 @@ nav a:hover::after {
     display: flex;
     align-items: center;
     gap: 30px;
+    position: relative;
+    z-index: 2;
 }
 
 .light-grid {
@@ -473,6 +510,9 @@ nav a:hover::after {
 
 .light-card {
     flex: 0 0 350px;
+    position: relative;
+    z-index: 3;
+    background-color: var(--paper);
 }
 
 .light-card img {
@@ -499,6 +539,8 @@ nav a:hover::after {
     color: var(--charcoal);
     cursor: pointer;
     padding: 10px;
+    position: relative;
+    z-index: 3;
 }
 
 .light-arrow:hover {
@@ -531,6 +573,8 @@ nav a:hover::after {
 
 .light-tools {
     margin-top: 80px;
+    position: relative;
+    z-index: 2;
 }
 
 .light-tools h3 {
@@ -563,11 +607,11 @@ nav a:hover::after {
 
 #logic {
     padding: 0 200px 100px;
-
     display: flex;
     flex-direction: column;
-
     gap: 60px;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -575,13 +619,12 @@ nav a:hover::after {
 
 .logic-intro {
     min-height: calc(100vh - 60px);
-
     display: flex;
     flex-direction: column;
-
     justify-content: center;
-
     gap: 50px;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -589,45 +632,45 @@ nav a:hover::after {
 
 .logic-content {
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     gap: 80px;
+    position: relative;
+    z-index: 2;
 }
 
 .logic-img {
     border: 2px solid var(--charcoal);
-
     flex-shrink: 0;
+    position: relative;
+    z-index: 3;
+    background-color: var(--paper);
 }
 
 .logic-img img {
     width: 400px;
-
     aspect-ratio: 4 / 5;
-
     object-fit: cover;
 }
 
 .logic-info {
     flex: 1;
-
     max-width: 700px;
+    position: relative;
+    z-index: 2;
 }
 
 .logic-info h2 {
     text-align: center;
-
     margin-bottom: 30px;
 }
 
 .logic-text {
     font-family: var(--font-text);
-
     font-size: 18px;
-
     line-height: 1.6;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -635,19 +678,17 @@ nav a:hover::after {
 
 .logic-process {
     width: 100vw;
-
     margin-left: calc(50% - 50vw);
 
     display: flex;
-
     justify-content: space-around;
     align-items: center;
 
     font-family: var(--font-note);
-
     font-size: 40px;
-
     color: var(--royal-violet);
+    position: relative;
+    z-index: 2;
 }
 
 .logic-process span {
@@ -656,7 +697,6 @@ nav a:hover::after {
 
 .logic-process span:not(:last-child)::after {
     content: "→";
-
     margin-left: 100px;
 }
 
@@ -667,6 +707,8 @@ nav a:hover::after {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    position: relative;
+    z-index: 3;
 }
 
 .logic-img-2 img {
@@ -675,6 +717,7 @@ nav a:hover::after {
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border: 2px solid var(--charcoal);
+    background-color: var(--paper);
 }
 
 
@@ -682,6 +725,8 @@ nav a:hover::after {
 
 .logic-works {
     margin-top: 60px;
+    position: relative;
+    z-index: 2;
 }
 
 .logic-works h3 {
@@ -690,41 +735,36 @@ nav a:hover::after {
 
 .logic-carousel {
     display: flex;
-
     align-items: center;
-
     gap: 30px;
+    position: relative;
+    z-index: 2;
 }
 
 .logic-grid {
     display: flex;
-
     gap: 40px;
-
     overflow: hidden;
-
     flex: 1;
 }
 
 .logic-card {
     flex: 0 0 350px;
+    position: relative;
+    z-index: 3;
+    background-color: var(--paper);
 }
 
 .logic-card img {
     width: 100%;
-
     aspect-ratio: 16 / 10;
-
     object-fit: cover;
-
     display: block;
 }
 
 .logic-card article {
     display: flex;
-
     flex-direction: column;
-
     gap: 15px;
 }
 
@@ -733,18 +773,14 @@ nav a:hover::after {
 
 .logic-arrow {
     border: none;
-
     background: none;
-
     font-family: var(--font-text);
-
     font-size: 32px;
-
     color: var(--charcoal);
-
     cursor: pointer;
-
     padding: 10px;
+    position: relative;
+    z-index: 3;
 }
 
 .logic-arrow:hover {
@@ -756,21 +792,13 @@ nav a:hover::after {
 
 .logic-ver-proyecto {
     align-self: flex-start;
-
     border: none;
-
     background: none;
-
     font-family: var(--font-text);
-
     font-size: 15px;
-
     color: var(--charcoal);
-
     cursor: pointer;
-
     padding: 0;
-
     transition: color 0.2s ease;
 }
 
@@ -783,6 +811,8 @@ nav a:hover::after {
 
 .logic-tools {
     margin-top: 80px;
+    position: relative;
+    z-index: 2;
 }
 
 .logic-tools h3 {
@@ -796,20 +826,15 @@ nav a:hover::after {
 
 .logic-tools ul {
     display: flex;
-
     flex-wrap: wrap;
-
     gap: 10px 25px;
-
     list-style: none;
-
     padding: 0;
     margin: 0;
 }
 
 .logic-tools li {
     font-family: var(--font-text);
-
     font-size: 18px;
 }
 
@@ -820,37 +845,34 @@ nav a:hover::after {
 
 #create {
     min-height: 100vh;
-
     padding: 100px 200px;
-
     display: flex;
     flex-direction: column;
-
     justify-content: center;
-
     gap: 60px;
+    position: relative;
+    z-index: 2;
 }
 
 #create h2 {
     align-self: center;
-
     text-align: center;
 }
 
 .create-text {
     max-width: 900px;
-
     margin: 0 auto;
-
     font-family: var(--font-text);
-
     font-size: 18px;
-
     line-height: 1.6;
+    position: relative;
+    z-index: 2;
 }
 
 .create-projects {
     margin-top: 60px;
+    position: relative;
+    z-index: 2;
 }
 
 .create-projects h3 {
@@ -859,41 +881,36 @@ nav a:hover::after {
 
 .create-carousel {
     display: flex;
-
     align-items: center;
-
     gap: 30px;
+    position: relative;
+    z-index: 2;
 }
 
 .create-grid {
     display: flex;
-
     gap: 40px;
-
     overflow: hidden;
-
     flex: 1;
 }
 
 .create-card {
     flex: 0 0 350px;
+    position: relative;
+    z-index: 3;
+    background-color: var(--paper);
 }
 
 .create-card img {
     width: 100%;
-
     aspect-ratio: 16 / 10;
-
     object-fit: cover;
-
     display: block;
 }
 
 .create-card article {
     display: flex;
-
     flex-direction: column;
-
     gap: 15px;
 }
 
@@ -902,18 +919,14 @@ nav a:hover::after {
 
 .create-arrow {
     border: none;
-
     background: none;
-
     font-family: var(--font-text);
-
     font-size: 32px;
-
     color: var(--charcoal);
-
     cursor: pointer;
-
     padding: 10px;
+    position: relative;
+    z-index: 3;
 }
 
 .create-arrow:hover {
@@ -925,21 +938,13 @@ nav a:hover::after {
 
 .create-ver-proyecto {
     align-self: flex-start;
-
     border: none;
-
     background: none;
-
     font-family: var(--font-text);
-
     font-size: 15px;
-
     color: var(--charcoal);
-
     cursor: pointer;
-
     padding: 0;
-
     transition: color 0.2s ease;
 }
 
@@ -949,33 +954,36 @@ nav a:hover::after {
 
 
 /* =========================================================
-   CONTACTO
+   CONTACTO (Degradado por detrás de los cables)
    ========================================================= */
 
 #contact {
-    min-height: 80vh;
+    min-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 80px 40px;
-
+    padding: 100px 40px 140px;
     position: relative;
-    z-index: -1;
+    background: transparent;
+}
 
+/* Fondo degradado colocado detrás de los cables (z-index: 0) */
+#contact::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
     background: linear-gradient(
         to bottom,
         var(--paper) 0%,
-        var(--paper) 65%,
-        #F0ECE4 69%,
-        #E7E2D9 72%,
-        #D8D3CA 75%,
-        #C3BEB6 78%,
-        #AAA59E 81%,
-        #908B84 84%,
-        #75716B 87%,
-        #5D5954 90%,
-        #4A4642 93%,
-        #3D3936 96%,
+        var(--paper) 40%,
+        #F0ECE4 50%,
+        #E7E2D9 58%,
+        #D8D3CA 66%,
+        #AAA59E 74%,
+        #75716B 82%,
+        #4A4642 90%,
         var(--charcoal) 100%
     );
 }
@@ -984,10 +992,10 @@ nav a:hover::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-
     text-align: center;
-
     max-width: 700px;
+    position: relative;
+    z-index: 2;
 }
 
 .contact-content h2 {
@@ -996,7 +1004,6 @@ nav a:hover::after {
 
 .contact-content p {
     margin-bottom: 40px;
-
     font-family: "Caveat", cursive;
     font-size: 1.5rem;
 }
@@ -1011,18 +1018,17 @@ nav a:hover::after {
     justify-content: center;
     align-items: flex-start;
     gap: 30px;
+    position: relative;
+    z-index: 2;
 }
 
 .contact-links a {
     position: relative;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-
     color: inherit;
     text-decoration: none;
-
     transition: transform 0.3s ease;
 }
 
@@ -1038,13 +1044,10 @@ nav a:hover::after {
 
 .contact-links span {
     margin-top: 8px;
-
     font-family: "JetBrains Mono", monospace;
     font-size: 0.7rem;
-
     opacity: 0;
     transform: translateY(-5px);
-
     transition:
         opacity 0.3s ease,
         transform 0.3s ease;
@@ -1064,6 +1067,7 @@ nav a:hover::after {
     transform: translateY(0);
 }
 
+
 /* =========================================================
    MODAL DE PROYECTOS
    ========================================================= */
@@ -1071,16 +1075,13 @@ nav a:hover::after {
 .project-modal {
     justify-content: center;
     align-items: center;
-
     position: fixed;
     inset: 0;
-
     padding: 60px;
-
     background: rgba(245, 241, 232, 0.35);
     backdrop-filter: blur(8px);
-
     display: none;
+    z-index: 2000;
 }
 
 
@@ -1088,18 +1089,14 @@ nav a:hover::after {
 
 .project-modal-content {
     position: relative;
-
     width: 100%;
     max-width: 1200px;
     max-height: 90vh;
-
     padding: 50px;
-
     background: var(--paper);
-
     box-shadow: 0 10px 40px rgba(32, 33, 57, 0.15);
-
     overflow-y: auto;
+    z-index: 2001;
 }
 
 
@@ -1109,20 +1106,14 @@ nav a:hover::after {
     position: absolute;
     top: 15px;
     right: 25px;
-
     border: none;
     background: none;
-
     padding: 0;
     margin: 0;
-
     font: inherit;
     font-size: 28px;
-
     color: var(--charcoal);
-
     cursor: pointer;
-
     transition: color 0.2s ease;
 }
 
@@ -1136,7 +1127,6 @@ nav a:hover::after {
 .project-modal-main {
     display: flex;
     flex-direction: row;
-
     gap: 60px;
 }
 
@@ -1150,7 +1140,6 @@ nav a:hover::after {
 .project-modal-header img {
     width: 100%;
     margin-top: 25px;
-
     object-fit: cover;
 }
 
@@ -1159,12 +1148,9 @@ nav a:hover::after {
 
 .project-modal-body {
     flex: 0.5;
-
     display: flex;
     flex-direction: column;
-
     justify-content: center;
-
     gap: 15px;
 }
 
@@ -1174,54 +1160,52 @@ nav a:hover::after {
 .project-modal-gallery {
     margin-top: 60px;
     padding-top: 40px;
-
     border-top: 1px solid var(--soft-grey);
 }
 
 .project-modal-gallery-grid {
     display: flex;
-
     gap: 20px;
-
     margin-top: 25px;
-
     overflow-x: auto;
 }
 
 .project-modal-gallery-grid img {
     flex: 0 0 250px;
-
     width: 250px;
     height: 170px;
-
     object-fit: cover;
 }
 
+
 /* =========================================================
-   FOOTER
+   FOOTER (Fondo oscuro continuo)
    ========================================================= */
 
 footer {
-    padding: 30px;
+    position: relative;
+    z-index: 2;
+    padding: 40px 20px 50px;
     text-align: center;
-
-    background: var(--charcoal);
+    background-color: var(--charcoal);
     color: var(--paper);
+    margin-top: -1px;
 }
 
 footer p {
     font-family: var(--font-note);
-    font-size: 20px;
+    font-size: 22px;
     color: var(--paper);
 }
 
 footer small {
     display: block;
-    margin-top: 8px;
+    margin-top: 10px;
     font-family: var(--font-code);
     font-size: 11px;
-    opacity: 0.3;
+    opacity: 0.4;
 }
+
 
 /* =========================================================
    DIVIDER
@@ -1229,18 +1213,16 @@ footer small {
 
 .divider {
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     width: 100%;
-
     padding: 40px 0;
+    position: relative;
+    z-index: 2;
 }
 
 .divider img {
     width: 150px;
-
     max-width: 30%;
 }
 
@@ -1279,8 +1261,6 @@ footer small {
 
 @media (max-width: 700px) {
 
-    /* ---------- Header ---------- */
-
     header {
         height: 70px;
         padding: 0 20px;
@@ -1303,8 +1283,6 @@ footer small {
         height: 9px;
     }
 
-    /* ---------- Base ---------- */
-
     main {
         padding-top: 50px;
     }
@@ -1320,11 +1298,6 @@ footer small {
     h4 {
         font-size: 22px;
     }
-
-
-    /* =========================================================
-       HOME
-       ========================================================= */
 
     #home {
         min-height: 100svh;
@@ -1342,11 +1315,6 @@ footer small {
         line-height: 1.3;
         max-width: 100%;
     }
-
-
-    /* =========================================================
-       ABOUT
-       ========================================================= */
 
     #about {
         min-height: auto;
@@ -1374,11 +1342,6 @@ footer small {
         width: 100%;
         aspect-ratio: 4 / 5;
     }
-
-
-    /* =========================================================
-       LIGHT
-       ========================================================= */
 
     #light {
         padding: 0 30px 80px;
@@ -1420,9 +1383,6 @@ footer small {
         aspect-ratio: 4 / 5;
     }
 
-
-    /* ---------- Flujo ---------- */
-
     .light-process,
     .logic-process {
         width: 100%;
@@ -1439,9 +1399,6 @@ footer small {
         margin-left: 25px;
     }
 
-
-    /* ---------- Segunda imagen ---------- */
-
     .light-img-2,
     .logic-img-2 {
         margin-top: 30px;
@@ -1452,9 +1409,6 @@ footer small {
         width: 100%;
         max-width: 100%;
     }
-
-
-    /* ---------- Trabajos ---------- */
 
     .light-works,
     .logic-works {
@@ -1494,9 +1448,6 @@ footer small {
         flex-shrink: 0;
     }
 
-
-    /* ---------- Herramientas ---------- */
-
     .light-tools,
     .logic-tools {
         margin-top: 60px;
@@ -1516,11 +1467,6 @@ footer small {
     .logic-tools li {
         font-size: 16px;
     }
-
-
-    /* =========================================================
-       LOGIC
-       ========================================================= */
 
     #logic {
         padding: 0 30px 80px;
@@ -1560,11 +1506,6 @@ footer small {
         font-size: 16px;
     }
 
-
-    /* =========================================================
-       CREATE
-       ========================================================= */
-
     #create {
         min-height: auto;
         padding: 100px 30px;
@@ -1583,11 +1524,6 @@ footer small {
     .create-projects h3 {
         margin-bottom: 25px;
     }
-
-
-    /* =========================================================
-       CONTACTO
-       ========================================================= */
 
     #contact {
         min-height: 75vh;
@@ -1628,11 +1564,6 @@ footer small {
     .contact-links span {
         font-size: 10px;
     }
-
-
-    /* =========================================================
-       MODALES
-       ========================================================= */
 
     .project-modal {
         padding: 20px;
@@ -1675,11 +1606,6 @@ footer small {
         height: 150px;
     }
 
-
-    /* =========================================================
-       FOOTER
-       ========================================================= */
-
     footer {
         padding: 30px 20px;
     }
@@ -1695,58 +1621,49 @@ footer small {
 
 
 /* =========================================================
-   PLACEHOLDERS TEMPORALES (Imágenes pendientes)
+   PLACEHOLDERS TEMPORALES
    ========================================================= */
 
-/* Base para cualquier imagen sin cargar o pendiente */
 img {
     background-color: var(--soft-grey);
     position: relative;
 }
 
-/* Retrato personal (About) */
 .about-img img {
     background: linear-gradient(135deg, var(--soft-grey), #e8e3d8);
 }
 
-/* Fotos e imágenes de sección Light */
 .light-img img,
 .light-img-2 img {
     background: linear-gradient(135deg, rgba(232, 131, 0, 0.12), rgba(255, 196, 81, 0.25));
 }
 
-/* Tarjetas de proyectos Light */
 .light-card img {
     background: linear-gradient(135deg, #ede7db, rgba(232, 131, 0, 0.18));
     border: 1px solid rgba(52, 52, 52, 0.1);
 }
 
-/* Fotos e imágenes de sección Logic */
 .logic-img img,
 .logic-img-2 img {
     background: linear-gradient(135deg, rgba(81, 69, 117, 0.12), rgba(167, 157, 218, 0.25));
 }
 
-/* Tarjetas de proyectos Logic */
 .logic-card img {
     background: linear-gradient(135deg, #ede7db, rgba(113, 102, 166, 0.18));
     border: 1px solid rgba(52, 52, 52, 0.1);
 }
 
-/* Tarjetas de proyectos Create */
 .create-card img {
     background: linear-gradient(135deg, #ede7db, rgba(167, 157, 218, 0.18));
     border: 1px solid rgba(52, 52, 52, 0.1);
 }
 
-/* Galería dentro del modal de proyectos */
 .project-modal-header img,
 .project-modal-gallery-grid img {
     background-color: var(--soft-grey);
     border: 1px solid rgba(52, 52, 52, 0.08);
 }
 
-/* Imagen secundaria horizontal (Light 2 y Logic 2) */
 .light-img-2 img,
 .logic-img-2 img {
     aspect-ratio: 16 / 9;
@@ -1757,12 +1674,22 @@ img {
 /* =========================================================
    CABLES SVG DE FONDO (LIGHT / LOGIC)
    ========================================================= */
+
+.cables-container,
 .cables-svg {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
-    height: auto !important;
+    pointer-events: none !important;
+    z-index: 1 !important; /* Detrás de fotos/tarjetas y por encima del fondo/degradado */
+    overflow: hidden;
+}
+
+.cables-container svg,
+.cables-svg svg {
+    width: 100% !important;
+    display: block;
 }
 
 .cable-path {
