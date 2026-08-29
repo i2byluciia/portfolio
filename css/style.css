@@ -1757,39 +1757,57 @@ img {
 /* =========================================================
    CABLES SVG DE FONDO (LIGHT / LOGIC)
    ========================================================= */
-
 .cables-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: ;
-    pointer-events: none;
-    overflow: visible;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
 }
 
 .cable-path {
     fill: none;
+    stroke: rgba(65, 65, 65, 0.18);
+    stroke-width: 8;
     stroke-linecap: round;
     stroke-linejoin: round;
-    opacity: 0.55;
 }
 
-.cable-light {
+.cable-glass {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.65);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cable-core {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.9;
+}
+
+.cable-core-light {
     stroke: url(#cable-gradient-light);
-    stroke-width: 3;
 }
 
-.cable-logic {
+.cable-core-logic {
     stroke: url(#cable-gradient-logic);
-    stroke-width: 3;
 }
 
 @media (max-width: 1000px) {
 
     .cable-path {
-        stroke-width: 2.2;
-        opacity: 0.45;
+        stroke-width: 7;
     }
 
+    .cable-glass {
+        stroke-width: 4.5;
+    }
+
+    .cable-core {
+        stroke-width: 1.7;
+    }
 }

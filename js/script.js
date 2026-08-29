@@ -135,8 +135,12 @@ document.addEventListener("keydown", event => {
     const svg     = document.getElementById("cables-svg");
     const lightEl = document.getElementById("light-cable");
     const logicEl = document.getElementById("logic-cable");
+    const lightCore = document.getElementById("light-core");
+    const logicCore = document.getElementById("logic-core");
+    const lightGlass = document.getElementById("light-glass");
+    const logicGlass = document.getElementById("logic-glass");
 
-    if (!svg || !lightEl || !logicEl) return;
+    if (!svg || !lightEl || !logicEl || !lightCore || !logicCore || !lightGlass || !logicGlass) return;
 
     // ── Utilidades ────────────────────────────────────────
 
@@ -386,7 +390,12 @@ document.addEventListener("keydown", event => {
         const routes = MQ.matches ? buildMobile(r) : buildDesktop(r);
 
         lightEl.setAttribute("d", smoothPath(routes.light));
+        lightGlass.setAttribute("d", smoothPath(routes.light));
+        lightCore.setAttribute("d", smoothPath(routes.light));
+
         logicEl.setAttribute("d", smoothPath(routes.logic));
+        logicGlass.setAttribute("d", smoothPath(routes.logic));
+        logicCore.setAttribute("d", smoothPath(routes.logic));
 
         // El SVG cubre exactamente el scrollHeight del documento.
         // NO añadimos margen extra: eso estiraría el body
