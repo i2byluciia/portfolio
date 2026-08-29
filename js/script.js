@@ -225,22 +225,21 @@ document.addEventListener("keydown", event => {
         light.push(pt(startX, startY));
         light.push(pt(px(r.home, 0.30), py(r.home, 0.55)));
         light.push(pt(px(r.home, 0.72), py(r.home, 0.43)));
-        light.push(pt(px(r.home, 0.80), py(r.home, 0.88)));
-        light.push(pt(px(r.home, 0.18), py(r.home, 0.96)));
+        light.push(pt(px(r.home, 0.90), py(r.home, 0.85)));
+        light.push(pt(px(r.home, 0.24), py(r.home, 0.96)));
 
         // ABOUT: curva amplia hacia la derecha y vuelve.
         light.push(pt(px(r.about, 0.15), py(r.about, 0.16)));
         light.push(pt(px(r.about, 0.55), py(r.about, 0.30)));
         light.push(pt(px(r.about, 0.90), py(r.about, 0.55)));
-        light.push(pt(px(r.about, 0.45), py(r.about, 0.78)));
-        light.push(pt(px(r.about, 0.12), py(r.about, 0.94)));
+        light.push(pt(px(r.about, 0.22), py(r.about, 0.90)));
 
         // LIGHT (sección): tres olas amplias horizontales.
         // Entra por la izquierda junto al título.
         if (r.ltitle) {
             light.push(pt(r.ltitle.left - 20, r.ltitle.top + r.ltitle.height * 0.5));
         }
-        light.push(pt(px(r.light, 0.55), py(r.light, 0.16)));
+        light.push(pt(px(r.light, 0.55), py(r.light, 0.12)));
         light.push(pt(px(r.light, 0.92), py(r.light, 0.28)));
         light.push(pt(px(r.light, 0.55), py(r.light, 0.42)));
         light.push(pt(px(r.light, 0.10), py(r.light, 0.56)));
@@ -254,8 +253,9 @@ document.addEventListener("keydown", event => {
         light.push(pt(px(r.logic, 0.08), py(r.logic, 0.06)));
         light.push(pt(px(r.logic, 0.30), py(r.logic, 0.25)));
         light.push(pt(px(r.logic, 0.94), py(r.logic, 0.46)));
-        light.push(pt(px(r.logic, 0.28), py(r.logic, 0.68)));
-        light.push(pt(px(r.logic, 0.10), py(r.logic, 0.88)));
+        light.push(pt(px(r.logic, 0.40), py(r.logic, 0.68)));
+        light.push(pt(px(r.logic, 0.10), py(r.logic, 0.95)));
+        light.push(pt(px(r.logic, 0.80), py(r.logic, 0.85)));
 
         // CREATE: primer cruce exactamente en el centro del
         // título "Create". Los dos cables pasan por el mismo
@@ -274,14 +274,12 @@ document.addEventListener("keydown", event => {
         light.push(pt(px(r.create, 0.10), py(r.create, 0.40)));
         light.push(pt(px(r.create, 0.35), py(r.create, 0.60)));
         light.push(pt(px(r.create, 0.65), py(r.create, 0.72)));
-        light.push(pt(px(r.create, 0.25), py(r.create, 0.85)));
-        light.push(pt(px(r.create, 0.08), py(r.create, 0.96)));
+        light.push(pt(px(r.create, 0.12), py(r.create, 0.96)));
 
         // CONTACT: curvas amplias, poca presencia izquierda.
         light.push(pt(px(r.contact, 0.06), py(r.contact, 0.10)));
         light.push(pt(px(r.contact, 0.65), py(r.contact, 0.45)));
-        light.push(pt(px(r.contact, 0.06), py(r.contact, 0.80)));
-        light.push(pt(px(r.contact, 0.10), py(r.contact, 0.97)));
+        light.push(pt(px(r.contact, 0.10), py(r.contact, 0.90)));
 
         // FOOTER
         light.push(pt(px(r.footer, 0.35), py(r.footer, 0.35)));
@@ -297,26 +295,25 @@ document.addEventListener("keydown", event => {
         // HOME: sale del mismo punto, pero se va más
         // a la derecha pasando por encima del título.
         logic.push(pt(startX, startY));
-        logic.push(pt(px(r.home, 0.30), py(r.home, 0.05)));
-        logic.push(pt(px(r.home, 0.70), py(r.home, 0.10)));
-        logic.push(pt(px(r.home, 0.94), py(r.home, 0.38)));
-        logic.push(pt(px(r.home, 0.82), py(r.home, 0.68)));
-        logic.push(pt(px(r.home, 0.55), py(r.home, 0.90)));
+        logic.push(pt(px(r.home, 0.36), py(r.home, 0.18)));
+        logic.push(pt(px(r.home, 0.50), py(r.home, 0.68)));
+        logic.push(pt(px(r.home, 0.82), py(r.home, 0.20)));
 
         // ABOUT: ese independiente del recorrido de LIGHT.
-        logic.push(pt(px(r.about, 0.55), py(r.about, 0.08)));
+        logic.push(pt(px(r.about, 0.65), py(r.about, 0.08)));
         logic.push(pt(px(r.about, 0.88), py(r.about, 0.30)));
         logic.push(pt(px(r.about, 0.10), py(r.about, 0.52)));
-        logic.push(pt(px(r.about, 0.88), py(r.about, 0.74)));
-        logic.push(pt(px(r.about, 0.70), py(r.about, 0.96)));
+        logic.push(pt(px(r.about, 0.68), py(r.about, 0.74)));
+        logic.push(pt(px(r.about, 0.48), py(r.about, 0.96)));
 
         // LIGHT (sección): LOGIC pasa por la derecha,
         // NO toca el título (que está a la izquierda).
         logic.push(pt(px(r.light, 0.82), py(r.light, 0.08)));
-        logic.push(pt(px(r.light, 0.68), py(r.light, 0.28)));
+        logic.push(pt(px(r.light, 0.48), py(r.light, 0.28)));
         logic.push(pt(px(r.light, 0.88), py(r.light, 0.50)));
-        logic.push(pt(px(r.light, 0.70), py(r.light, 0.72)));
-        logic.push(pt(px(r.light, 0.90), py(r.light, 0.94)));
+        logic.push(pt(px(r.light, 0.25), py(r.light, 0.75)));
+        logic.push(pt(px(r.light, 0.65), py(r.light, 0.86)));
+        logic.push(pt(px(r.light, 0.35), py(r.light, 0.99)));
 
         // LOGIC (sección): el cable atraviesa el título.
         // Tres puntos muy próximos al título fuerzan al spline
@@ -332,8 +329,8 @@ document.addEventListener("keydown", event => {
         logic.push(pt(px(r.logic, 0.80), py(r.logic, 0.22)));
         logic.push(pt(px(r.logic, 0.48), py(r.logic, 0.40)));
         logic.push(pt(px(r.logic, 0.65), py(r.logic, 0.58)));
-        logic.push(pt(px(r.logic, 0.45), py(r.logic, 0.76)));
-        logic.push(pt(px(r.logic, 0.18), py(r.logic, 0.92)));
+        logic.push(pt(px(r.logic, 0.18), py(r.logic, 0.76)));
+        logic.push(pt(px(r.logic, 0.30), py(r.logic, 0.92)));
 
         // CREATE: LOGIC entra por la izquierda y se cruza con
         // LIGHT exactamente en el título (mismo punto ctx/cty).
@@ -342,15 +339,12 @@ document.addEventListener("keydown", event => {
         logic.push(pt(px(r.create, 0.90), py(r.create, 0.40)));
         logic.push(pt(px(r.create, 0.65), py(r.create, 0.60)));
         logic.push(pt(px(r.create, 0.35), py(r.create, 0.72)));
-        logic.push(pt(px(r.create, 0.75), py(r.create, 0.85)));
-        logic.push(pt(px(r.create, 0.92), py(r.create, 0.96)));
+        logic.push(pt(px(r.create, 0.92), py(r.create, 0.92)));
 
         // CONTACT: gran lazo en lágrima a la derecha
         logic.push(pt(px(r.contact, 0.92), py(r.contact, 0.10)));
-        logic.push(pt(px(r.contact, 0.40), py(r.contact, 0.35)));
-        logic.push(pt(px(r.contact, 0.52), py(r.contact, 0.52)));
-        logic.push(pt(px(r.contact, 0.88), py(r.contact, 0.68)));
-        logic.push(pt(px(r.contact, 0.78), py(r.contact, 0.90)));
+        logic.push(pt(px(r.contact, 0.40), py(r.contact, 0.40)));
+        logic.push(pt(px(r.contact, 0.90), py(r.contact, 0.90)));
 
         // FOOTER
         logic.push(pt(endX, endY));
