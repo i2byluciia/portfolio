@@ -1184,12 +1184,27 @@ nav a:hover::after {
 
 footer {
     position: relative;
-    z-index: 2;
     padding: 40px 20px 50px;
     text-align: center;
-    background-color: var(--charcoal);
+    background: transparent;   /* el color pasa al pseudo-elemento */
     color: var(--paper);
-    margin-top: -1px;
+}
+
+/* Fondo sólido del footer, colocado DETRÁS del cable
+   (funciona porque footer ahora vive dentro de <main>) */
+footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;                /* por debajo del cable (z-index: 1) */
+    background-color: var(--charcoal);
+    pointer-events: none;
+}
+
+footer p,
+footer small {
+    position: relative;
+    z-index: 2;                /* por encima del cable, igual que el resto de textos */
 }
 
 footer p {

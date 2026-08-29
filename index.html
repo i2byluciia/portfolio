@@ -12,38 +12,6 @@
 
 <body>
 
-    <!-- =========================================================
-         CABLES SVG DE FONDO (LIGHT / LOGIC)
-         El atributo "d" de cada path se calcula en js/cables.js
-         ========================================================= -->
-
-    <svg id="cables-svg" class="cables-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-
-        <defs>
-
-            <linearGradient id="cable-gradient-light" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:var(--golden-beam)" />
-                <stop offset="100%" style="stop-color:var(--amber-glow)" />
-            </linearGradient>
-
-            <linearGradient id="cable-gradient-logic" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:var(--soft-lavender)" />
-                <stop offset="100%" style="stop-color:var(--royal-violet)" />
-            </linearGradient>
-
-        </defs>
-
-        <path id="light-cable" class="cable-path cable-light"></path>
-        <path id="light-glass" class="cable-glass cable-glass-light"></path>
-        <path id="light-core" class="cable-core cable-core-light"></path>
-
-        <path id="logic-cable" class="cable-path cable-logic"></path>
-        <path id="logic-glass" class="cable-glass cable-glass-logic"></path>
-        <path id="logic-core" class="cable-core cable-core-logic"></path>
-
-    </svg>
-
-
     <header>
 
         <a href="#home" class="logo">
@@ -66,6 +34,41 @@
 
 
     <main>
+
+        <!-- =========================================================
+             CABLES SVG DE FONDO (LIGHT / LOGIC)
+             El atributo "d" de cada path se calcula en js/cables.js
+             (Vive dentro de <main> para poder pasar por detrás del
+             degradado de #contact y del fondo del footer, sin
+             afectar al resto del apilamiento de texto/tarjetas)
+             ========================================================= -->
+
+        <svg id="cables-svg" class="cables-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+
+            <defs>
+
+                <linearGradient id="cable-gradient-light" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:var(--golden-beam)" />
+                    <stop offset="100%" style="stop-color:var(--amber-glow)" />
+                </linearGradient>
+
+                <linearGradient id="cable-gradient-logic" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:var(--soft-lavender)" />
+                    <stop offset="100%" style="stop-color:var(--royal-violet)" />
+                </linearGradient>
+
+            </defs>
+
+            <path id="light-cable" class="cable-path cable-light"></path>
+            <path id="light-glass" class="cable-glass cable-glass-light"></path>
+            <path id="light-core" class="cable-core cable-core-light"></path>
+
+            <path id="logic-cable" class="cable-path cable-logic"></path>
+            <path id="logic-glass" class="cable-glass cable-glass-logic"></path>
+            <path id="logic-core" class="cable-core cable-core-logic"></path>
+
+        </svg>
+
 
         <!-- =========================
              HOME
@@ -1235,13 +1238,13 @@
 
         </div>
 
+
+        <footer>
+            <p>Iluminación × Informática by Luciia</p>
+            <small>© 2026 Luciia</small>
+        </footer>
+
     </main>
-
-
-    <footer>
-        <p>Iluminación × Informática by Luciia</p>
-        <small>© 2026 Luciia</small>
-    </footer>
 
 
     <script src="js/script.js"></script>
