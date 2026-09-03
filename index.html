@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Light · Logic · Create</title>
 
     <link rel="icon" type="image/png" href="assets/icons/favicon-ambar.png">
@@ -11,6 +12,10 @@
 </head>
 
 <body>
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
 
     <header>
 
@@ -20,12 +25,43 @@
 
         <nav>
             <ul>
-                <li><a href="#home" data-label="Inicio">Inicio</a></li>
-                <li><a href="#about" data-label="Acerca de">Acerca de</a></li>
-                <li><a href="#light" data-label="Light">Light</a></li>
-                <li><a href="#logic" data-label="Logic">Logic</a></li>
-                <li><a href="#create" data-label="Create">Create</a></li>
-                <li><a href="#contact" data-label="Contacto">Contacto</a></li>
+
+                <li>
+                    <a href="#home" data-label="Inicio">
+                        Inicio
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#about" data-label="Acerca de">
+                        Acerca de
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#light" data-label="Light">
+                        Light
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#logic" data-label="Logic">
+                        Logic
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#create" data-label="Create">
+                        Create
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#contact" data-label="Contacto">
+                        Contacto
+                    </a>
+                </li>
+
             </ul>
         </nav>
 
@@ -33,58 +69,97 @@
 
 
 
+    <!-- =========================================================
+         CABLES SVG
+    ========================================================== -->
+
+    <svg id="cables-svg"
+         class="cables-svg"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-hidden="true"
+         focusable="false">
+
+        <defs>
+
+            <linearGradient id="cable-gradient-light"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="100%">
+
+                <stop offset="0%"
+                      style="stop-color:var(--golden-beam)" />
+
+                <stop offset="100%"
+                      style="stop-color:var(--amber-glow)" />
+
+            </linearGradient>
+
+
+            <linearGradient id="cable-gradient-logic"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="100%">
+
+                <stop offset="0%"
+                      style="stop-color:var(--soft-lavender)" />
+
+                <stop offset="100%"
+                      style="stop-color:var(--royal-violet)" />
+
+            </linearGradient>
+
+        </defs>
+
+
+        <path id="light-cable"
+              class="cable-path cable-light"></path>
+
+        <path id="light-glass"
+              class="cable-glass cable-glass-light"></path>
+
+        <path id="light-core"
+              class="cable-core cable-core-light"></path>
+
+
+        <path id="logic-cable"
+              class="cable-path cable-logic"></path>
+
+        <path id="logic-glass"
+              class="cable-glass cable-glass-logic"></path>
+
+        <path id="logic-core"
+              class="cable-core cable-core-logic"></path>
+
+    </svg>
+
+
+
     <main>
 
-        <!-- =========================================================
-             CABLES SVG DE FONDO (LIGHT / LOGIC)
-             El atributo "d" de cada path se calcula en js/cables.js
-             (Vive dentro de <main> para poder pasar por detrás del
-             degradado de #contact y del fondo del footer, sin
-             afectar al resto del apilamiento de texto/tarjetas)
-             ========================================================= -->
 
-        <svg id="cables-svg" class="cables-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-
-            <defs>
-
-                <linearGradient id="cable-gradient-light" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:var(--golden-beam)" />
-                    <stop offset="100%" style="stop-color:var(--amber-glow)" />
-                </linearGradient>
-
-                <linearGradient id="cable-gradient-logic" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:var(--soft-lavender)" />
-                    <stop offset="100%" style="stop-color:var(--royal-violet)" />
-                </linearGradient>
-
-            </defs>
-
-            <path id="light-cable" class="cable-path cable-light"></path>
-            <path id="light-glass" class="cable-glass cable-glass-light"></path>
-            <path id="light-core" class="cable-core cable-core-light"></path>
-
-            <path id="logic-cable" class="cable-path cable-logic"></path>
-            <path id="logic-glass" class="cable-glass cable-glass-logic"></path>
-            <path id="logic-core" class="cable-core cable-core-logic"></path>
-
-        </svg>
-
-
-        <!-- =========================
+        <!-- =====================================================
              HOME
-        ========================== -->
+        ====================================================== -->
 
         <section id="home">
 
-            <h1>Light · Logic · Create</h1>
-            <p>i² by Luciia</p>
+            <h1>
+                Light · Logic · Create
+            </h1>
+
+            <p>
+                i² by Luciia
+            </p>
 
         </section>
 
 
-        <!-- =========================
+
+        <!-- =====================================================
              ABOUT
-        ========================== -->
+        ====================================================== -->
 
         <section id="about">
 
@@ -92,28 +167,44 @@
 
                 <div class="about-info">
 
-                    <h2>Acerca de</h2>
+                    <h2>
+                        Acerca de
+                    </h2>
 
                     <div class="about-text">
 
                         <p>
-                            Me gusta entender cómo funcionan las cosas, descubrir otras nuevas
-                            y convertir ideas en algo real.
-                            La iluminación y la informática son dos formas diferentes de hacer eso.
-                            En la cabina, me gusta dar vida a un escenario y sentir que lo que hago
-                            forma parte de que ese momento suceda. En informática, disfruto de ese
-                            mismo proceso desde otro lugar: investigar, resolver problemas, aprender
+                            Me gusta entender cómo funcionan las cosas,
+                            descubrir otras nuevas y convertir ideas en algo real.
+
+                            La iluminación y la informática son dos formas
+                            diferentes de hacer eso.
+
+                            En la cabina, me gusta dar vida a un escenario y
+                            sentir que lo que hago forma parte de que ese
+                            momento suceda.
+
+                            En informática, disfruto de ese mismo proceso desde
+                            otro lugar: investigar, resolver problemas, aprender
                             cómo funcionan las cosas y construir soluciones.
 
-                            No necesito saber cómo hacer algo para querer intentarlo. Si una idea me
-                            interesa, busco, pregunto, pruebo y aprendo hasta encontrar la manera de
-                            hacerla funcionar. Y cuando funciona, normalmente ya estoy pensando en
-                            qué más podría hacer con ello.
+                            No necesito saber cómo hacer algo para querer
+                            intentarlo.
 
-                            Me gusta crear cosas que tengan un propósito, que funcionen y que tengan
-                            algo de mí. Y también me importa cómo se trabaja en equipo: quiero que las
-                            personas que trabajan conmigo estén a gusto, sepan que pueden contar conmigo
-                            y encuentren en mí a alguien que aporta buenas ideas y hace bien su trabajo.
+                            Si una idea me interesa, busco, pregunto, pruebo y
+                            aprendo hasta encontrar la manera de hacerla funcionar.
+
+                            Y cuando funciona, normalmente ya estoy pensando
+                            en qué más podría hacer con ello.
+
+                            Me gusta crear cosas que tengan un propósito,
+                            que funcionen y que tengan algo de mí.
+
+                            Y también me importa cómo se trabaja en equipo:
+                            quiero que las personas que trabajan conmigo estén
+                            a gusto, sepan que pueden contar conmigo y
+                            encuentren en mí a alguien que aporta buenas ideas
+                            y hace bien su trabajo.
                         </p>
 
                     </div>
@@ -123,7 +214,8 @@
 
                 <div class="about-img">
 
-                    <img src="img/luciia.png" alt="Foto de Luciia">
+                    <img src="img/luciia.png"
+                         alt="Foto de Luciia">
 
                 </div>
 
@@ -132,50 +224,58 @@
         </section>
 
 
+
         <div class="divider">
+
             <img src="icons/divider.png" alt="">
+
         </div>
 
 
-        <!-- =========================
+
+        <!-- =====================================================
              LIGHT
-        ========================== -->
+        ====================================================== -->
 
         <section id="light">
-
-            <!-- Primera pantalla -->
 
             <div class="light-content">
 
                 <div class="light-intro">
 
-                    <!-- Texto izquierda -->
-
                     <div class="light-info">
 
-                        <h2>Light</h2>
+                        <h2>
+                            Light
+                        </h2>
 
                         <div class="light-text">
 
                             <p>
-                                Para mí, la iluminación es parte de la historia: ayuda a los actores
-                                a entrar en personaje y al público a sumergirse en ella.
-                                En cabina preparo, observo y me adapto. Conozco la obra, sigo lo que
-                                ocurre en escena y, si algo cambia, encuentro la manera de que el
+                                Para mí, la iluminación es parte de la historia:
+                                ayuda a los actores a entrar en personaje y al
+                                público a sumergirse en ella.
+
+                                En cabina preparo, observo y me adapto.
+
+                                Conozco la obra, sigo lo que ocurre en escena y,
+                                si algo cambia, encuentro la manera de que el
                                 espectáculo continúe sin que nadie lo perciba.
 
-                                Me gusta saber que lo que hago importa, aunque el público nunca llegue
-                                a verlo. <br>
+                                Me gusta saber que lo que hago importa, aunque
+                                el público nunca llegue a verlo.
 
-                                <i>Una más. :)</i>
+                                <br>
+
+                                <i>
+                                    Una más. :)
+                                </i>
                             </p>
 
                         </div>
 
                     </div>
 
-
-                    <!-- Foto derecha -->
 
                     <div class="light-img">
 
@@ -187,21 +287,29 @@
                 </div>
 
 
-                <!-- Flujo -->
-
                 <div class="light-process">
 
-                    <span>Preparar</span>
-                    <span>Observar</span>
-                    <span>Adaptar</span>
-                    <span>Actuar</span>
+                    <span>
+                        Preparar
+                    </span>
+
+                    <span>
+                        Observar
+                    </span>
+
+                    <span>
+                        Adaptar
+                    </span>
+
+                    <span>
+                        Actuar
+                    </span>
 
                 </div>
 
             </div>
 
 
-            <!-- Segunda imagen -->
 
             <div class="light-img-2">
 
@@ -211,11 +319,17 @@
             </div>
 
 
-            <!-- Trabajos -->
+
+            <!-- =========================
+                 LIGHT PROJECTS
+            ========================== -->
 
             <div class="light-works">
 
-                <h3>¿Quieres ver alguno de mis trabajos?</h3>
+                <h3>
+                    ¿Quieres ver alguno de mis trabajos?
+                </h3>
+
 
                 <div class="light-carousel">
 
@@ -227,6 +341,9 @@
 
                     <div class="light-grid">
 
+
+                        <!-- HOTEL LA FUGA -->
+
                         <div class="light-card">
 
                             <article>
@@ -234,7 +351,9 @@
                                 <img src="assets/img/light-la-fuga.png"
                                      alt="Imagen del trabajo Hotel La Fuga">
 
-                                <h4>Hotel La Fuga</h4>
+                                <h4>
+                                    Hotel La Fuga
+                                </h4>
 
                                 <button class="light-ver-proyecto"
                                         data-project="la-fuga">
@@ -246,6 +365,9 @@
                         </div>
 
 
+
+                        <!-- EL JUEGO DE LA SEPIA -->
+
                         <div class="light-card">
 
                             <article>
@@ -253,7 +375,9 @@
                                 <img src="assets/img/light-el-juego-de-la-sepia.png"
                                      alt="Imagen del trabajo El Juego de la Sepia">
 
-                                <h4>El Juego de la Sepia</h4>
+                                <h4>
+                                    El Juego de la Sepia
+                                </h4>
 
                                 <button class="light-ver-proyecto"
                                         data-project="la-sepia">
@@ -265,6 +389,9 @@
                         </div>
 
 
+
+                        <!-- LA HERENCIA -->
+
                         <div class="light-card">
 
                             <article>
@@ -272,7 +399,9 @@
                                 <img src="assets/img/light-la-herencia.png"
                                      alt="Imagen del trabajo La Herencia">
 
-                                <h4>La Herencia</h4>
+                                <h4>
+                                    La Herencia
+                                </h4>
 
                                 <button class="light-ver-proyecto"
                                         data-project="la-herencia">
@@ -284,6 +413,9 @@
                         </div>
 
 
+
+                        <!-- OTROS -->
+
                         <div class="light-card">
 
                             <article>
@@ -291,16 +423,19 @@
                                 <img src="assets/img/light-otros.png"
                                      alt="Imagen de otros trabajos">
 
-                                <h4>Otros</h4>
+                                <h4>
+                                    Otros
+                                </h4>
 
                                 <button class="light-ver-proyecto"
-                                        data-project="otros">
+                                        data-project="light-otros">
                                     Ver proyecto
                                 </button>
 
                             </article>
 
                         </div>
+
 
                     </div>
 
@@ -315,34 +450,52 @@
             </div>
 
 
-            <!-- Herramientas -->
+
+            <!-- =========================
+                 LIGHT TOOLS
+            ========================== -->
 
             <div class="light-tools">
 
-                <h3>Herramientas</h3>
+                <h3>
+                    Herramientas
+                </h3>
 
-                <h4>Control</h4>
+
+                <h4>
+                    Control
+                </h4>
 
                 <ul>
+
                     <li>grandMA2</li>
                     <li>ChamSys</li>
                     <li>LightShark</li>
+
                 </ul>
 
 
-                <h4>Programación</h4>
+                <h4>
+                    Programación
+                </h4>
 
                 <ul>
+
                     <li>Patch DMX</li>
                     <li>Direccionamiento DMX</li>
                     <li>Universos DMX</li>
+
                 </ul>
 
 
-                <h4>Multimedia</h4>
+                <h4>
+                    Multimedia
+                </h4>
 
                 <ul>
+
                     <li>QLab</li>
+
                 </ul>
 
             </div>
@@ -350,20 +503,25 @@
         </section>
 
 
+
         <div class="divider">
+
             <img src="icons/divider.png" alt="">
+
         </div>
 
 
-        <!-- =========================
+
+        <!-- =====================================================
              LOGIC
-        ========================== -->
+        ====================================================== -->
 
         <section id="logic">
 
             <div class="logic-intro">
 
                 <div class="logic-content">
+
 
                     <div class="logic-img">
 
@@ -373,28 +531,43 @@
                     </div>
 
 
+
                     <div class="logic-info">
 
-                        <h2>Logic</h2>
+                        <h2>
+                            Logic
+                        </h2>
+
 
                         <div class="logic-text">
 
                             <p>
-                                La informática es otra forma de crear para mí. Me gusta entender cómo
-                                funcionan las cosas, pensar cómo deberían encajar y convertir una idea
-                                en algo que realmente funcione.
+                                La informática es otra forma de crear para mí.
 
-                                Disfruto especialmente trabajando con datos y construyendo soluciones.
-                                Cuando algo falla, investigo, encuentro el problema y busco la forma de
-                                resolverlo.
+                                Me gusta entender cómo funcionan las cosas,
+                                pensar cómo deberían encajar y convertir una
+                                idea en algo que realmente funcione.
 
-                                Uno de mis proyectos empezó como una pequeña idea para hacer algo visual
-                                para mi grupo y acabó convirtiéndose en el caso práctico de mi TFC.
-                                Diseñé su base de datos y desarrollé la web, incluyendo la gestión de
-                                usuarios y roles. Lo que empezó como una idea terminó siendo un proyecto real.
+                                Disfruto especialmente trabajando con datos y
+                                construyendo soluciones.
 
-                                Y quizá eso sea lo que más me gusta de la informática: ver cómo algo que
-                                primero solo existe en mi cabeza acaba funcionando delante de mí.
+                                Cuando algo falla, investigo, encuentro el
+                                problema y busco la forma de resolverlo.
+
+                                Uno de mis proyectos empezó como una pequeña
+                                idea para hacer algo visual para mi grupo y
+                                acabó convirtiéndose en el caso práctico de mi TFC.
+
+                                Diseñé su base de datos y desarrollé la web,
+                                incluyendo la gestión de usuarios y roles.
+
+                                Lo que empezó como una idea terminó siendo
+                                un proyecto real.
+
+                                Y quizá eso sea lo que más me gusta de la
+                                informática: ver cómo algo que primero solo
+                                existe en mi cabeza acaba funcionando delante
+                                de mí.
                             </p>
 
                         </div>
@@ -402,6 +575,7 @@
                     </div>
 
                 </div>
+
 
 
                 <div class="logic-process">
@@ -416,6 +590,7 @@
             </div>
 
 
+
             <div class="logic-img-2">
 
                 <img src="img/luciia-logic-2.png"
@@ -424,11 +599,20 @@
             </div>
 
 
+
+            <!-- =========================
+                 LOGIC PROJECTS
+            ========================== -->
+
             <div class="logic-works">
 
-                <h3>¿Quieres ver alguno de mis trabajos?</h3>
+                <h3>
+                    ¿Quieres ver alguno de mis trabajos?
+                </h3>
+
 
                 <div class="logic-carousel">
+
 
                     <button class="logic-arrow logic-arrow-left"
                             aria-label="Proyecto anterior">
@@ -438,6 +622,9 @@
 
                     <div class="logic-grid">
 
+
+                        <!-- DAILY DOSE -->
+
                         <div class="logic-card">
 
                             <article>
@@ -445,7 +632,9 @@
                                 <img src="assets/img/logic-daily-dose.png"
                                      alt="Imagen del proyecto Daily Dose">
 
-                                <h4>Daily Dose</h4>
+                                <h4>
+                                    Daily Dose
+                                </h4>
 
                                 <button class="logic-ver-proyecto"
                                         data-project="daily-dose">
@@ -457,17 +646,25 @@
                         </div>
 
 
+
+                        <!-- i2LAB -->
+
                         <div class="logic-card">
 
                             <article>
 
-                                <img src="assets/img/logic-lifehub.png"
-                                     alt="Imagen del proyecto LifeHub">
+                                <img src="assets/img/logic-i2lab.png"
+                                     alt="Imagen del proyecto i2lab">
 
-                                <h4>LifeHub</h4>
+                                <h4>
+                                    i2lab
+                                    <span class="project-status">
+                                        · En desarrollo
+                                    </span>
+                                </h4>
 
                                 <button class="logic-ver-proyecto"
-                                        data-project="lifehub">
+                                        data-project="i2lab">
                                     Ver proyecto
                                 </button>
 
@@ -476,23 +673,56 @@
                         </div>
 
 
+
+                        <!-- DOTFILES -->
+
                         <div class="logic-card">
 
                             <article>
 
-                                <img src="assets/img/logic-otros.png"
-                                     alt="Imagen de otros proyectos">
+                                <img src="assets/img/logic-dotfiles.png"
+                                     alt="Imagen del proyecto dotfiles">
 
-                                <h4>Otros</h4>
+                                <h4>
+                                    dotfiles
+                                </h4>
 
                                 <button class="logic-ver-proyecto"
-                                        data-project="otros">
+                                        data-project="dotfiles">
                                     Ver proyecto
                                 </button>
 
                             </article>
 
                         </div>
+
+
+
+                        <!-- AMBER -->
+
+                        <div class="logic-card">
+
+                            <article>
+
+                                <img src="assets/img/logic-amber.png"
+                                     alt="Imagen del proyecto Amber">
+
+                                <h4>
+                                    Amber
+                                    <span class="project-status">
+                                        · En desarrollo
+                                    </span>
+                                </h4>
+
+                                <button class="logic-ver-proyecto"
+                                        data-project="amber">
+                                    Ver proyecto
+                                </button>
+
+                            </article>
+
+                        </div>
+
 
                     </div>
 
@@ -507,41 +737,65 @@
             </div>
 
 
+
+            <!-- =========================
+                 LOGIC TOOLS
+            ========================== -->
+
             <div class="logic-tools">
 
-                <h3>Herramientas</h3>
+                <h3>
+                    Herramientas
+                </h3>
 
-                <h4>Desarrollo</h4>
+
+                <h4>
+                    Desarrollo
+                </h4>
 
                 <ul>
+
                     <li>HTML</li>
                     <li>CSS</li>
                     <li>JavaScript</li>
                     <li>PHP</li>
+
                 </ul>
 
 
-                <h4>Bases de datos</h4>
+                <h4>
+                    Bases de datos
+                </h4>
 
                 <ul>
+
                     <li>MySQL</li>
                     <li>SQL</li>
+
                 </ul>
 
 
-                <h4>Sistemas</h4>
+                <h4>
+                    Sistemas
+                </h4>
 
                 <ul>
+
                     <li>Linux</li>
                     <li>Docker</li>
+
                 </ul>
 
 
-                <h4>Control de versiones</h4>
+                <h4>
+                    Control de versiones
+                </h4>
 
                 <ul>
+
                     <li>Git</li>
                     <li>GitHub</li>
+
                 </ul>
 
             </div>
@@ -549,34 +803,47 @@
         </section>
 
 
+
         <div class="divider">
+
             <img src="icons/divider.png" alt="">
+
         </div>
 
 
-        <!-- =========================
+
+        <!-- =====================================================
              CREATE
-        ========================== -->
+        ====================================================== -->
 
         <section id="create">
 
-            <h2>Create</h2>
+            <h2>
+                Create
+            </h2>
+
 
             <div class="create-text">
 
                 <p>
-                    No todas mis ideas empiezan con un objetivo concreto. Algunas simplemente
-                    me parecen interesantes, me despiertan curiosidad o me hacen pensar:
+                    No todas mis ideas empiezan con un objetivo concreto.
+
+                    Algunas simplemente me parecen interesantes, me despiertan
+                    curiosidad o me hacen pensar:
+
                     “¿sería capaz de hacer esto?”
 
-                    Crear es una forma de aprender para mí. Investigo, pruebo, me equivoco,
-                    descubro cosas nuevas y voy viendo hasta dónde puedo llevar una idea.
+                    Crear es una forma de aprender para mí.
 
-                    Aquí es donde mezclo todo lo que me gusta: tecnología, creatividad,
-                    fotografía, ideas y experimentación.
+                    Investigo, pruebo, me equivoco, descubro cosas nuevas y
+                    voy viendo hasta dónde puedo llevar una idea.
 
-                    No siempre sé dónde va a acabar un proyecto cuando empiezo. Y creo que
-                    esa es precisamente la parte que más disfruto.
+                    Aquí es donde mezclo todo lo que me gusta: tecnología,
+                    creatividad, fotografía, ideas y experimentación.
+
+                    No siempre sé dónde va a acabar un proyecto cuando empiezo.
+
+                    Y creo que esa es precisamente la parte que más disfruto.
 
                     Crear me hace bien.
                 </p>
@@ -584,11 +851,16 @@
             </div>
 
 
+
             <div class="create-projects">
 
-                <h3>¿Quieres ver alguno de mis trabajos?</h3>
+                <h3>
+                    ¿Quieres ver alguno de mis trabajos?
+                </h3>
+
 
                 <div class="create-carousel">
+
 
                     <button class="create-arrow create-arrow-left"
                             aria-label="Proyecto anterior">
@@ -598,163 +870,242 @@
 
                     <div class="create-grid">
 
+
+                        <!-- i2LUMEN -->
+
                         <div class="create-card">
+
                             <article>
-                                <img src="assets/img/create-archlinux.png"
-                                     alt="Proyecto ArchLinux">
-                                <h4>ArchLinux</h4>
+
+                                <img src="assets/img/create-i2lumen.png"
+                                     alt="Proyecto i2lumen">
+
+                                <h4>
+                                    i2lumen
+                                    <span class="project-status">
+                                        · En desarrollo
+                                    </span>
+                                </h4>
+
                                 <button class="create-ver-proyecto"
-                                        data-project="archlinux">
+                                        data-project="i2lumen">
                                     Ver proyecto
                                 </button>
+
                             </article>
+
                         </div>
+
+
+
+                        <!-- PORTFOLIO -->
+
                         <div class="create-card">
+
                             <article>
-                                <img src="assets/img/create-amber.png"
-                                     alt="Proyecto AMBER">
-                                <h4>AMBER</h4>
+
+                                <img src="assets/img/create-portfolio.png"
+                                     alt="Proyecto Portfolio">
+
+                                <h4>
+                                    Portfolio
+                                    <span class="project-status">
+                                        · En desarrollo
+                                    </span>
+                                </h4>
+
                                 <button class="create-ver-proyecto"
-                                        data-project="amber">
+                                        data-project="portfolio">
                                     Ver proyecto
                                 </button>
+
                             </article>
+
                         </div>
+
+
+
+                        <!-- FOTOGRAFÍA -->
+
                         <div class="create-card">
+
                             <article>
+
                                 <img src="assets/img/create-fotografia.png"
                                      alt="Proyectos de fotografía">
-                                <h4>Proyectos de fotografía</h4>
+
+                                <h4>
+                                    Proyectos de fotografía
+                                </h4>
+
                                 <button class="create-ver-proyecto"
                                         data-project="fotografia">
                                     Ver proyecto
                                 </button>
+
                             </article>
+
                         </div>
-                        <div class="create-card">
-                            <article>
-                                <img src="assets/img/create-otros.png"
-                                     alt="Otros proyectos">
-                                <h4>Otros</h4>
-                                <button class="create-ver-proyecto"
-                                        data-project="otros">
-                                    Ver proyecto
-                                </button>
-                            </article>
-                        </div>
+
+
                     </div>
+
+
                     <button class="create-arrow create-arrow-right"
                             aria-label="Siguiente proyecto">
                         →
                     </button>
+
                 </div>
+
             </div>
+
         </section>
 
-        <!-- SEPARADOR -->
+
+
         <div class="divider">
+
             <img src="icons/divider.png" alt="">
+
         </div>
 
-        <!-- =========================
+
+
+        <!-- =====================================================
              CONTACT
-        ========================== -->
+        ====================================================== -->
 
         <section id="contact">
 
             <div class="contact-content">
 
-                <h2>Contacto</h2>
+                <h2>
+                    Contacto
+                </h2>
 
-                <p>¿Quieres crear algo conmigo?</p>
+                <p>
+                    ¿Quieres crear algo conmigo?
+                </p>
+
 
                 <div class="contact-links">
 
+
                     <!-- EMAIL -->
+
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=luciiacampos.27@gmail.com"
-                    target="_blank"
-                    rel="noopener noreferrer">
+                       target="_blank"
+                       rel="noopener noreferrer">
 
                         <svg viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true">
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.5"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             aria-hidden="true">
 
                             <rect x="3"
-                                y="5"
-                                width="18"
-                                height="14"
-                                rx="2"/>
+                                  y="5"
+                                  width="18"
+                                  height="14"
+                                  rx="2"/>
 
                             <path d="M4 7.5 L12 13 L20 7.5"/>
 
                         </svg>
-                        <span>Email</span>
+
+                        <span>
+                            Email
+                        </span>
+
                     </a>
 
 
+
                     <!-- LINKEDIN -->
+
                     <a href="https://www.linkedin.com/in/lucía-campos-flores/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn">
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="LinkedIn">
 
                         <svg viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true">
+                             xmlns="http://www.w3.org/2000/svg"
+                             aria-hidden="true">
 
                             <path d="M5.2 3.5A2.2 2.2 0 1 1 5.2 7.9a2.2 2.2 0 0 1 0-4.4ZM3.3 8.8h3.8V21H3.3V8.8ZM9.5 8.8h3.6v1.67h.05c.5-.96 1.72-1.97 3.55-1.97 3.8 0 4.5 2.5 4.5 5.75V21h-3.75v-5.98c0-1.43-.03-3.27-2-3.27-2 0-2.3 1.56-2.3 3.17V21H9.5V8.8Z"/>
 
                         </svg>
-                        <span>LinkedIn</span>
+
+                        <span>
+                            LinkedIn
+                        </span>
+
                     </a>
+
 
 
                     <!-- GITHUB -->
+
                     <a href="https://github.com/i2byluciia"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub">
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="GitHub">
 
                         <svg viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true">
+                             xmlns="http://www.w3.org/2000/svg"
+                             aria-hidden="true">
 
-                            <path d="M12 2C6.48 2 2 6.58 2 12.24c0 4.52 2.87 8.36 6.84 9.71.5.1.68-.22.68-.49v-1.72c-2.78.62-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.59 2.36 1.13 2.94.86.09-.67.35-1.13.64-1.39-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05A9.2 9.2 0 0 1 12 6.95c.85 0 1.7.12 2.5.36 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.8-4.58 5.05.36.32.68.95.68 1.92v2.84c0 .27.18.59.69.49A10.25 10.25 0 0 0 22 12.24C22 6.58 17.52 2 12 2Z"/>
+                            <path d="M12 2C6.48 2 2 6.58 2 12.24c0 4.52 2.87 8.36 6.84 9.71.5.1.68-.22.68-.49v-1.72c-2.78.62-3.37-1.22-3.37-1.22-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.59 2.36 1.13 2.94.86.09-.67.35-1.13.64-1.39-.2.26-.45 1.31-.45 2.72 0 0 .84-.28 2.75 1.05A9.2 9.2 0 0 1 12 6.95c.85 0 1.7.12 2.5.36 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.8-4.58 5.05.36.32.68.95.68 1.92v2.84c0 .27.18.59.69.49A10.25 10.25 0 0 0 22 12.24C22 6.58 17.52 2 12 2Z"/>
 
                         </svg>
-                        <span>GitHub</span>
+
+                        <span>
+                            GitHub
+                        </span>
 
                     </a>
 
 
+
                     <!-- INSTAGRAM -->
+
                     <a href="https://www.instagram.com/_luciia_27_/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram">
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="Instagram">
 
                         <svg viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true">
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             aria-hidden="true">
 
-                            <rect x="3" y="3" width="18" height="18" rx="5"/>
+                            <rect x="3"
+                                  y="3"
+                                  width="18"
+                                  height="18"
+                                  rx="5"/>
 
-                            <circle cx="12" cy="12" r="4"/>
+                            <circle cx="12"
+                                    cy="12"
+                                    r="4"/>
 
-                            <circle cx="17.5" cy="6.5" r="1"/>
+                            <circle cx="17.5"
+                                    cy="6.5"
+                                    r="1"/>
 
                         </svg>
-                        <span>Instagram</span>
+
+                        <span>
+                            Instagram
+                        </span>
 
                     </a>
 
@@ -764,12 +1115,14 @@
 
         </section>
 
-        <!-- =========================
-             PROYECTOS (MODALES)
-        ========================== -->
 
-        <!-- HOTEL LA FUGA -->
-        <div class="project-modal" id="modal-la-fuga">
+
+        <!-- =====================================================
+             MODAL — HOTEL LA FUGA
+        ====================================================== -->
+
+        <div class="project-modal"
+             id="modal-la-fuga">
 
             <div class="project-modal-content">
 
@@ -783,9 +1136,24 @@
 
                     <div class="project-modal-header">
 
-                        <h3>Hotel La Fuga</h3>
-                        <h4>Búnker Teatro</h4>
-                        <h4>Bululú</h4>
+                        <h3>
+
+                            Hotel La Fuga
+
+                            <a href="https://www.instagram.com/hotel_la_fuga/"
+                               target="_blank"
+                               rel="noopener noreferrer">
+
+                                @hotel_la_fuga
+
+                            </a>
+
+                        </h3>
+
+                        <h4>
+                            Búnker Teatro
+                        </h4>
+
 
                         <img src="assets/img/light-la-fuga.png"
                              alt="Imagen del trabajo Hotel La Fuga">
@@ -795,19 +1163,28 @@
 
                     <div class="project-modal-body">
 
-                        <h4>Mi rol</h4>
-                        <p>Iluminadora</p>
-
-                        <h4>Descripción</h4>
+                        <h4>
+                            Mi rol
+                        </h4>
 
                         <p>
-                            Hotel La Fuga es un espectáculo de teatro inmersivo
-                            que se desarrolla en un hotel abandonado.
+                            Técnica de iluminación
+                        </p>
 
-                            Como iluminadora, mi papel fue crear una atmósfera
-                            que sumergiera al público en la historia, utilizando
-                            técnicas de iluminación para resaltar la narrativa
-                            y las emociones de los personajes.
+
+                        <h4>
+                            Descripción
+                        </h4>
+
+                        <p>
+                            Hotel La Fuga es una comedia musical que transcurre
+                            en un hotel y cuenta distintas historias protagonizadas
+                            por mujeres que se enfrentan a situaciones de
+                            desigualdad, precariedad y abuso.
+
+                            A través del humor negro, la ironía y canciones
+                            originales, la obra habla de feminismo, lucha obrera
+                            y supervivencia femenina.
                         </p>
 
                     </div>
@@ -817,7 +1194,9 @@
 
                 <div class="project-modal-gallery">
 
-                    <h4>Galería</h4>
+                    <h4>
+                        Galería
+                    </h4>
 
                     <div class="project-modal-gallery-grid">
 
@@ -839,8 +1218,13 @@
         </div>
 
 
-        <!-- EL JUEGO DE LA SEPIA -->
-        <div class="project-modal" id="modal-la-sepia">
+
+        <!-- =====================================================
+             MODAL — EL JUEGO DE LA SEPIA
+        ====================================================== -->
+
+        <div class="project-modal"
+             id="modal-la-sepia">
 
             <div class="project-modal-content">
 
@@ -854,9 +1238,24 @@
 
                     <div class="project-modal-header">
 
-                        <h3>El Juego De La Sepia</h3>
-                        <h4>Búnker Teatro</h4>
-                        <h4>Sojo Laboratorio</h4>
+                        <h3>
+
+                            El Juego De La Sepia
+
+                            <a href="https://www.instagram.com/eljuegodelasepia/"
+                               target="_blank"
+                               rel="noopener noreferrer">
+
+                                @eljuegodelasepia
+
+                            </a>
+
+                        </h3>
+
+                        <h4>
+                            Búnker Teatro
+                        </h4>
+
 
                         <img src="assets/img/light-el-juego-de-la-sepia.png"
                              alt="Imagen del trabajo El Juego De La Sepia">
@@ -866,19 +1265,35 @@
 
                     <div class="project-modal-body">
 
-                        <h4>Mi rol</h4>
-                        <p>Iluminadora</p>
-
-                        <h4>Descripción</h4>
+                        <h4>
+                            Mi rol
+                        </h4>
 
                         <p>
-                            El Juego De La Sepia es un espectáculo de teatro inmersivo
-                            que se desarrolla en un espacio de arte.
+                            Técnica de iluminación
+                        </p>
 
-                            Como iluminadora, mi papel fue crear una atmósfera
-                            que sumergiera al público en la historia, utilizando
-                            técnicas de iluminación para resaltar la narrativa
-                            y las emociones de los personajes.
+
+                        <h4>
+                            Descripción
+                        </h4>
+
+                        <p>
+                            El Juego De La Sepia es una comedia interactiva
+                            de improvisación construida como un concurso
+                            televisivo.
+
+                            Los concursantes deben enfrentarse a diferentes
+                            pruebas mientras el público participa activamente
+                            en el desarrollo del espectáculo y toma decisiones
+                            que pueden cambiar el rumbo de la función.
+
+                            A través del humor, la improvisación y la
+                            participación del público, la obra parodia las
+                            grandes distopías contemporáneas y plantea una
+                            mirada crítica sobre el poder, la desigualdad
+                            y hasta dónde estamos dispuestos a llegar para
+                            conseguir aquello que deseamos.
                         </p>
 
                     </div>
@@ -888,7 +1303,9 @@
 
                 <div class="project-modal-gallery">
 
-                    <h4>Galería</h4>
+                    <h4>
+                        Galería
+                    </h4>
 
                     <div class="project-modal-gallery-grid">
 
@@ -910,8 +1327,13 @@
         </div>
 
 
-        <!-- LA HERENCIA -->
-        <div class="project-modal" id="modal-la-herencia">
+
+        <!-- =====================================================
+             MODAL — LA HERENCIA
+        ====================================================== -->
+
+        <div class="project-modal"
+             id="modal-la-herencia">
 
             <div class="project-modal-content">
 
@@ -925,9 +1347,18 @@
 
                     <div class="project-modal-header">
 
-                        <h3>La Herencia</h3>
-                        <h4>Miller</h4>
-                        <h4>Teatros Luchana</h4>
+                        <h3>
+                            La Herencia
+                        </h3>
+
+                        <h4>
+                            Miller
+                        </h4>
+
+                        <h4>
+                            Teatros Luchana
+                        </h4>
+
 
                         <img src="assets/img/light-la-herencia.png"
                              alt="Imagen del trabajo La Herencia">
@@ -937,19 +1368,31 @@
 
                     <div class="project-modal-body">
 
-                        <h4>Mi rol</h4>
-                        <p>Iluminadora</p>
-
-                        <h4>Descripción</h4>
+                        <h4>
+                            Mi rol
+                        </h4>
 
                         <p>
-                            La Herencia es un espectáculo de teatro inmersivo
-                            que se desarrolla en un teatro abandonado.
+                            Técnica de iluminación · Sustituta
+                        </p>
 
-                            Como iluminadora, mi papel fue crear una atmósfera
-                            que sumergiera al público en la historia, utilizando
-                            técnicas de iluminación para resaltar la narrativa
-                            y las emociones de los personajes.
+
+                        <h4>
+                            Descripción
+                        </h4>
+
+                        <p>
+                            La Herencia es una comedia negra llena de intriga
+                            que comienza cuando tres hermanos, distanciados
+                            durante años, se reúnen tras la muerte de su tía
+                            para repartir su herencia.
+
+                            Lo que parecía un sencillo reparto cambia cuando
+                            el testamento revela una última sorpresa.
+
+                            A partir de ese momento, salen a la luz antiguos
+                            rencores, envidias y secretos familiares que harán
+                            que nada sea lo que parecía.
                         </p>
 
                     </div>
@@ -959,7 +1402,9 @@
 
                 <div class="project-modal-gallery">
 
-                    <h4>Galería</h4>
+                    <h4>
+                        Galería
+                    </h4>
 
                     <div class="project-modal-gallery-grid">
 
@@ -981,8 +1426,13 @@
         </div>
 
 
-        <!-- DAILY DOSE -->
-        <div class="project-modal" id="modal-daily-dose">
+
+        <!-- =====================================================
+             MODAL — DAILY DOSE
+        ====================================================== -->
+
+        <div class="project-modal"
+             id="modal-daily-dose">
 
             <div class="project-modal-content">
 
@@ -996,8 +1446,14 @@
 
                     <div class="project-modal-header">
 
-                        <h3>Daily Dose</h3>
-                        <h4>Proyecto</h4>
+                        <h3>
+                            Daily Dose
+                        </h3>
+
+                        <h4>
+                            Proyecto · TFC
+                        </h4>
+
 
                         <img src="assets/img/logic-daily-dose.png"
                              alt="Imagen del proyecto Daily Dose">
@@ -1007,16 +1463,51 @@
 
                     <div class="project-modal-body">
 
-                        <h4>Mi rol</h4>
-                        <p>Desarrollo</p>
-
-                        <h4>Descripción</h4>
+                        <h4>
+                            Mi rol
+                        </h4>
 
                         <p>
-                            Daily Dose es un proyecto de informática desarrollado
-                            como parte de mi trabajo con aplicaciones web y bases
-                            de datos.
+                            Desarrollo · Base de datos
                         </p>
+
+
+                        <h4>
+                            Descripción
+                        </h4>
+
+                        <p>
+                            Daily Dose es una aplicación web que nació como
+                            una pequeña idea para crear algo visual para mi
+                            grupo y terminó convirtiéndose en el proyecto
+                            de mi TFC.
+                        </p>
+
+                        <p>
+                            Desarrollé la aplicación desde la base, diseñando
+                            su estructura y su base de datos y construyendo
+                            la parte web.
+
+                            El proyecto incluye gestión de usuarios y roles,
+                            además de la conexión entre la aplicación y la
+                            base de datos.
+                        </p>
+
+                        <p>
+                            Lo que empezó como una idea sencilla acabó
+                            convirtiéndose en un proyecto completo en el
+                            que pude poner en práctica desarrollo web,
+                            bases de datos y lógica de aplicación.
+                        </p>
+
+
+                        <a href="https://github.com/i2byluciia/dailydose"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            Ver proyecto en GitHub ↗
+
+                        </a>
 
                     </div>
 
@@ -1025,7 +1516,9 @@
 
                 <div class="project-modal-gallery">
 
-                    <h4>Galería</h4>
+                    <h4>
+                        Galería
+                    </h4>
 
                     <div class="project-modal-gallery-grid">
 
@@ -1047,8 +1540,13 @@
         </div>
 
 
-        <!-- ARCHLINUX -->
-        <div class="project-modal" id="modal-archlinux">
+
+        <!-- =====================================================
+             MODAL — i2LAB
+        ====================================================== -->
+
+        <div class="project-modal"
+             id="modal-i2lab">
 
             <div class="project-modal-content">
 
@@ -1062,26 +1560,52 @@
 
                     <div class="project-modal-header">
 
-                        <h3>ArchLinux</h3>
-                        <h4>Linux</h4>
+                        <h3>
+                            i2lab
+                        </h3>
 
-                        <img src="assets/img/create-archlinux.png"
-                             alt="Imagen del proyecto ArchLinux">
+                        <h4>
+                            Proyecto personal · En desarrollo
+                        </h4>
+
+
+                        <img src="assets/img/logic-i2lab.png"
+                             alt="Imagen del proyecto i2lab">
 
                     </div>
 
 
                     <div class="project-modal-body">
 
-                        <h4>Mi rol</h4>
-                        <p>Desarrollo</p>
-
-                        <h4>Descripción</h4>
+                        <h4>
+                            Mi rol
+                        </h4>
 
                         <p>
-                            ArchLinux es una distribución de Linux conocida
-                            por su enfoque en la simplicidad y el control
-                            total sobre el sistema.
+                            Administración · Desarrollo
+                        </p>
+
+
+                        <h4>
+                            Descripción
+                        </h4>
+
+                        <p>
+                            i2lab es mi proyecto personal de homelab:
+                            un entorno propio en el que puedo aprender,
+                            experimentar y construir mis propios servicios
+                            y aplicaciones.
+
+                            El proyecto reúne la infraestructura, los
+                            servicios y las herramientas que voy desarrollando
+                            y gestionando, creando un espacio en el que
+                            experimentar con Linux, servidores, redes,
+                            desarrollo web, bases de datos y diferentes
+                            tecnologías.
+
+                            i2lab está pensado para crecer conmigo,
+                            incorporando nuevos proyectos y servicios a
+                            medida que sigo aprendiendo.
                         </p>
 
                     </div>
@@ -1091,18 +1615,20 @@
 
                 <div class="project-modal-gallery">
 
-                    <h4>Galería</h4>
+                    <h4>
+                        Galería
+                    </h4>
 
                     <div class="project-modal-gallery-grid">
 
-                        <img src="assets/img/logic-archlinux-2.png"
-                             alt="ArchLinux">
+                        <img src="assets/img/logic-i2lab-2.png"
+                             alt="i2lab">
 
-                        <img src="assets/img/logic-archlinux-3.png"
-                             alt="ArchLinux">
+                        <img src="assets/img/logic-i2lab-3.png"
+                             alt="i2lab">
 
-                        <img src="assets/img/logic-archlinux-4.png"
-                             alt="ArchLinux">
+                        <img src="assets/img/logic-i2lab-4.png"
+                             alt="i2lab">
 
                     </div>
 
@@ -1112,8 +1638,14 @@
 
         </div>
 
-        <!-- LIFEHUB -->
-        <div class="project-modal" id="modal-lifehub">
+
+
+        <!-- =====================================================
+             MODAL — DOTFILES
+        ====================================================== -->
+
+        <div class="project-modal"
+             id="modal-dotfiles">
 
             <div class="project-modal-content">
 
@@ -1127,25 +1659,55 @@
 
                     <div class="project-modal-header">
 
-                        <h3>LifeHub</h3>
-                        <h4>Aplicación Web</h4>
+                        <h3>
+                            dotfiles
+                        </h3>
 
-                        <img src="assets/img/create-lifehub.png"
-                             alt="Imagen del proyecto LifeHub">
+                        <h4>
+                            Linux · Configuración
+                        </h4>
+
+
+                        <img src="assets/img/logic-dotfiles.png"
+                             alt="Imagen del proyecto dotfiles">
 
                     </div>
 
 
                     <div class="project-modal-body">
 
-                        <h4>Mi rol</h4>
-                        <p>Desarrollo</p>
-
-                        <h4>Descripción</h4>
+                        <h4>
+                            Mi rol
+                        </h4>
 
                         <p>
-                            LifeHub es una aplicación web diseñada para facilitar la gestión y organización de tareas y proyectos.
+                            Configuración · Linux
                         </p>
+
+
+                        <h4>
+                            Descripción
+                        </h4>
+
+                        <p>
+                            Un repositorio dedicado a mis configuraciones
+                            personales de Linux y a la personalización
+                            de mi entorno de trabajo.
+
+                            Incluye configuraciones y scripts para
+                            diferentes herramientas y aplicaciones,
+                            permitiéndome mantener y reproducir mi entorno
+                            de trabajo de una forma organizada.
+                        </p>
+
+
+                        <a href="https://github.com/i2byluciia/dotfiles"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            Ver proyecto en GitHub ↗
+
+                        </a>
 
                     </div>
 
@@ -1154,18 +1716,20 @@
 
                 <div class="project-modal-gallery">
 
-                    <h4>Galería</h4>
+                    <h4>
+                        Galería
+                    </h4>
 
                     <div class="project-modal-gallery-grid">
 
-                        <img src="assets/img/logic-lifehub-2.png"
-                             alt="LifeHub">
+                        <img src="assets/img/logic-dotfiles-2.png"
+                             alt="dotfiles">
 
-                        <img src="assets/img/logic-lifehub-3.png"
-                             alt="LifeHub">
+                        <img src="assets/img/logic-dotfiles-3.png"
+                             alt="dotfiles">
 
-                        <img src="assets/img/logic-lifehub-4.png"
-                             alt="LifeHub">
+                        <img src="assets/img/logic-dotfiles-4.png"
+                             alt="dotfiles">
 
                     </div>
 
@@ -1175,8 +1739,14 @@
 
         </div>
 
-        <!-- AMBER -->
-        <div class="project-modal" id="modal-amber">
+
+
+        <!-- =====================================================
+             MODAL — AMBER
+        ====================================================== -->
+
+        <div class="project-modal"
+             id="modal-amber">
 
             <div class="project-modal-content">
 
@@ -1190,10 +1760,16 @@
 
                     <div class="project-modal-header">
 
-                        <h3>Amber</h3>
-                        <h4>Aplicación Web</h4>
+                        <h3>
+                            Amber
+                        </h3>
 
-                        <img src="assets/img/create-amber.png"
+                        <h4>
+                            Aplicación Web · En desarrollo
+                        </h4>
+
+
+                        <img src="assets/img/logic-amber.png"
                              alt="Imagen del proyecto Amber">
 
                     </div>
@@ -1201,14 +1777,35 @@
 
                     <div class="project-modal-body">
 
-                        <h4>Mi rol</h4>
-                        <p>Desarrollo</p>
-
-                        <h4>Descripción</h4>
+                        <h4>
+                            Mi rol
+                        </h4>
 
                         <p>
-                            Amber es una aplicación web diseñada para facilitar la gestión y organización de tareas y proyectos.
+                            Desarrollo
                         </p>
+
+
+                        <h4>
+                            Descripción
+                        </h4>
+
+                        <p>
+                            Amber es un proyecto personal de asistente
+                            inteligente orientado a combinar diferentes
+                            tecnologías para crear un sistema capaz de
+                            centralizar herramientas, automatización e
+                            interacción.
+                        </p>
+
+
+                        <a href="https://github.com/i2byluciia/amber"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            Ver proyecto en GitHub ↗
+
+                        </a>
 
                     </div>
 
@@ -1217,7 +1814,9 @@
 
                 <div class="project-modal-gallery">
 
-                    <h4>Galería</h4>
+                    <h4>
+                        Galería
+                    </h4>
 
                     <div class="project-modal-gallery-grid">
 
@@ -1239,17 +1838,228 @@
         </div>
 
 
-        <footer>
-            <p>Iluminación × Informática by Luciia</p>
-            <small>© 2026 Luciia</small>
-        </footer>
 
+        <!-- =====================================================
+             MODAL — i2LUMEN
+        ====================================================== -->
+
+        <div class="project-modal"
+             id="modal-i2lumen">
+
+            <div class="project-modal-content">
+
+                <button class="project-modal-close"
+                        aria-label="Cerrar proyecto">
+                    ×
+                </button>
+
+
+                <div class="project-modal-main">
+
+                    <div class="project-modal-header">
+
+                        <h3>
+                            i2lumen
+                        </h3>
+
+                        <h4>
+                            Proyecto personal · En desarrollo
+                        </h4>
+
+
+                        <img src="assets/img/create-i2lumen.png"
+                             alt="Imagen del proyecto i2lumen">
+
+                    </div>
+
+
+                    <div class="project-modal-body">
+
+                        <h4>
+                            Mi rol
+                        </h4>
+
+                        <p>
+                            Desarrollo
+                        </p>
+
+
+                        <h4>
+                            Descripción
+                        </h4>
+
+                        <p>
+                            i2lumen es un proyecto personal centrado en
+                            la iluminación, la tecnología y la experimentación.
+
+                            Nace de la combinación de mi interés por la
+                            iluminación y la informática, explorando cómo
+                            ambas disciplinas pueden encontrarse para crear
+                            nuevas ideas y proyectos.
+                        </p>
+
+
+                        <a href="https://github.com/i2byluciia/i2-to-lumen"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            Ver proyecto en GitHub ↗
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <div class="project-modal-gallery">
+
+                    <h4>
+                        Galería
+                    </h4>
+
+                    <div class="project-modal-gallery-grid">
+
+                        <img src="assets/img/create-i2lumen-2.png"
+                             alt="i2lumen">
+
+                        <img src="assets/img/create-i2lumen-3.png"
+                             alt="i2lumen">
+
+                        <img src="assets/img/create-i2lumen-4.png"
+                             alt="i2lumen">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             MODAL — PORTFOLIO
+        ====================================================== -->
+
+        <div class="project-modal"
+             id="modal-portfolio">
+
+            <div class="project-modal-content">
+
+                <button class="project-modal-close"
+                        aria-label="Cerrar proyecto">
+                    ×
+                </button>
+
+
+                <div class="project-modal-main">
+
+                    <div class="project-modal-header">
+
+                        <h3>
+                            Portfolio
+                        </h3>
+
+                        <h4>
+                            Proyecto personal · En desarrollo
+                        </h4>
+
+
+                        <img src="assets/img/create-portfolio.png"
+                             alt="Imagen del portfolio">
+
+                    </div>
+
+
+                    <div class="project-modal-body">
+
+                        <h4>
+                            Mi rol
+                        </h4>
+
+                        <p>
+                            Diseño · Desarrollo
+                        </p>
+
+
+                        <h4>
+                            Descripción
+                        </h4>
+
+                        <p>
+                            Este portfolio es un proyecto personal creado
+                            desde cero para reunir y presentar mis trabajos
+                            de iluminación, informática y creación.
+
+                            El proyecto combina diseño visual, desarrollo
+                            web y JavaScript para construir una experiencia
+                            que refleje las tres partes que forman mi manera
+                            de trabajar: Light · Logic · Create.
+                        </p>
+
+
+                        <a href="https://github.com/i2byluciia/portfolio"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            Ver proyecto en GitHub ↗
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <div class="project-modal-gallery">
+
+                    <h4>
+                        Galería
+                    </h4>
+
+                    <div class="project-modal-gallery-grid">
+
+                        <img src="assets/img/create-portfolio-2.png"
+                             alt="Portfolio">
+
+                        <img src="assets/img/create-portfolio-3.png"
+                             alt="Portfolio">
+
+                        <img src="assets/img/create-portfolio-4.png"
+                             alt="Portfolio">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+        <footer>
+
+            <p>
+                Iluminación × Informática by Luciia
+            </p>
+
+            <small>
+                © 2026 Luciia
+            </small>
+
+        </footer>
     </main>
 
-
+    <!-- =========================================================
+         SCRIPTS
+    ========================================================== -->
     <script src="js/script.js"></script>
     <script src="js/cables.js"></script>
-
 </body>
-
 </html>
