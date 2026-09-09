@@ -1,4 +1,64 @@
 // =========================================================
+// EFECTO LUPA EN EL TÍTULO (Light · Logic · Create)
+// =========================================================
+
+(function () {
+
+    const title = document.querySelector("#home h1");
+    if (!title) return;
+
+    // Envolvemos cada letra en un <span> para poder escalarla
+    // individualmente. Los espacios se dejan como texto normal
+    // para no romper el flujo del título.
+    const text = title.textContent;
+    title.textContent = "";
+
+    text.split("").forEach(char => {
+        if (char === " ") {
+            title.appendChild(document.createTextNode(" "));
+        } else {
+            const span = document.createElement("span");
+            span.textContent = char;
+            title.appendChild(span);
+        }
+    });
+
+    const letters = title.querySelectorAll("span");
+
+    const MAX_SCALE = 1.6;   // cuánto se amplía la letra bajo el cursor
+    const RADIUS = 70;       // px de radio de influencia de la "lupa"
+
+    const applyMagnify = (mouseX, mouseY) => {
+        letters.forEach(letter => {
+            const rect = letter.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const distance = Math.hypot(mouseX - centerX, mouseY - centerY);
+
+            if (distance < RADIUS) {
+                const scale = MAX_SCALE - (distance / RADIUS) * (MAX_SCALE - 1);
+                letter.style.transform = `scale(${scale})`;
+            } else {
+                letter.style.transform = "scale(1)";
+            }
+        });
+    };
+
+    title.addEventListener("mousemove", (e) => {
+        applyMagnify(e.clientX, e.clientY);
+    });
+
+    title.addEventListener("mouseleave", () => {
+        letters.forEach(letter => {
+            letter.style.transform = "scale(1)";
+        });
+    });
+
+})();
+
+
+// =========================================================
 // CARRUSELES
 // =========================================================
 

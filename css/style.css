@@ -281,6 +281,15 @@ nav a:hover::after {
     line-height: 1.2;
 }
 
+/* ---------- Efecto lupa sobre el título ---------- */
+
+#home h1 span {
+    display: inline-block;
+    transform-origin: center bottom;
+    transition: transform 0.15s ease-out;
+    will-change: transform;
+}
+
 #home p {
     font-family: var(--font-note);
     font-size: 40px;
