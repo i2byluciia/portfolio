@@ -102,7 +102,12 @@ img {
 
 main {
     position: relative;
-    z-index: 2;
+    /* Sin z-index: si <main> tuviera z-index propio, crearía su propio
+       contexto de apilado y todo lo de dentro (incluido el fondo de
+       #contact) se pintaría por encima de los cables sin importar el
+       z-index interno que tuviera cada cosa. Al quitarlo, el fondo
+       (z-index:0), los cables (z-index:1) y los textos/tarjetas
+       (z-index:2/3) se comparan todos en el mismo contexto, como toca. */
 }
 
 /* Todos los textos se colocan por encima de los cables sin fondos artificiales */
