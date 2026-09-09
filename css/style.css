@@ -1445,14 +1445,28 @@ footer small {
     .logic-grid,
     .create-grid {
         gap: 20px;
-        overflow: hidden;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .light-grid::-webkit-scrollbar,
+    .logic-grid::-webkit-scrollbar,
+    .create-grid::-webkit-scrollbar {
+        display: none;
+        height: 0;
     }
 
     .light-card,
     .logic-card,
     .create-card {
-        flex: 0 0 calc(100vw - 100px);
-        max-width: 300px;
+        flex: 0 0 100%;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
     }
 
     .light-arrow,

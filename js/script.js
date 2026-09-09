@@ -12,16 +12,25 @@ carousels.forEach(section => {
 
     if (!grid || !left || !right) return;
 
+    // Calcula cuánto hay que desplazar (ancho real de una tarjeta + gap),
+    // así funciona bien tanto en escritorio como en móvil.
+    const getStep = () => {
+        const card = grid.querySelector(`.${section}-card`);
+        if (!card) return 390;
+        const gap = parseFloat(getComputedStyle(grid).columnGap || getComputedStyle(grid).gap) || 0;
+        return card.getBoundingClientRect().width + gap;
+    };
+
     right.addEventListener("click", () => {
         grid.scrollBy({
-            left: 390,
+            left: getStep(),
             behavior: "smooth"
         });
     });
 
     left.addEventListener("click", () => {
         grid.scrollBy({
-            left: -390,
+            left: -getStep(),
             behavior: "smooth"
         });
     });
