@@ -1,6 +1,12 @@
+/* =========================================================
+   COLORES DE MARCA Y TIPOGRAFÍAS
+   Los colores de marca son fijos: no cambian entre temas.
+   Los temas solo redefinen los tokens semánticos (más abajo).
+   ========================================================= */
+
 :root {
 
-    /* Colores */
+    /* Colores de marca */
 
     --paper: #F5F1E8;
     --charcoal: #343434;
@@ -11,6 +17,13 @@
     --velvet-purple: #514575;
     --royal-violet: #7166A6;
     --soft-lavender: #A79DDA;
+
+    /* Ámbar oscurecido (mismo tono) para usarlo como texto sobre
+       Paper con contraste suficiente:
+       --amber-text    ≥ 4.5:1  texto normal, hover y foco
+       --amber-display ≥ 3:1    texto grande */
+    --amber-text: #A35C00;
+    --amber-display: #CE7500;
 
 
     /* Tipografías */
@@ -23,39 +36,158 @@
 
 
 /* =========================================================
+   TOKENS SEMÁNTICOS POR TEMA
+   El tema lo fija el script del <head> con data-theme en <html>
+   (preferencia guardada > tema del sistema). Sin JS: tema claro.
+   ========================================================= */
+
+/* Tema claro (por defecto) */
+:root {
+    color-scheme: light;
+
+    --bg: var(--paper);
+    --text: var(--charcoal);
+    --text-muted: #66616A;
+    --surface: var(--paper);               /* tarjetas, marcos, modal */
+    --frame: var(--charcoal);              /* borde de las fotografías */
+    --line: var(--soft-grey);              /* separadores */
+    --hairline: rgba(52, 52, 52, 0.1);     /* borde fino de imágenes */
+    --placeholder: #EDE7DB;                /* fondo mientras carga una imagen */
+
+    /* Tarjetas de vidrio */
+    --card-bg: rgba(255, 255, 255, 0.42);
+    --card-border: rgba(52, 52, 52, 0.08);
+    --card-border-hover: rgba(52, 52, 52, 0.16);
+    --card-shadow: 0 6px 22px rgba(52, 52, 52, 0.06);
+    --card-shadow-hover: 0 12px 30px rgba(52, 52, 52, 0.1);
+
+    --modal-overlay: rgba(245, 241, 232, 0.35);
+    --modal-border: transparent;
+    --modal-shadow: 0 10px 40px rgba(32, 33, 57, 0.15);
+
+    --footer-bg: var(--charcoal);
+    --footer-text: var(--paper);
+
+    /* Acentos como texto (contraste comprobado sobre --bg) */
+    --accent-light: var(--amber-text);
+    --accent-light-display: var(--amber-display);
+    --accent-logic: var(--royal-violet);
+    --accent-create: var(--royal-violet);
+    --focus-ring: var(--amber-text);
+
+    /* Cuerpo y cristal de los cables (la luz no cambia de tema) */
+    --cable-body: rgba(65, 65, 65, 0.18);
+    --cable-glass: rgba(255, 255, 255, 0.65);
+
+    /* Chispitas: sobre Paper se leen por saturación */
+    --sparkle-light: var(--amber-glow);
+    --sparkle-light-hot: var(--golden-beam);
+    --sparkle-logic: var(--royal-violet);
+    --sparkle-logic-hot: var(--soft-lavender);
+}
+
+/* Tema oscuro: carbón cálido con un matiz violeta, sin negro puro */
+html[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg: #1E1C21;
+    --text: var(--paper);
+    --text-muted: #C7C1CC;
+    --surface: #2A2730;
+    --frame: #514C56;
+    --line: #4A4550;
+    --hairline: rgba(245, 241, 232, 0.1);
+    --placeholder: #2A2730;
+
+    --card-bg: rgba(42, 39, 48, 0.5);
+    --card-border: rgba(245, 241, 232, 0.08);
+    --card-border-hover: rgba(245, 241, 232, 0.16);
+    --card-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
+    --card-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.35);
+
+    --modal-overlay: rgba(15, 14, 17, 0.65);
+    --modal-border: #514C56;
+    --modal-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+
+    --footer-bg: #141317;
+    --footer-text: var(--paper);
+
+    --accent-light: var(--amber-glow);         /* 6.2:1 sobre --bg */
+    --accent-light-display: var(--amber-glow);
+    --accent-logic: var(--soft-lavender);      /* 6.8:1 sobre --bg */
+    --accent-create: var(--soft-lavender);
+    --focus-ring: var(--golden-beam);
+
+    --cable-body: rgba(220, 215, 230, 0.22);
+    --cable-glass: rgba(255, 255, 255, 0.28);
+
+    /* Sobre fondo oscuro las chispitas pueden ser más claras */
+    --sparkle-light: var(--golden-beam);
+    --sparkle-light-hot: #FFF6DE;
+    --sparkle-logic: var(--soft-lavender);
+    --sparkle-logic-hot: #F4F1FF;
+}
+
+/* Transición de color solo durante el cambio de tema (la clase la
+   pone js/script.js unos ms). Así no se pisan las transiciones
+   propias de cada elemento el resto del tiempo. */
+html.theme-changing,
+html.theme-changing *,
+html.theme-changing *::before,
+html.theme-changing *::after {
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        stroke 0.3s ease !important;
+}
+
+
+/* =========================================================
    FUENTES
+   WOFF2 variables con el subconjunto latino (textos en español,
+   puntuación y flechas). Los TTF originales siguen en
+   assets/fonts como fuente de origen.
    ========================================================= */
 
 @font-face {
     font-family: "Cormorant Garamond";
-    src: url("../assets/fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf")
-        format("truetype");
-    font-weight: 100 700;
+    src: url("../assets/fonts/woff2/cormorant-garamond-latin.woff2") format("woff2");
+    font-weight: 300 700;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Inter";
-    src: url("../assets/fonts/Inter/Inter-VariableFont_opsz,wght.ttf")
-        format("truetype");
+    src: url("../assets/fonts/woff2/inter-latin.woff2") format("woff2");
     font-weight: 100 900;
     font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("../assets/fonts/woff2/inter-italic-latin.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Caveat";
-    src: url("../assets/fonts/Caveat/Caveat-VariableFont_wght.ttf")
-        format("truetype");
-    font-weight: 100 700;
+    src: url("../assets/fonts/woff2/caveat-latin.woff2") format("woff2");
+    font-weight: 400 700;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "JetBrains Mono";
-    src: url("../assets/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf")
-        format("truetype");
+    src: url("../assets/fonts/woff2/jetbrains-mono-latin.woff2") format("woff2");
     font-weight: 100 800;
     font-style: normal;
+    font-display: swap;
 }
 
 
@@ -83,8 +215,8 @@ html {
 }
 
 body {
-    background-color: var(--paper);
-    color: var(--charcoal);
+    background-color: var(--bg);
+    color: var(--text);
     font-family: var(--font-text);
     position: relative;
     overflow-x: hidden;
@@ -106,12 +238,20 @@ main {
        contexto de apilado y todo lo de dentro (incluido el fondo de
        #contact) se pintaría por encima de los cables sin importar el
        z-index interno que tuviera cada cosa. Al quitarlo, el fondo
-       (z-index:0), los cables (z-index:1) y los textos/tarjetas
-       (z-index:2/3) se comparan todos en el mismo contexto, como toca. */
+       (z-index:0), los cables (z-index:1) y el contenido (z-index:2)
+       se comparan todos en el mismo contexto, como toca. */
 }
 
-/* Todos los textos se colocan por encima de los cables sin fondos artificiales */
-h1, h2, h3, h4, p, span, li {
+/* Capas respecto a los cables (z-index: 1):
+   - Las secciones con contenido sobre el fondo general forman su
+     propio contexto por encima de los cables.
+   - Contact y footer no: su fondo (::before, z-index 0) queda por
+     debajo de los cables y solo su contenido sube (z-index 2). */
+#home,
+#about,
+#light,
+#logic,
+#create {
     position: relative;
     z-index: 2;
 }
@@ -120,21 +260,27 @@ h2 {
     font-family: var(--font-title);
     font-size: 60px;
     font-weight: 500;
-    color: var(--charcoal);
+    color: var(--text);
 }
 
 h3 {
     font-family: var(--font-title);
     font-size: 32px;
     font-weight: 500;
-    color: var(--charcoal);
+    color: var(--text);
 }
 
 h4 {
     font-family: var(--font-note);
     font-size: 24px;
     font-weight: 500;
-    color: var(--charcoal);
+    color: var(--text);
+}
+
+/* Foco visible y coherente en toda la web (solo con teclado) */
+:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
 }
 
 
@@ -180,7 +326,7 @@ nav a {
     width: 10px;
     height: 10px;
 
-    border: 2px solid var(--charcoal);
+    border: 2px solid var(--text);
     border-radius: 50%;
 
     font-size: 0;
@@ -191,8 +337,13 @@ nav a {
 }
 
 nav a:hover {
-    background-color: var(--charcoal);
+    background-color: var(--text);
     transform: scale(1.4);
+}
+
+/* Sección actual (aria-current lo pone js/script.js) */
+nav a[aria-current="true"] {
+    background-color: var(--text);
 }
 
 nav a::after {
@@ -210,7 +361,7 @@ nav a::after {
 
     white-space: nowrap;
 
-    color: var(--charcoal);
+    color: var(--text);
 
     opacity: 0;
 
@@ -221,7 +372,9 @@ nav a::after {
     pointer-events: none;
 }
 
-nav a:hover::after {
+/* El nombre de la sección aparece también al navegar con teclado */
+nav a:hover::after,
+nav a:focus-visible::after {
     opacity: 1;
     transform: translateY(-50%) translateX(0);
 }
@@ -236,7 +389,7 @@ nav a:hover::after {
     font-size: 42px;
     font-weight: 600;
 
-    color: var(--charcoal);
+    color: var(--text);
 
     line-height: 1;
 
@@ -251,7 +404,62 @@ nav a:hover::after {
 }
 
 .logo:hover {
-    color: var(--amber-glow);
+    color: var(--accent-light-display);
+}
+
+
+/* =========================================================
+   BOTÓN DE TEMA
+   ========================================================= */
+
+.theme-toggle {
+    position: fixed;
+    top: 22px;
+    right: 65px;
+    z-index: 1100;
+
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px;
+    border: 1px solid var(--text);
+    border-radius: 50%;
+    background-color: var(--bg);
+    color: var(--text);
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+    transform: rotate(12deg);
+}
+
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* En claro se muestra la luna; en oscuro, el sol */
+.theme-toggle .icon-sun {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .icon-moon {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle .icon-sun {
+    display: block;
 }
 
 
@@ -271,8 +479,6 @@ nav a:hover::after {
     padding: 0 200px;
 
     gap: 20px;
-    position: relative;
-    z-index: 2;
 }
 
 #home h1 {
@@ -287,7 +493,6 @@ nav a:hover::after {
     display: inline-block;
     transform-origin: center bottom;
     transition: transform 0.15s ease-out;
-    will-change: transform;
 }
 
 #home p {
@@ -295,6 +500,355 @@ nav a:hover::after {
     font-size: 40px;
     line-height: 1.5;
     max-width: 600px;
+}
+
+
+/* =========================================================
+   TEXTOS, FOTOS Y COMPONENTES COMPARTIDOS
+   About, Light, Logic y Create comparten tipografía de texto,
+   marcos de foto, carruseles y botones. Cada sección define
+   su color de acento y las reglas equivalentes son una sola.
+   ========================================================= */
+
+#light {
+    --accent: var(--accent-light);
+    --accent-display: var(--accent-light-display);
+}
+
+#logic {
+    --accent: var(--accent-logic);
+    --accent-display: var(--accent-logic);
+}
+
+#create {
+    --accent: var(--accent-create);
+}
+
+
+/* ---------- Texto ---------- */
+
+.about-text,
+.light-text,
+.logic-text,
+.create-text {
+    font-family: var(--font-text);
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.about-text p + p,
+.light-text p + p,
+.logic-text p + p,
+.create-text p + p {
+    margin-top: 1em;
+}
+
+
+/* ---------- Fotos con marco ---------- */
+
+.about-img,
+.light-img,
+.logic-img {
+    border: 2px solid var(--frame);
+    flex-shrink: 0;
+    background-color: var(--surface);
+}
+
+.about-img img,
+.light-img img,
+.logic-img img {
+    width: 400px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
+
+/* ---------- Flujo (Preparar → Actuar / Pensar → Resolver) ---------- */
+
+.light-process,
+.logic-process {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    font-family: var(--font-note);
+    font-size: 40px;
+    color: var(--accent-display);
+}
+
+.light-process span,
+.logic-process span {
+    position: relative;
+}
+
+.light-process span:not(:last-child)::after,
+.logic-process span:not(:last-child)::after {
+    content: "→";
+    margin-left: 100px;
+}
+
+
+/* ---------- Segunda imagen ---------- */
+
+.light-img-2,
+.logic-img-2 {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.light-img-2 img,
+.logic-img-2 img {
+    width: 1000px;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: 280px;
+    object-fit: cover;
+    border: 2px solid var(--frame);
+    background-color: var(--surface);
+}
+
+
+/* ---------- Trabajos / proyectos (carruseles) ---------- */
+
+.light-works,
+.logic-works,
+.create-projects {
+    margin-top: 60px;
+}
+
+.light-works h3,
+.logic-works h3,
+.create-projects h3 {
+    margin-bottom: 40px;
+}
+
+.light-carousel,
+.logic-carousel,
+.create-carousel {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.light-grid,
+.logic-grid,
+.create-grid {
+    display: flex;
+    gap: 40px;
+    overflow: hidden;
+    flex: 1;
+    /* Aire para la sombra y la elevación de las tarjetas, que el
+       overflow del carrusel recortaría */
+    padding: 8px 6px 18px;
+    scroll-padding-inline: 6px;
+}
+
+/* Tarjetas de vidrio: translúcidas, con desenfoque de lo que hay
+   detrás (los cables se intuyen a través), esquinas redondeadas y
+   margen interior */
+.light-card,
+.logic-card,
+.create-card {
+    flex: 0 0 350px;
+    padding: 14px 14px 18px;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    background-color: var(--card-bg);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    backdrop-filter: blur(12px) saturate(1.2);
+    box-shadow: var(--card-shadow);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.light-card:hover,
+.logic-card:hover,
+.create-card:hover,
+.light-card:focus-within,
+.logic-card:focus-within,
+.create-card:focus-within {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: var(--card-border-hover);
+}
+
+.light-card img,
+.logic-card img,
+.create-card img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+}
+
+.light-card article,
+.logic-card article,
+.create-card article {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.light-card h4,
+.logic-card h4,
+.create-card h4 {
+    padding-inline: 4px;
+}
+
+.light-ver-proyecto,
+.logic-ver-proyecto,
+.create-ver-proyecto {
+    margin-inline: 4px;
+}
+
+
+/* ---------- Flechas ---------- */
+
+/* Botones circulares de vidrio, a juego con las tarjetas. Al pasar
+   el ratón toman el color de su sección (ámbar en Light, violeta en
+   Logic/Create) con un halo suave, y la flecha apunta hacia su lado.
+   En los extremos del carrusel se atenúan (aria-disabled, lo pone
+   js/script.js). */
+.light-arrow,
+.logic-arrow,
+.create-arrow {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--card-border-hover);
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    backdrop-filter: blur(12px) saturate(1.2);
+    box-shadow: var(--card-shadow);
+    color: var(--text);
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.25s ease,
+        opacity 0.25s ease,
+        transform 0.15s ease;
+}
+
+.light-arrow svg,
+.logic-arrow svg,
+.create-arrow svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.25s ease;
+}
+
+.light-arrow:not([aria-disabled="true"]):hover,
+.logic-arrow:not([aria-disabled="true"]):hover,
+.create-arrow:not([aria-disabled="true"]):hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent),
+        0 6px 18px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.light-arrow-right:not([aria-disabled="true"]):hover svg,
+.logic-arrow-right:not([aria-disabled="true"]):hover svg,
+.create-arrow-right:not([aria-disabled="true"]):hover svg {
+    transform: translateX(2px);
+}
+
+.light-arrow-left:not([aria-disabled="true"]):hover svg,
+.logic-arrow-left:not([aria-disabled="true"]):hover svg,
+.create-arrow-left:not([aria-disabled="true"]):hover svg {
+    transform: translateX(-2px);
+}
+
+.light-arrow:not([aria-disabled="true"]):active,
+.logic-arrow:not([aria-disabled="true"]):active,
+.create-arrow:not([aria-disabled="true"]):active {
+    transform: scale(0.94);
+}
+
+/* Extremo del carrusel: no hay más tarjetas hacia ese lado */
+.light-arrow[aria-disabled="true"],
+.logic-arrow[aria-disabled="true"],
+.create-arrow[aria-disabled="true"] {
+    opacity: 0.35;
+    cursor: default;
+    box-shadow: none;
+}
+
+
+/* ---------- Botón proyecto ---------- */
+
+.light-ver-proyecto,
+.logic-ver-proyecto,
+.create-ver-proyecto {
+    align-self: flex-start;
+    border: none;
+    background: none;
+    font-family: var(--font-text);
+    font-size: 15px;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.light-ver-proyecto:hover,
+.logic-ver-proyecto:hover,
+.create-ver-proyecto:hover {
+    color: var(--accent);
+}
+
+
+/* ---------- Herramientas ---------- */
+
+.light-tools,
+.logic-tools {
+    margin-top: 80px;
+}
+
+.light-tools h3,
+.logic-tools h3 {
+    margin-bottom: 50px;
+}
+
+.light-tools h4,
+.logic-tools h4 {
+    margin-top: 35px;
+    margin-bottom: 10px;
+}
+
+.light-tools ul,
+.logic-tools ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 25px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.light-tools li,
+.logic-tools li {
+    font-family: var(--font-text);
+    font-size: 18px;
 }
 
 
@@ -313,8 +867,6 @@ nav a:hover::after {
     justify-content: center;
 
     gap: 50px;
-    position: relative;
-    z-index: 2;
 }
 
 #about h2 {
@@ -327,37 +879,11 @@ nav a:hover::after {
     align-items: center;
     justify-content: center;
     gap: 80px;
-    position: relative;
-    z-index: 2;
-}
-
-.about-info {
-    position: relative;
-    z-index: 2;
 }
 
 .about-text {
     flex: 1;
     max-width: 700px;
-    font-family: var(--font-text);
-    font-size: 18px;
-    line-height: 1.6;
-    position: relative;
-    z-index: 2;
-}
-
-.about-img {
-    border: 2px solid var(--charcoal);
-    flex-shrink: 0;
-    position: relative;
-    z-index: 3;
-    background-color: var(--paper);
-}
-
-.about-img img {
-    width: 400px;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
 }
 
 
@@ -365,13 +891,12 @@ nav a:hover::after {
    LIGHT
    ========================================================= */
 
-#light {
+#light,
+#logic {
     padding: 0 200px 100px;
     display: flex;
     flex-direction: column;
     gap: 60px;
-    position: relative;
-    z-index: 2;
 }
 
 
@@ -383,8 +908,6 @@ nav a:hover::after {
     flex-direction: column;
     justify-content: center;
     gap: 60px;
-    position: relative;
-    z-index: 2;
 }
 
 
@@ -394,19 +917,12 @@ nav a:hover::after {
     display: flex;
     align-items: center;
     gap: 80px;
-    position: relative;
-    z-index: 2;
 }
-
-
-/* ---------- Información ---------- */
 
 .light-info {
     order: 1;
     flex: 1;
     max-width: 700px;
-    position: relative;
-    z-index: 2;
 }
 
 .light-info h2 {
@@ -414,220 +930,14 @@ nav a:hover::after {
     margin-bottom: 30px;
 }
 
-.light-text {
-    font-family: var(--font-text);
-    font-size: 18px;
-    line-height: 1.6;
-    position: relative;
-    z-index: 2;
-}
-
-
-/* ---------- Foto ---------- */
-
 .light-img {
     order: 2;
-    border: 2px solid var(--charcoal);
-    flex-shrink: 0;
-    position: relative;
-    z-index: 3;
-    background-color: var(--paper);
-}
-
-.light-img img {
-    width: 400px;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-}
-
-
-/* =========================================================
-   FLUJO
-   ========================================================= */
-
-.light-process {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    font-family: var(--font-note);
-    font-size: 40px;
-    color: var(--amber-glow);
-    position: relative;
-    z-index: 2;
-}
-
-.light-process span {
-    position: relative;
-}
-
-.light-process span:not(:last-child)::after {
-    content: "→";
-    margin-left: 100px;
-}
-
-
-/* =========================================================
-   SEGUNDA IMAGEN
-   ========================================================= */
-
-.light-img-2 {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    width: 100%;
-    position: relative;
-    z-index: 3;
-}
-
-.light-img-2 img {
-    width: 1000px;
-    max-width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border: 2px solid var(--charcoal);
-    background-color: var(--paper);
-}
-
-
-/* =========================================================
-   TRABAJOS
-   ========================================================= */
-
-.light-works {
-    margin-top: 60px;
-    position: relative;
-    z-index: 2;
-}
-
-.light-works h3 {
-    margin-bottom: 40px;
-}
-
-.light-carousel {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    position: relative;
-    z-index: 2;
-}
-
-.light-grid {
-    display: flex;
-    gap: 40px;
-    overflow: hidden;
-    flex: 1;
-}
-
-.light-card {
-    flex: 0 0 350px;
-    position: relative;
-    z-index: 3;
-    background-color: var(--paper);
-}
-
-.light-card img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    display: block;
-}
-
-.light-card article {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-
-/* ---------- Flechas ---------- */
-
-.light-arrow {
-    border: none;
-    background: none;
-    font-family: var(--font-text);
-    font-size: 32px;
-    color: var(--charcoal);
-    cursor: pointer;
-    padding: 10px;
-    position: relative;
-    z-index: 3;
-}
-
-.light-arrow:hover {
-    color: var(--amber-glow);
-}
-
-
-/* ---------- Botón proyecto ---------- */
-
-.light-ver-proyecto {
-    align-self: flex-start;
-    border: none;
-    background: none;
-    font-family: var(--font-text);
-    font-size: 15px;
-    color: var(--charcoal);
-    cursor: pointer;
-    padding: 0;
-    transition: color 0.2s ease;
-}
-
-.light-ver-proyecto:hover {
-    color: var(--amber-glow);
-}
-
-
-/* =========================================================
-   HERRAMIENTAS
-   ========================================================= */
-
-.light-tools {
-    margin-top: 80px;
-    position: relative;
-    z-index: 2;
-}
-
-.light-tools h3 {
-    margin-bottom: 50px;
-}
-
-.light-tools h4 {
-    margin-top: 35px;
-    margin-bottom: 10px;
-}
-
-.light-tools ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 25px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.light-tools li {
-    font-family: var(--font-text);
-    font-size: 18px;
 }
 
 
 /* =========================================================
    LOGIC
    ========================================================= */
-
-#logic {
-    padding: 0 200px 100px;
-    display: flex;
-    flex-direction: column;
-    gap: 60px;
-    position: relative;
-    z-index: 2;
-}
-
 
 /* ---------- Primera pantalla ---------- */
 
@@ -637,8 +947,6 @@ nav a:hover::after {
     flex-direction: column;
     justify-content: center;
     gap: 50px;
-    position: relative;
-    z-index: 2;
 }
 
 
@@ -649,207 +957,16 @@ nav a:hover::after {
     align-items: center;
     justify-content: center;
     gap: 80px;
-    position: relative;
-    z-index: 2;
-}
-
-.logic-img {
-    border: 2px solid var(--charcoal);
-    flex-shrink: 0;
-    position: relative;
-    z-index: 3;
-    background-color: var(--paper);
-}
-
-.logic-img img {
-    width: 400px;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
 }
 
 .logic-info {
     flex: 1;
     max-width: 700px;
-    position: relative;
-    z-index: 2;
 }
 
 .logic-info h2 {
     text-align: center;
     margin-bottom: 30px;
-}
-
-.logic-text {
-    font-family: var(--font-text);
-    font-size: 18px;
-    line-height: 1.6;
-    position: relative;
-    z-index: 2;
-}
-
-
-/* ---------- Flujo ---------- */
-
-.logic-process {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    font-family: var(--font-note);
-    font-size: 40px;
-    color: var(--royal-violet);
-    position: relative;
-    z-index: 2;
-}
-
-.logic-process span {
-    position: relative;
-}
-
-.logic-process span:not(:last-child)::after {
-    content: "→";
-    margin-left: 100px;
-}
-
-
-/* ---------- Segunda imagen ---------- */
-
-.logic-img-2 {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    position: relative;
-    z-index: 3;
-}
-
-.logic-img-2 img {
-    width: 1000px;
-    max-width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border: 2px solid var(--charcoal);
-    background-color: var(--paper);
-}
-
-
-/* ---------- Trabajos ---------- */
-
-.logic-works {
-    margin-top: 60px;
-    position: relative;
-    z-index: 2;
-}
-
-.logic-works h3 {
-    margin-bottom: 40px;
-}
-
-.logic-carousel {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    position: relative;
-    z-index: 2;
-}
-
-.logic-grid {
-    display: flex;
-    gap: 40px;
-    overflow: hidden;
-    flex: 1;
-}
-
-.logic-card {
-    flex: 0 0 350px;
-    position: relative;
-    z-index: 3;
-    background-color: var(--paper);
-}
-
-.logic-card img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    display: block;
-}
-
-.logic-card article {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-
-/* ---------- Flechas ---------- */
-
-.logic-arrow {
-    border: none;
-    background: none;
-    font-family: var(--font-text);
-    font-size: 32px;
-    color: var(--charcoal);
-    cursor: pointer;
-    padding: 10px;
-    position: relative;
-    z-index: 3;
-}
-
-.logic-arrow:hover {
-    color: var(--royal-violet);
-}
-
-
-/* ---------- Botón proyecto ---------- */
-
-.logic-ver-proyecto {
-    align-self: flex-start;
-    border: none;
-    background: none;
-    font-family: var(--font-text);
-    font-size: 15px;
-    color: var(--charcoal);
-    cursor: pointer;
-    padding: 0;
-    transition: color 0.2s ease;
-}
-
-.logic-ver-proyecto:hover {
-    color: var(--royal-violet);
-}
-
-
-/* ---------- Herramientas ---------- */
-
-.logic-tools {
-    margin-top: 80px;
-    position: relative;
-    z-index: 2;
-}
-
-.logic-tools h3 {
-    margin-bottom: 50px;
-}
-
-.logic-tools h4 {
-    margin-top: 35px;
-    margin-bottom: 10px;
-}
-
-.logic-tools ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 25px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.logic-tools li {
-    font-family: var(--font-text);
-    font-size: 18px;
 }
 
 
@@ -864,8 +981,6 @@ nav a:hover::after {
     flex-direction: column;
     justify-content: center;
     gap: 60px;
-    position: relative;
-    z-index: 2;
 }
 
 #create h2 {
@@ -876,94 +991,6 @@ nav a:hover::after {
 .create-text {
     max-width: 900px;
     margin: 0 auto;
-    font-family: var(--font-text);
-    font-size: 18px;
-    line-height: 1.6;
-    position: relative;
-    z-index: 2;
-}
-
-.create-projects {
-    margin-top: 60px;
-    position: relative;
-    z-index: 2;
-}
-
-.create-projects h3 {
-    margin-bottom: 40px;
-}
-
-.create-carousel {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    position: relative;
-    z-index: 2;
-}
-
-.create-grid {
-    display: flex;
-    gap: 40px;
-    overflow: hidden;
-    flex: 1;
-}
-
-.create-card {
-    flex: 0 0 350px;
-    position: relative;
-    z-index: 3;
-    background-color: var(--paper);
-}
-
-.create-card img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    display: block;
-}
-
-.create-card article {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-
-/* ---------- Flechas ---------- */
-
-.create-arrow {
-    border: none;
-    background: none;
-    font-family: var(--font-text);
-    font-size: 32px;
-    color: var(--charcoal);
-    cursor: pointer;
-    padding: 10px;
-    position: relative;
-    z-index: 3;
-}
-
-.create-arrow:hover {
-    color: var(--soft-lavender);
-}
-
-
-/* ---------- Botón proyecto ---------- */
-
-.create-ver-proyecto {
-    align-self: flex-start;
-    border: none;
-    background: none;
-    font-family: var(--font-text);
-    font-size: 15px;
-    color: var(--charcoal);
-    cursor: pointer;
-    padding: 0;
-    transition: color 0.2s ease;
-}
-
-.create-ver-proyecto:hover {
-    color: var(--soft-lavender);
 }
 
 
@@ -981,24 +1008,28 @@ nav a:hover::after {
     background: transparent;
 }
 
-/* Fondo degradado colocado detrás de los cables (z-index: 0) */
+/* Fondo degradado colocado detrás de los cables (z-index: 0).
+   Funde el fondo de la página con el del footer en ambos temas;
+   los porcentajes de mezcla reproducen la curva del degradado
+   original (Paper → Charcoal). */
 #contact::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
+    background: linear-gradient(to bottom, var(--bg) 40%, var(--footer-bg) 100%);
     background: linear-gradient(
         to bottom,
-        var(--paper) 0%,
-        var(--paper) 40%,
-        #F0ECE4 50%,
-        #E7E2D9 58%,
-        #D8D3CA 66%,
-        #AAA59E 74%,
-        #75716B 82%,
-        #4A4642 90%,
-        var(--charcoal) 100%
+        var(--bg) 0%,
+        var(--bg) 40%,
+        color-mix(in srgb, var(--footer-bg) 3%, var(--bg)) 50%,
+        color-mix(in srgb, var(--footer-bg) 7%, var(--bg)) 58%,
+        color-mix(in srgb, var(--footer-bg) 15%, var(--bg)) 66%,
+        color-mix(in srgb, var(--footer-bg) 39%, var(--bg)) 74%,
+        color-mix(in srgb, var(--footer-bg) 66%, var(--bg)) 82%,
+        color-mix(in srgb, var(--footer-bg) 89%, var(--bg)) 90%,
+        var(--footer-bg) 100%
     );
 }
 
@@ -1018,22 +1049,20 @@ nav a:hover::after {
 
 .contact-content p {
     margin-bottom: 40px;
-    font-family: "Caveat", cursive;
+    font-family: var(--font-note);
     font-size: 1.5rem;
 }
 
 
- /* =========================================================
-    ICONOS DE CONTACTO
-    ========================================================= */
+/* =========================================================
+   ICONOS DE CONTACTO
+   ========================================================= */
 
 .contact-links {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     gap: 30px;
-    position: relative;
-    z-index: 2;
 }
 
 .contact-links a {
@@ -1051,6 +1080,12 @@ nav a:hover::after {
     height: 28px;
 }
 
+/* Iconos de relleno (LinkedIn, GitHub): siguen el color del texto.
+   Los de trazo (email, Instagram) ya declaran fill="none". */
+.contact-links svg:not([fill="none"]) {
+    fill: currentColor;
+}
+
 
 /* =========================
    NOMBRE
@@ -1058,7 +1093,7 @@ nav a:hover::after {
 
 .contact-links span {
     margin-top: 8px;
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-code);
     font-size: 0.7rem;
     opacity: 0;
     transform: translateY(-5px);
@@ -1069,33 +1104,52 @@ nav a:hover::after {
 
 
 /* =========================
-   HOVER
+   HOVER / FOCO
    ========================= */
 
-.contact-links a:hover {
+.contact-links a:hover,
+.contact-links a:focus-visible {
     transform: translateY(-3px);
 }
 
-.contact-links a:hover span {
+.contact-links a:hover span,
+.contact-links a:focus-visible span {
     opacity: 1;
     transform: translateY(0);
 }
 
 
 /* =========================================================
-   MODAL DE PROYECTOS
+   MODAL DE PROYECTOS (<dialog>)
+   El <dialog> ocupa toda la pantalla y hace de capa de fondo;
+   el cuadro es .project-modal-content. Un clic en la capa
+   (fuera del cuadro) cierra el modal.
    ========================================================= */
 
 .project-modal {
-    justify-content: center;
-    align-items: center;
     position: fixed;
     inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: 0;
     padding: 60px;
-    background: rgba(245, 241, 232, 0.35);
+    background: var(--modal-overlay);
     backdrop-filter: blur(8px);
+    color: var(--text);
+    justify-content: center;
+    align-items: center;
     display: none;
-    z-index: 2000;
+}
+
+.project-modal[open] {
+    display: flex;
+}
+
+.project-modal::backdrop {
+    background: transparent;
 }
 
 
@@ -1107,10 +1161,10 @@ nav a:hover::after {
     max-width: 1200px;
     max-height: 90vh;
     padding: 50px;
-    background: var(--paper);
-    box-shadow: 0 10px 40px rgba(32, 33, 57, 0.15);
+    background: var(--surface);
+    border: 1px solid var(--modal-border);
+    box-shadow: var(--modal-shadow);
     overflow-y: auto;
-    z-index: 2001;
 }
 
 
@@ -1126,13 +1180,13 @@ nav a:hover::after {
     margin: 0;
     font: inherit;
     font-size: 28px;
-    color: var(--charcoal);
+    color: var(--text);
     cursor: pointer;
     transition: color 0.2s ease;
 }
 
 .project-modal-close:hover {
-    color: var(--amber-glow);
+    color: var(--accent-light);
 }
 
 
@@ -1174,7 +1228,7 @@ nav a:hover::after {
 .project-modal-gallery {
     margin-top: 60px;
     padding-top: 40px;
-    border-top: 1px solid var(--soft-grey);
+    border-top: 1px solid var(--line);
 }
 
 .project-modal-gallery-grid {
@@ -1191,6 +1245,11 @@ nav a:hover::after {
     object-fit: cover;
 }
 
+.project-modal-header img,
+.project-modal-gallery-grid img {
+    border: 1px solid var(--hairline);
+}
+
 
 /* =========================================================
    FOOTER (Fondo oscuro continuo)
@@ -1201,17 +1260,17 @@ footer {
     padding: 40px 20px 50px;
     text-align: center;
     background: transparent;   /* el color pasa al pseudo-elemento */
-    color: var(--paper);
+    color: var(--footer-text);
 }
 
 /* Fondo sólido del footer, colocado DETRÁS del cable
-   (funciona porque footer ahora vive dentro de <main>) */
+   (funciona porque footer vive dentro de <main>) */
 footer::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 0;                /* por debajo del cable (z-index: 1) */
-    background-color: var(--charcoal);
+    background-color: var(--footer-bg);
     pointer-events: none;
 }
 
@@ -1224,7 +1283,6 @@ footer small {
 footer p {
     font-family: var(--font-note);
     font-size: 22px;
-    color: var(--paper);
 }
 
 footer small {
@@ -1257,7 +1315,45 @@ footer small {
 
 
 /* =========================================================
-   RESPONSIVE
+   PLACEHOLDERS
+   Fondo visible mientras una imagen carga (o si falta).
+   ========================================================= */
+
+img {
+    background-color: var(--placeholder);
+}
+
+.about-img img {
+    background: linear-gradient(135deg, var(--line), var(--placeholder));
+}
+
+.light-img img,
+.light-img-2 img {
+    background: linear-gradient(135deg, rgba(232, 131, 0, 0.12), rgba(255, 196, 81, 0.25));
+}
+
+.logic-img img,
+.logic-img-2 img {
+    background: linear-gradient(135deg, rgba(81, 69, 117, 0.12), rgba(167, 157, 218, 0.25));
+}
+
+.light-card img {
+    background: linear-gradient(135deg, var(--placeholder), rgba(232, 131, 0, 0.18));
+}
+
+.logic-card img {
+    background: linear-gradient(135deg, var(--placeholder), rgba(113, 102, 166, 0.18));
+}
+
+.create-card img {
+    background: linear-gradient(135deg, var(--placeholder), rgba(167, 157, 218, 0.18));
+}
+
+
+/* =========================================================
+   RESPONSIVE: TABLET Y PANTALLAS MEDIANAS (≤ 1000 px)
+   Texto y foto se apilan: en fila, la foto fija dejaba columnas
+   de texto de menos de 200 px en tablet.
    ========================================================= */
 
 @media (max-width: 1000px) {
@@ -1275,17 +1371,49 @@ footer small {
     .about-content,
     .light-intro,
     .logic-content {
+        flex-direction: column;
         gap: 40px;
     }
 
+    .about-text,
+    .light-info,
+    .logic-info {
+        max-width: 100%;
+    }
+
+    .about-img,
+    .light-img,
+    .logic-img {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .about-img img,
     .light-img img,
     .logic-img img {
-        width: 320px;
+        width: 100%;
+    }
+
+    /* El flujo deja de caber en una línea: se reparte en varias */
+    .light-process,
+    .logic-process {
+        width: 100%;
+        margin-left: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 25px;
+        text-align: center;
+    }
+
+    .light-process span:not(:last-child)::after,
+    .logic-process span:not(:last-child)::after {
+        margin-left: 25px;
     }
 }
 
+
 /* =========================================================
-   MÓVIL
+   MÓVIL (≤ 700 px)
    ========================================================= */
 
 @media (max-width: 700px) {
@@ -1310,6 +1438,18 @@ footer small {
     nav a {
         width: 9px;
         height: 9px;
+    }
+
+    .theme-toggle {
+        top: 15px;
+        right: 55px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .theme-toggle svg {
+        width: 18px;
+        height: 18px;
     }
 
     main {
@@ -1351,28 +1491,15 @@ footer small {
         gap: 40px;
     }
 
-    .about-content {
-        flex-direction: column;
-        gap: 40px;
-    }
-
-    .about-text {
-        max-width: 100%;
+    .about-text,
+    .light-text,
+    .logic-text,
+    .create-text {
         font-size: 16px;
-        line-height: 1.6;
     }
 
-    .about-img {
-        width: 100%;
-        max-width: 350px;
-    }
-
-    .about-img img {
-        width: 100%;
-        aspect-ratio: 4 / 5;
-    }
-
-    #light {
+    #light,
+    #logic {
         padding: 0 30px 80px;
         gap: 50px;
     }
@@ -1383,49 +1510,20 @@ footer small {
         gap: 50px;
     }
 
-    .light-intro {
-        flex-direction: column;
+    .logic-intro {
+        min-height: auto;
+        padding-top: 80px;
         gap: 40px;
     }
 
-    .light-info {
-        order: 1;
-        max-width: 100%;
-    }
-
-    .light-info h2 {
+    .light-info h2,
+    .logic-info h2 {
         margin-bottom: 25px;
-    }
-
-    .light-text {
-        font-size: 16px;
-    }
-
-    .light-img {
-        order: 2;
-        width: 100%;
-        max-width: 350px;
-    }
-
-    .light-img img {
-        width: 100%;
-        aspect-ratio: 4 / 5;
     }
 
     .light-process,
     .logic-process {
-        width: 100%;
-        margin-left: 0;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px 25px;
         font-size: 30px;
-        text-align: center;
-    }
-
-    .light-process span:not(:last-child)::after,
-    .logic-process span:not(:last-child)::after {
-        margin-left: 25px;
     }
 
     .light-img-2,
@@ -1445,7 +1543,8 @@ footer small {
     }
 
     .light-works h3,
-    .logic-works h3 {
+    .logic-works h3,
+    .create-projects h3 {
         margin-bottom: 25px;
     }
 
@@ -1486,9 +1585,15 @@ footer small {
     .light-arrow,
     .logic-arrow,
     .create-arrow {
-        font-size: 26px;
-        padding: 5px;
-        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+    }
+
+    .light-arrow svg,
+    .logic-arrow svg,
+    .create-arrow svg {
+        width: 18px;
+        height: 18px;
     }
 
     .light-tools,
@@ -1511,44 +1616,6 @@ footer small {
         font-size: 16px;
     }
 
-    #logic {
-        padding: 0 30px 80px;
-        gap: 50px;
-    }
-
-    .logic-intro {
-        min-height: auto;
-        padding-top: 80px;
-        gap: 40px;
-    }
-
-    .logic-content {
-        flex-direction: column;
-        gap: 40px;
-    }
-
-    .logic-img {
-        width: 100%;
-        max-width: 350px;
-    }
-
-    .logic-img img {
-        width: 100%;
-        aspect-ratio: 4 / 5;
-    }
-
-    .logic-info {
-        max-width: 100%;
-    }
-
-    .logic-info h2 {
-        margin-bottom: 25px;
-    }
-
-    .logic-text {
-        font-size: 16px;
-    }
-
     #create {
         min-height: auto;
         padding: 100px 30px;
@@ -1557,15 +1624,10 @@ footer small {
 
     .create-text {
         max-width: 100%;
-        font-size: 16px;
     }
 
     .create-projects {
         margin-top: 30px;
-    }
-
-    .create-projects h3 {
-        margin-bottom: 25px;
     }
 
     #contact {
@@ -1664,80 +1726,23 @@ footer small {
 
 
 /* =========================================================
-   PLACEHOLDERS TEMPORALES
-   ========================================================= */
-
-img {
-    background-color: var(--soft-grey);
-    position: relative;
-}
-
-.about-img img {
-    background: linear-gradient(135deg, var(--soft-grey), #e8e3d8);
-}
-
-.light-img img,
-.light-img-2 img {
-    background: linear-gradient(135deg, rgba(232, 131, 0, 0.12), rgba(255, 196, 81, 0.25));
-}
-
-.light-card img {
-    background: linear-gradient(135deg, #ede7db, rgba(232, 131, 0, 0.18));
-    border: 1px solid rgba(52, 52, 52, 0.1);
-}
-
-.logic-img img,
-.logic-img-2 img {
-    background: linear-gradient(135deg, rgba(81, 69, 117, 0.12), rgba(167, 157, 218, 0.25));
-}
-
-.logic-card img {
-    background: linear-gradient(135deg, #ede7db, rgba(113, 102, 166, 0.18));
-    border: 1px solid rgba(52, 52, 52, 0.1);
-}
-
-.create-card img {
-    background: linear-gradient(135deg, #ede7db, rgba(167, 157, 218, 0.18));
-    border: 1px solid rgba(52, 52, 52, 0.1);
-}
-
-.project-modal-header img,
-.project-modal-gallery-grid img {
-    background-color: var(--soft-grey);
-    border: 1px solid rgba(52, 52, 52, 0.08);
-}
-
-.light-img-2 img,
-.logic-img-2 img {
-    aspect-ratio: 16 / 9;
-    min-height: 280px;
-}
-
-
-/* =========================================================
    CABLES SVG DE FONDO (LIGHT / LOGIC)
+   Geometría, iluminación, chispas y cue final: js/cables.js
    ========================================================= */
 
-.cables-container,
 .cables-svg {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    pointer-events: none !important;
-    z-index: 1 !important; /* Detrás de fotos/tarjetas y por encima del fondo/degradado */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+    z-index: 1; /* Por encima de los fondos de Contact/footer y por debajo del contenido */
     overflow: hidden;
-}
-
-.cables-container svg,
-.cables-svg svg {
-    width: 100% !important;
-    display: block;
 }
 
 .cable-path {
     fill: none;
-    stroke: rgba(65, 65, 65, 0.18);
+    stroke: var(--cable-body);
     stroke-width: 8;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -1745,7 +1750,7 @@ img {
 
 .cable-glass {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.65);
+    stroke: var(--cable-glass);
     stroke-width: 5;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -1753,10 +1758,9 @@ img {
 
 .cable-core {
     fill: none;
-    stroke-width: 2;
+    stroke-width: 3;
     stroke-linecap: round;
     stroke-linejoin: round;
-    opacity: 0.9;
 }
 
 .cable-core-light {
@@ -1768,7 +1772,7 @@ img {
 }
 
 /* ---------------------------------------------------------
-   ILUMINACIÓN POR SECCIONES (la controla js/script.js)
+   ILUMINACIÓN POR SECCIONES (la controla js/cables.js)
    Variables escritas sobre #cables-svg:
      --light-level / --logic-level : 0 (apagado) a 1 (máximo)
      --light-glow  / --logic-glow  : resplandor (nivel al cuadrado)
@@ -1795,46 +1799,214 @@ img {
     opacity: calc(0.9 * var(--logic-level));
 }
 
-/* Halo: dos trazos anchos y translúcidos (sin filter: el SVG
-   mide todo el documento y un blur sería muy costoso) */
+/* Halo: js/cables.js genera varias capas finas (ancho, color y
+   opacidad en línea) cuya suma sigue una caída gaussiana: el
+   resplandor se desvanece sin escalones. Sin filter: el SVG mide
+   todo el documento y un blur sería muy costoso. */
+.cables-svg {
+    --halo-scale: 1;
+}
+
 .cable-halo {
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
-.cable-halo-wide {
-    stroke-width: 26;
+/* Tinte: el cristal se llena del color de su cable al encenderse,
+   así la luz parece nacer dentro del tubo y no encima de él */
+.cable-tint {
+    fill: none;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-.cable-halo-mid {
-    stroke-width: 14;
-}
-
-.cable-halo-light.cable-halo-wide {
-    stroke: var(--amber-glow);
-    opacity: calc(0.2 * var(--light-glow));
-}
-
-.cable-halo-light.cable-halo-mid {
+.cable-tint-light {
     stroke: var(--golden-beam);
-    opacity: calc(0.4 * var(--light-glow));
+    opacity: calc(0.45 * var(--light-level));
 }
 
-.cable-halo-logic.cable-halo-wide {
-    stroke: var(--royal-violet);
-    opacity: calc(0.2 * var(--logic-glow));
-}
-
-.cable-halo-logic.cable-halo-mid {
+.cable-tint-logic {
     stroke: var(--soft-lavender);
-    opacity: calc(0.4 * var(--logic-glow));
+    opacity: calc(0.45 * var(--logic-level));
 }
 
-/* Reflejo del cristal: durante el blackout se atenúa hasta un 35 %
-   para que el cable siga viéndose como un cable apagado */
-.cable-glass {
-    opacity: calc(1 - 0.65 * var(--blackout));
+/* Filamento: punto caliente del LED, tintado y suave. Solo aparece
+   con intensidad alta (sigue al glow, nivel²) */
+.cable-hot {
+    fill: none;
+    stroke-width: 1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cable-hot-light {
+    stroke: #FFEBB8;
+    opacity: calc(0.55 * var(--light-glow));
+}
+
+.cable-hot-logic {
+    stroke: #E9E4FF;
+    opacity: calc(0.55 * var(--logic-glow));
+}
+
+/* Cristal: al encenderse se vuelve más transparente para que el
+   tubo parezca lleno de luz de color. Durante el blackout se atenúa
+   hasta un 35 %: sin luz de color, el cable apagado se lee gris
+   sobre el fondo oscuro del footer */
+.cable-glass-light {
+    opacity: calc((1 - 0.6 * var(--light-level)) * (1 - 0.65 * var(--blackout)));
+}
+
+.cable-glass-logic {
+    opacity: calc((1 - 0.6 * var(--logic-level)) * (1 - 0.65 * var(--blackout)));
+}
+
+/* ---------------------------------------------------------
+   CHISPAS Y DESTELLO FINAL
+   Las chispas las mueve js/cables.js sobre el trazado real.
+   El destello nace en el punto de encuentro de los dos cables
+   (footer) y se anima aquí, una sola vez por llegada.
+   --------------------------------------------------------- */
+
+.cable-pulse,
+.cable-flash {
+    pointer-events: none;
+}
+
+/* Chispa que acompaña al scroll, como un cometa sobre el cable:
+   - estela: tramos del propio trazado del cable (los recorta
+     js/cables.js con stroke-dasharray); su longitud depende de la
+     velocidad del scroll; la cola es larga, fina y tenue y las
+     capas se suman cerca de la cabeza;
+   - cabeza: la chispa del HTML (degradado radial, sin bordes),
+     ampliada para que haga de resplandor redondo. */
+/* Solo la estela (hijos directos); la estrella de la cabeza va rellena */
+.cable-pulse > path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.pulse-tail {
+    stroke-width: 2.5;
+    opacity: 0.35;
+}
+
+.pulse-body {
+    stroke-width: 4;
+    opacity: 0.45;
+}
+
+.pulse-glow {
+    stroke-width: 12;
+    opacity: 0.14;
+}
+
+.pulse-core {
+    stroke-width: 3;
+    opacity: 0.85;
+}
+
+.pulse-head {
+    stroke-width: 2.6;
+}
+
+/* La chispa siempre está: en reposo el resplandor "respira" despacio */
+.cable-pulse .spark-body {
+    transform: scale(2);
+    animation: spark-breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes spark-breathe {
+    0%,
+    100% {
+        transform: scale(2);
+        opacity: 0.85;
+    }
+
+    50% {
+        transform: scale(2.5);
+        opacity: 1;
+    }
+}
+
+/* Estrella de la cabeza: destello de 8 puntas que centellea */
+.cable-pulse .spark-star {
+    transform: scale(1.4);
+    animation: star-twinkle 1.9s ease-in-out infinite;
+}
+
+@keyframes star-twinkle {
+    0%,
+    100% {
+        transform: scale(1.4) rotate(0deg);
+    }
+
+    50% {
+        transform: scale(1.65) rotate(14deg);
+    }
+}
+
+/* Chispitas que se desprenden de la chispa (las mueve js/cables.js) */
+.cable-sparkles {
+    pointer-events: none;
+}
+
+.cable-sparkle-light {
+    fill: var(--sparkle-light);
+}
+
+.cable-sparkle-light.is-hot {
+    fill: var(--sparkle-light-hot);
+}
+
+.cable-sparkle-logic {
+    fill: var(--sparkle-logic);
+}
+
+.cable-sparkle-logic.is-hot {
+    fill: var(--sparkle-logic-hot);
+}
+
+.cable-pulse-light .pulse-tail,
+.cable-pulse-light .pulse-glow { stroke: var(--amber-glow); }
+.cable-pulse-light .pulse-body { stroke: var(--golden-beam); }
+.cable-pulse-light .pulse-core { stroke: #FFE7A3; }
+.cable-pulse-light .pulse-head { stroke: #FFFBEF; }
+
+.cable-pulse-logic .pulse-tail,
+.cable-pulse-logic .pulse-glow { stroke: var(--royal-violet); }
+.cable-pulse-logic .pulse-body { stroke: var(--soft-lavender); }
+.cable-pulse-logic .pulse-core { stroke: #DCD6FA; }
+.cable-pulse-logic .pulse-head { stroke: #F8F6FF; }
+
+.cable-flash-body {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.cable-flash.is-flashing .cable-flash-body {
+    animation: cable-flash 0.9s ease-out forwards;
+}
+
+@keyframes cable-flash {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.6);
+    }
 }
 
 @media (max-width: 1000px) {
@@ -1848,14 +2020,69 @@ img {
     }
 
     .cable-core {
-        stroke-width: 1.7;
+        stroke-width: 2.5;
     }
 
-    .cable-halo-wide {
-        stroke-width: 22;
+    .cable-hot {
+        stroke-width: 0.9;
     }
 
-    .cable-halo-mid {
-        stroke-width: 12;
+    .cable-tint {
+        stroke-width: 4.5;
+    }
+
+    .cables-svg {
+        --halo-scale: 0.85;
+    }
+}
+
+
+/* =========================================================
+   MOVIMIENTO REDUCIDO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html,
+    .light-grid,
+    .logic-grid,
+    .create-grid {
+        scroll-behavior: auto;
+    }
+
+    /* Sin destello: el cierre se resuelve con el fundido de las luces */
+    .cable-flash {
+        display: none;
+    }
+
+    /* La chispa sigue al scroll, pero sin respiración, centelleo
+       ni chispitas */
+    .cable-pulse .spark-body,
+    .cable-pulse .spark-star {
+        animation: none;
+    }
+
+    .cable-sparkles {
+        display: none;
+    }
+
+    /* Flechas: solo cambian de color, sin desplazamientos */
+    .light-arrow svg,
+    .logic-arrow svg,
+    .create-arrow svg,
+    .light-arrow:active,
+    .logic-arrow:active,
+    .create-arrow:active {
+        transform: none !important;
+    }
+
+    /* Tarjetas: sin elevación, solo cambian borde y sombra */
+    .light-card:hover,
+    .logic-card:hover,
+    .create-card:hover,
+    .light-card:focus-within,
+    .logic-card:focus-within,
+    .create-card:focus-within {
+        transform: none;
     }
 }

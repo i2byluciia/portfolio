@@ -11,20 +11,29 @@
 
     <link rel="icon" type="image/png" href="assets/icons/favicon-ambar.png">
     <!-- Tema: se resuelve antes de pintar para evitar el parpadeo.
-         Preferencia guardada > tema del sistema. -->
+         Preferencia guardada > tema del sistema.
+         La clave debe coincidir con la de js/script.js. -->
     <script>
         (function () {
             var theme = null;
-            try { theme = localStorage.getItem("theme"); } catch (e) {}
+            try { theme = localStorage.getItem("i2byluciia-theme"); } catch (e) {}
             if (theme !== "light" && theme !== "dark") {
                 theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
                     ? "dark" : "light";
             }
             document.documentElement.setAttribute("data-theme", theme);
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute("content", theme === "dark" ? "#1E1C21" : "#F5F1E8");
         })();
     </script>
 
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Fuentes visibles en la primera pantalla (título y subtítulo de Home) -->
+    <link rel="preload" href="assets/fonts/woff2/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/woff2/caveat-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- ?v=… : cambia el valor al publicar para que el navegador no
+         mezcle un CSS antiguo en caché con un JS nuevo (o al revés) -->
+    <link rel="stylesheet" href="css/style.css?v=20261013-6">
 </head>
 
 <body>
@@ -84,9 +93,9 @@
         <button type="button"
                 id="theme-toggle"
                 class="theme-toggle"
-                aria-label="Modo oscuro"
+                aria-label="Tema oscuro"
                 aria-pressed="false"
-                title="Cambiar entre modo claro y oscuro">
+                title="Cambiar a tema oscuro">
 
             <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path>
@@ -169,69 +178,98 @@
                 <stop offset="100%" style="stop-color:var(--soft-lavender);stop-opacity:0" />
             </radialGradient>
 
+            <!-- Estrella de la chispa: centro blanco cálido, puntas del color del cable -->
+            <radialGradient id="spark-star-light">
+                <stop offset="0%"   stop-color="#FFFDF5" />
+                <stop offset="35%"  style="stop-color:var(--golden-beam)" />
+                <stop offset="100%" style="stop-color:var(--amber-glow)" />
+            </radialGradient>
+
+            <radialGradient id="spark-star-logic">
+                <stop offset="0%"   stop-color="#FBFAFF" />
+                <stop offset="35%"  style="stop-color:var(--soft-lavender)" />
+                <stop offset="100%" style="stop-color:var(--royal-violet)" />
+            </radialGradient>
+
         </defs>
 
 
-        <!-- Halos de iluminación (capas de brillo). Comparten el trazado de
-             su cable (lo asigna draw() en script.js) y su opacidad la
-             controla el sistema de iluminación por secciones. -->
-        <path id="light-halo-outer"
-              class="cable-halo cable-halo-outer cable-halo-light"></path>
+        <!-- Halos de iluminación: js/cables.js genera dentro varias capas
+             finas que comparten el trazado de su cable y cuyas opacidades
+             siguen una caída gaussiana (resplandor sin bordes marcados).
+             Van por debajo de los dos cables. -->
+        <g id="light-halos" class="cable-halos cable-halos-light"></g>
 
-        <path id="light-halo-wide"
-              class="cable-halo cable-halo-wide cable-halo-light"></path>
-
-        <path id="light-halo"
-              class="cable-halo cable-halo-mid cable-halo-light"></path>
-
-        <path id="logic-halo-outer"
-              class="cable-halo cable-halo-outer cable-halo-logic"></path>
-
-        <path id="logic-halo-wide"
-              class="cable-halo cable-halo-wide cable-halo-logic"></path>
-
-        <path id="logic-halo"
-              class="cable-halo cable-halo-mid cable-halo-logic"></path>
+        <g id="logic-halos" class="cable-halos cable-halos-logic"></g>
 
 
-        <path id="light-cable"
+        <path fill="none"
+              id="light-cable"
               class="cable-path cable-light"></path>
 
-        <path id="light-glass"
+        <path fill="none"
+              id="light-glass"
               class="cable-glass cable-glass-light"></path>
 
-        <path id="light-core"
+        <path fill="none"
+              id="light-tint"
+              class="cable-tint cable-tint-light"></path>
+
+        <path fill="none"
+              id="light-core"
               class="cable-core cable-core-light"></path>
 
-        <path id="light-hot"
+        <path fill="none"
+              id="light-hot"
               class="cable-hot cable-hot-light"></path>
 
 
-        <path id="logic-cable"
+        <path fill="none"
+              id="logic-cable"
               class="cable-path cable-logic"></path>
 
-        <path id="logic-glass"
+        <path fill="none"
+              id="logic-glass"
               class="cable-glass cable-glass-logic"></path>
 
-        <path id="logic-core"
+        <path fill="none"
+              id="logic-tint"
+              class="cable-tint cable-tint-logic"></path>
+
+        <path fill="none"
+              id="logic-core"
               class="cable-core cable-core-logic"></path>
 
-        <path id="logic-hot"
+        <path fill="none"
+              id="logic-hot"
               class="cable-hot cable-hot-logic"></path>
 
 
-        <!-- Chispas: se mueven sobre el trazado real (script.js) -->
+        <!-- Chispas: cabeza luminosa de cada pulso de señal. js/cables.js
+             las clona, les añade la estela y las mueve sobre el trazado real -->
         <g id="light-spark" class="cable-spark cable-spark-light" visibility="hidden">
             <g class="spark-body" opacity="0">
                 <circle r="13" fill="url(#spark-halo-light)"></circle>
                 <circle r="3"  fill="url(#spark-core-light)"></circle>
             </g>
+            <path class="spark-star" d="M0.0 -11.0 Q0.5 -1.2 3.3 -3.3 Q1.2 -0.5 11.0 -0.0 Q1.2 0.5 3.3 3.3 Q0.5 1.2 0.0 11.0 Q-0.5 1.2 -3.3 3.3 Q-1.2 0.5 -11.0 0.0 Q-1.2 -0.5 -3.3 -3.3 Q-0.5 -1.2 0.0 -11.0 Z" fill="url(#spark-star-light)"></path>
         </g>
 
         <g id="logic-spark" class="cable-spark cable-spark-logic" visibility="hidden">
             <g class="spark-body" opacity="0">
                 <circle r="13" fill="url(#spark-halo-logic)"></circle>
                 <circle r="3"  fill="url(#spark-core-logic)"></circle>
+            </g>
+            <path class="spark-star" d="M0.0 -11.0 Q0.5 -1.2 3.3 -3.3 Q1.2 -0.5 11.0 -0.0 Q1.2 0.5 3.3 3.3 Q0.5 1.2 0.0 11.0 Q-0.5 1.2 -3.3 3.3 Q-1.2 0.5 -11.0 0.0 Q-1.2 -0.5 -3.3 -3.3 Q-0.5 -1.2 0.0 -11.0 Z" fill="url(#spark-star-logic)"></path>
+        </g>
+
+        <!-- Destello final: nace en el punto de encuentro de los dos
+             cables (lo coloca js/cables.js) y se anima por CSS -->
+        <g id="cables-flash" class="cable-flash">
+            <g class="cable-flash-body" opacity="0">
+                <circle r="30" cx="-5" fill="url(#spark-halo-light)"></circle>
+                <circle r="30" cx="5"  fill="url(#spark-halo-logic)"></circle>
+                <circle r="4" fill="url(#spark-core-light)"></circle>
             </g>
         </g>
 
@@ -279,30 +317,46 @@
                         <p>
                             Me gusta entender cómo funcionan las cosas,
                             descubrir otras nuevas y convertir ideas en algo real.
+                        </p>
 
+                        <p>
                             La iluminación y la informática son dos formas
                             diferentes de hacer eso.
+                        </p>
 
+                        <p>
                             En la cabina, me gusta dar vida a un escenario y
                             sentir que lo que hago forma parte de que ese
                             momento suceda.
+                        </p>
 
+                        <p>
                             En informática, disfruto de ese mismo proceso desde
                             otro lugar: investigar, resolver problemas, aprender
                             cómo funcionan las cosas y construir soluciones.
+                        </p>
 
+                        <p>
                             No necesito saber cómo hacer algo para querer
                             intentarlo.
+                        </p>
 
+                        <p>
                             Si una idea me interesa, busco, pregunto, pruebo y
                             aprendo hasta encontrar la manera de hacerla funcionar.
+                        </p>
 
+                        <p>
                             Y cuando funciona, normalmente ya estoy pensando
                             en qué más podría hacer con ello.
+                        </p>
 
+                        <p>
                             Me gusta crear cosas que tengan un propósito,
                             que funcionen y que tengan algo de mí.
+                        </p>
 
+                        <p>
                             Y también me importa cómo se trabaja en equipo:
                             quiero que las personas que trabajan conmigo estén
                             a gusto, sepan que pueden contar conmigo y
@@ -318,7 +372,8 @@
                 <div class="about-img">
 
                     <img src="assets/img/about/luciia.webp"
-                         alt="Foto de Luciia">
+                         alt="Foto de Luciia"
+                         loading="lazy">
 
                 </div>
 
@@ -330,7 +385,7 @@
 
         <!-- <div class="divider">
 
-            <img src="icons/divider.png" alt="">
+            <img src="icons/divider.png" alt="" loading="lazy">
 
         </div> -->
 
@@ -358,21 +413,25 @@
                                 Para mí, la iluminación es parte de la historia:
                                 ayuda a los actores a entrar en personaje y al
                                 público a sumergirse en ella.
+                            </p>
 
+                            <p>
                                 En cabina preparo, observo y me adapto.
+                            </p>
 
+                            <p>
                                 Conozco la obra, sigo lo que ocurre en escena y,
                                 si algo cambia, encuentro la manera de que el
                                 espectáculo continúe sin que nadie lo perciba.
+                            </p>
 
+                            <p>
                                 Me gusta saber que lo que hago importa, aunque
                                 el público nunca llegue a verlo.
+                            </p>
 
-                                <br>
-
-                                <i>
-                                    Una más. :)
-                                </i>
+                            <p>
+                                <em>Una más. :)</em>
                             </p>
 
                         </div>
@@ -383,7 +442,8 @@
                     <div class="light-img">
 
                         <img src="assets/img/light/luciia-light.webp"
-                             alt="Foto de Luciia en cabina de iluminación">
+                             alt="Foto de Luciia en cabina de iluminación"
+                             loading="lazy">
 
                     </div>
 
@@ -417,7 +477,8 @@
             <div class="light-img-2">
 
                 <img src="assets/img/light/luciia-light-2.webp"
-                     alt="Foto de Luciia en cabina de iluminación">
+                     alt="Foto de Luciia en cabina de iluminación"
+                     loading="lazy">
 
             </div>
 
@@ -436,9 +497,12 @@
 
                 <div class="light-carousel">
 
-                    <button class="light-arrow light-arrow-left"
+                    <button type="button"
+                            class="light-arrow light-arrow-left"
                             aria-label="Trabajo anterior">
-                        ←
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M19 12H5M11 6l-6 6 6 6"></path>
+                        </svg>
                     </button>
 
 
@@ -452,7 +516,8 @@
                             <article>
 
                                 <img src="assets/img/light/hotellafuga/light-la-fuga.webp"
-                                     alt="Imagen del trabajo Hotel La Fuga">
+                                     alt="Imagen del trabajo Hotel La Fuga"
+                                     loading="lazy">
 
                                 <h4>
                                     Hotel La Fuga
@@ -476,7 +541,8 @@
                             <article>
 
                                 <img src="assets/img/light/eljuegodelasepia/light-el-juego-de-la-sepia.webp"
-                                     alt="Imagen del trabajo El Juego de la Sepia">
+                                     alt="Imagen del trabajo El Juego de la Sepia"
+                                     loading="lazy">
 
                                 <h4>
                                     El Juego de la Sepia
@@ -500,7 +566,8 @@
                             <article>
 
                                 <img src="assets/img/light/laHerencia/light-la-herencia.webp"
-                                     alt="Imagen del trabajo La Herencia">
+                                     alt="Imagen del trabajo La Herencia"
+                                     loading="lazy">
 
                                 <h4>
                                     La Herencia
@@ -524,7 +591,8 @@
                             <article>
 
                                 <img src="assets/img/light/otros/light-otros.webp"
-                                     alt="Imagen de otros trabajos">
+                                     alt="Imagen de otros trabajos"
+                                     loading="lazy">
 
                                 <h4>
                                     Otros
@@ -543,9 +611,12 @@
                     </div>
 
 
-                    <button class="light-arrow light-arrow-right"
+                    <button type="button"
+                            class="light-arrow light-arrow-right"
                             aria-label="Siguiente trabajo">
-                        →
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M5 12h14M13 6l6 6-6 6"></path>
+                        </svg>
                     </button>
 
                 </div>
@@ -609,7 +680,7 @@
 
         <!-- <div class="divider">
 
-            <img src="icons/divider.png" alt="">
+            <img src="icons/divider.png" alt="" loading="lazy">
 
         </div> -->
 
@@ -629,7 +700,8 @@
                     <div class="logic-img">
 
                         <img src="assets/img/logic/luciia-logic-1.webp"
-                             alt="Foto de Luciia con ordenador">
+                             alt="Foto de Luciia con ordenador"
+                             loading="lazy">
 
                     </div>
 
@@ -646,27 +718,41 @@
 
                             <p>
                                 La informática es otra forma de crear para mí.
+                            </p>
 
+                            <p>
                                 Me gusta entender cómo funcionan las cosas,
                                 pensar cómo deberían encajar y convertir una
                                 idea en algo que realmente funcione.
+                            </p>
 
+                            <p>
                                 Disfruto especialmente trabajando con datos y
                                 construyendo soluciones.
+                            </p>
 
+                            <p>
                                 Cuando algo falla, investigo, encuentro el
                                 problema y busco la forma de resolverlo.
+                            </p>
 
+                            <p>
                                 Uno de mis proyectos empezó como una pequeña
                                 idea para hacer algo visual para mi grupo y
                                 acabó convirtiéndose en el caso práctico de mi TFC.
+                            </p>
 
+                            <p>
                                 Diseñé su base de datos y desarrollé la web,
                                 incluyendo la gestión de usuarios y roles.
+                            </p>
 
+                            <p>
                                 Lo que empezó como una idea terminó siendo
                                 un proyecto real.
+                            </p>
 
+                            <p>
                                 Y quizá eso sea lo que más me gusta de la
                                 informática: ver cómo algo que primero solo
                                 existe en mi cabeza acaba funcionando delante
@@ -697,7 +783,8 @@
             <div class="logic-img-2">
 
                 <img src="assets/img/logic/luciia-logic-2.webp"
-                     alt="Foto de Luciia con ordenador">
+                     alt="Foto de Luciia con ordenador"
+                     loading="lazy">
 
             </div>
 
@@ -717,9 +804,12 @@
                 <div class="logic-carousel">
 
 
-                    <button class="logic-arrow logic-arrow-left"
+                    <button type="button"
+                            class="logic-arrow logic-arrow-left"
                             aria-label="Proyecto anterior">
-                        ←
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M19 12H5M11 6l-6 6 6 6"></path>
+                        </svg>
                     </button>
 
 
@@ -733,7 +823,8 @@
                             <article>
 
                                 <img src="assets/img/logic/dailydose/logic-daily-dose.webp"
-                                     alt="Imagen del proyecto Daily Dose">
+                                     alt="Imagen del proyecto Daily Dose"
+                                     loading="lazy">
 
                                 <h4>
                                     Daily Dose
@@ -757,7 +848,8 @@
                             <article>
 
                                 <img src="assets/img/logic-i2lab.png"
-                                     alt="Imagen del proyecto i2lab">
+                                     alt="Imagen del proyecto i2lab"
+                                     loading="lazy">
 
                                 <h4>
                                     i2lab
@@ -784,7 +876,8 @@
                             <article>
 
                                 <img src="assets/img/logic/dotfiles/logic-dotfiles.webp"
-                                     alt="Imagen del proyecto dotfiles">
+                                     alt="Imagen del proyecto dotfiles"
+                                     loading="lazy">
 
                                 <h4>
                                     dotfiles
@@ -808,7 +901,8 @@
                             <article>
 
                                 <img src="assets/img/logic/amber/logic-amber.webp"
-                                     alt="Imagen del proyecto Amber">
+                                     alt="Imagen del proyecto Amber"
+                                     loading="lazy">
 
                                 <h4>
                                     Amber
@@ -830,9 +924,12 @@
                     </div>
 
 
-                    <button class="logic-arrow logic-arrow-right"
+                    <button type="button"
+                            class="logic-arrow logic-arrow-right"
                             aria-label="Siguiente proyecto">
-                        →
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M5 12h14M13 6l6 6-6 6"></path>
+                        </svg>
                     </button>
 
                 </div>
@@ -911,7 +1008,7 @@
 
         <!-- <div class="divider">
 
-            <img src="icons/divider.png" alt="">
+            <img src="icons/divider.png" alt="" loading="lazy">
 
         </div> -->
 
@@ -931,24 +1028,40 @@
 
                 <p>
                     No todas mis ideas empiezan con un objetivo concreto.
+                </p>
 
+                <p>
                     Algunas simplemente me parecen interesantes, me despiertan
                     curiosidad o me hacen pensar:
+                </p>
 
+                <p>
                     “¿sería capaz de hacer esto?”
+                </p>
 
+                <p>
                     Crear es una forma de aprender para mí.
+                </p>
 
+                <p>
                     Investigo, pruebo, me equivoco, descubro cosas nuevas y
                     voy viendo hasta dónde puedo llevar una idea.
+                </p>
 
+                <p>
                     Aquí es donde mezclo todo lo que me gusta: tecnología,
                     creatividad, fotografía, ideas y experimentación.
+                </p>
 
+                <p>
                     No siempre sé dónde va a acabar un proyecto cuando empiezo.
+                </p>
 
+                <p>
                     Y creo que esa es precisamente la parte que más disfruto.
+                </p>
 
+                <p>
                     Crear me hace bien.
                 </p>
 
@@ -966,9 +1079,12 @@
                 <div class="create-carousel">
 
 
-                    <button class="create-arrow create-arrow-left"
+                    <button type="button"
+                            class="create-arrow create-arrow-left"
                             aria-label="Proyecto anterior">
-                        ←
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M19 12H5M11 6l-6 6 6 6"></path>
+                        </svg>
                     </button>
 
 
@@ -982,7 +1098,8 @@
                             <article>
 
                                 <img src="assets/img/create/i2lumen/create-i2lumen.webp"
-                                     alt="Proyecto i2lumen">
+                                     alt="Proyecto i2lumen"
+                                     loading="lazy">
 
                                 <h4>
                                     i2lumen
@@ -1009,7 +1126,8 @@
                             <article>
 
                                 <img src="assets/img/create/portfolio/create-portfolio.webp"
-                                     alt="Proyecto Portfolio">
+                                     alt="Proyecto Portfolio"
+                                     loading="lazy">
 
                                 <h4>
                                     Portfolio
@@ -1036,7 +1154,8 @@
                             <article>
 
                                 <img src="assets/img/create/restauracion/create-restauracion.webp"
-                                     alt="Restauración Fotográfica">
+                                     alt="Restauración Fotográfica"
+                                     loading="lazy">
 
                                 <h4>
                                     Restauración Fotográfica
@@ -1055,9 +1174,12 @@
                     </div>
 
 
-                    <button class="create-arrow create-arrow-right"
+                    <button type="button"
+                            class="create-arrow create-arrow-right"
                             aria-label="Siguiente proyecto">
-                        →
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M5 12h14M13 6l6 6-6 6"></path>
+                        </svg>
                     </button>
 
                 </div>
@@ -1070,7 +1192,7 @@
 
         <!-- <div class="divider">
 
-            <img src="icons/divider.png" alt="">
+            <img src="icons/divider.png" alt="" loading="lazy">
 
         </div> -->
 
@@ -1098,7 +1220,7 @@
 
                     <!-- EMAIL -->
 
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=luciiacampos.27@gmail.com"
+                    <a href="mailto:luciiacampos.27@gmail.com"
                        target="_blank"
                        rel="noopener noreferrer">
 
@@ -1225,8 +1347,9 @@
              MODAL — HOTEL LA FUGA
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-la-fuga">
+        <dialog class="project-modal"
+                id="modal-la-fuga"
+                aria-labelledby="modal-la-fuga-title">
 
             <div class="project-modal-content">
 
@@ -1240,7 +1363,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-la-fuga-title">
 
                             Hotel La Fuga
 
@@ -1260,7 +1383,8 @@
 
 
                         <img src="assets/img/light/hotellafuga/light-la-fuga.webp"
-                             alt="Imagen del trabajo Hotel La Fuga">
+                             alt="Imagen del trabajo Hotel La Fuga"
+                             loading="lazy">
 
                     </div>
 
@@ -1305,16 +1429,20 @@
                     <div class="project-modal-gallery-grid">
 
                         <img src="assets/img/light/hotellafuga/gallery-1.webp"
-                             alt="Hotel La Fuga">
+                             alt="Hotel La Fuga"
+                             loading="lazy">
 
                         <img src="assets/img/light/hotellafuga/gallery-2.webp"
-                             alt="Hotel La Fuga">
+                             alt="Hotel La Fuga"
+                             loading="lazy">
 
                         <img src="assets/img/light/hotellafuga/gallery-3.webp"
-                             alt="Hotel La Fuga">
+                             alt="Hotel La Fuga"
+                             loading="lazy">
 
                         <img src="assets/img/light/hotellafuga/gallery-4.webp"
-                             alt="Hotel La Fuga">
+                             alt="Hotel La Fuga"
+                             loading="lazy">
 
                     </div>
 
@@ -1322,7 +1450,7 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
 
@@ -1330,8 +1458,9 @@
              MODAL — EL JUEGO DE LA SEPIA
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-la-sepia">
+        <dialog class="project-modal"
+                id="modal-la-sepia"
+                aria-labelledby="modal-la-sepia-title">
 
             <div class="project-modal-content">
 
@@ -1345,7 +1474,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-la-sepia-title">
 
                             El Juego De La Sepia
 
@@ -1365,7 +1494,8 @@
 
 
                         <img src="assets/img/light/eljuegodelasepia/light-el-juego-de-la-sepia.webp"
-                             alt="Imagen del trabajo El Juego De La Sepia">
+                             alt="Imagen del trabajo El Juego De La Sepia"
+                             loading="lazy">
 
                     </div>
 
@@ -1416,16 +1546,20 @@
 
                     <div class="project-modal-gallery-grid">
                         <img src="assets/img/light/eljuegodelasepia/gallery-1.webp"
-                             alt="El Juego De La Sepia">
+                             alt="El Juego De La Sepia"
+                             loading="lazy">
 
                         <img src="assets/img/light/eljuegodelasepia/gallery-2.webp"
-                             alt="El Juego De La Sepia">
+                             alt="El Juego De La Sepia"
+                             loading="lazy">
 
                         <img src="assets/img/light/eljuegodelasepia/gallery-3.webp"
-                             alt="El Juego De La Sepia">
+                             alt="El Juego De La Sepia"
+                             loading="lazy">
 
                         <img src="assets/img/light/eljuegodelasepia/gallery-4.webp"
-                             alt="El Juego De La Sepia">
+                             alt="El Juego De La Sepia"
+                             loading="lazy">
 
                     </div>
 
@@ -1433,7 +1567,7 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
 
@@ -1441,8 +1575,9 @@
              MODAL — LA HERENCIA
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-la-herencia">
+        <dialog class="project-modal"
+                id="modal-la-herencia"
+                aria-labelledby="modal-la-herencia-title">
 
             <div class="project-modal-content">
 
@@ -1456,7 +1591,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-la-herencia-title">
                             La Herencia
                         </h3>
 
@@ -1470,7 +1605,8 @@
 
 
                         <img src="assets/img/light/laHerencia/light-la-herencia.webp"
-                             alt="Imagen del trabajo La Herencia">
+                             alt="Imagen del trabajo La Herencia"
+                             loading="lazy">
 
                     </div>
 
@@ -1517,16 +1653,20 @@
 
                     <div class="project-modal-gallery-grid">
                         <img src="assets/img/light/laHerencia/gallery-1.webp"
-                             alt="La Herencia">
+                             alt="La Herencia"
+                             loading="lazy">
 
                         <img src="assets/img/light/laHerencia/gallery-2.webp"
-                             alt="La Herencia">
+                             alt="La Herencia"
+                             loading="lazy">
 
                         <img src="assets/img/light/laHerencia/gallery-3.webp"
-                             alt="La Herencia">
+                             alt="La Herencia"
+                             loading="lazy">
 
                         <img src="assets/img/light/laHerencia/gallery-4.webp"
-                             alt="La Herencia">
+                             alt="La Herencia"
+                             loading="lazy">
 
                     </div>
 
@@ -1534,15 +1674,16 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
         <!-- =====================================================
              MODAL — OTROS
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-light-otros">
+        <dialog class="project-modal"
+                id="modal-light-otros"
+                aria-labelledby="modal-light-otros-title">
 
             <div class="project-modal-content">
 
@@ -1556,7 +1697,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-light-otros-title">
                             Otros
                         </h3>
                         <p>
@@ -1576,22 +1717,28 @@
 
                     <div class="project-modal-gallery-grid">
                         <img src="assets/img/light/otros/gallery-1.webp"
-                             alt="Otros">
+                             alt="Otros"
+                             loading="lazy">
 
                         <img src="assets/img/light/otros/gallery-2.webp"
-                             alt="Otros">
+                             alt="Otros"
+                             loading="lazy">
 
                         <img src="assets/img/light/otros/gallery-3.webp"
-                             alt="Otros">
+                             alt="Otros"
+                             loading="lazy">
 
                         <img src="assets/img/light/otros/gallery-4.webp"
-                             alt="Otros">
+                             alt="Otros"
+                             loading="lazy">
 
                         <img src="assets/img/light/otros/gallery-5.webp"
-                             alt="Otros">
+                             alt="Otros"
+                             loading="lazy">
 
                         <img src="assets/img/light/otros/gallery-6.webp"
-                             alt="Otros">
+                             alt="Otros"
+                             loading="lazy">
 
                     </div>
 
@@ -1599,7 +1746,7 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
 
@@ -1607,8 +1754,9 @@
              MODAL — DAILY DOSE
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-daily-dose">
+        <dialog class="project-modal"
+                id="modal-daily-dose"
+                aria-labelledby="modal-daily-dose-title">
 
             <div class="project-modal-content">
 
@@ -1622,7 +1770,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-daily-dose-title">
                             Daily Dose
                         </h3>
 
@@ -1632,7 +1780,8 @@
 
 
                         <img src="assets/img/logic/dailydose/gallery-1.webp"
-                             alt="Imagen del proyecto Daily Dose">
+                             alt="Imagen del proyecto Daily Dose"
+                             loading="lazy">
 
                     </div>
 
@@ -1698,19 +1847,24 @@
 
                     <div class="project-modal-gallery-grid">
                         <img src="assets/img/logic/dailydose/gallery-2.webp"
-                             alt="Daily Dose">
+                             alt="Daily Dose"
+                             loading="lazy">
 
                         <img src="assets/img/logic/dailydose/gallery-3.webp"
-                             alt="Daily Dose">
+                             alt="Daily Dose"
+                             loading="lazy">
 
                         <img src="assets/img/logic/dailydose/gallery-4.webp"
-                             alt="Daily Dose">
+                             alt="Daily Dose"
+                             loading="lazy">
 
                         <img src="assets/img/logic/dailydose/gallery-5.webp"
-                             alt="Daily Dose">
+                             alt="Daily Dose"
+                             loading="lazy">
 
                         <img src="assets/img/logic/dailydose/gallery-6.webp"
-                             alt="Daily Dose">
+                             alt="Daily Dose"
+                             loading="lazy">
 
                     </div>
 
@@ -1718,7 +1872,7 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
 
@@ -1726,8 +1880,9 @@
              MODAL — i2LAB
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-i2lab">
+        <dialog class="project-modal"
+                id="modal-i2lab"
+                aria-labelledby="modal-i2lab-title">
 
             <div class="project-modal-content">
 
@@ -1741,7 +1896,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-i2lab-title">
                             i2lab
                         </h3>
 
@@ -1751,7 +1906,8 @@
 
 
                         <img src="assets/img/logic/i2lab/gallery-1.webp"
-                             alt="Imagen del proyecto i2lab">
+                             alt="Imagen del proyecto i2lab"
+                             loading="lazy">
 
                     </div>
 
@@ -1803,13 +1959,16 @@
                     <div class="project-modal-gallery-grid">
 
                         <img src="assets/img/logic/i2lab/logic-i2lab-2.webp"
-                             alt="i2lab">
+                             alt="i2lab"
+                             loading="lazy">
 
                         <img src="assets/img/logic/i2lab/logic-i2lab-3.webp"
-                             alt="i2lab">
+                             alt="i2lab"
+                             loading="lazy">
 
                         <img src="assets/img/logic/i2lab/logic-i2lab-4.webp"
-                             alt="i2lab">
+                             alt="i2lab"
+                             loading="lazy">
 
                     </div>
 
@@ -1817,7 +1976,7 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
 
@@ -1825,8 +1984,9 @@
              MODAL — DOTFILES
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-dotfiles">
+        <dialog class="project-modal"
+                id="modal-dotfiles"
+                aria-labelledby="modal-dotfiles-title">
 
             <div class="project-modal-content">
 
@@ -1840,7 +2000,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-dotfiles-title">
                             dotfiles
                         </h3>
 
@@ -1850,7 +2010,8 @@
 
 
                         <img src="assets/img/logic/dotfiles/gallery-1.webp"
-                             alt="Imagen del proyecto dotfiles">
+                             alt="Imagen del proyecto dotfiles"
+                             loading="lazy">
 
                     </div>
 
@@ -1904,13 +2065,16 @@
                     <div class="project-modal-gallery-grid">
 
                         <img src="assets/img/logic/dotfiles/gallery-2.webp"
-                             alt="dotfiles">
+                             alt="dotfiles"
+                             loading="lazy">
 
                         <img src="assets/img/logic/dotfiles/gallery-3.webp"
-                             alt="dotfiles">
+                             alt="dotfiles"
+                             loading="lazy">
 
                         <img src="assets/img/logic/dotfiles/gallery-4.webp"
-                             alt="dotfiles">
+                             alt="dotfiles"
+                             loading="lazy">
 
                     </div>
 
@@ -1918,7 +2082,7 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
 
@@ -1926,8 +2090,9 @@
              MODAL — AMBER
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-amber">
+        <dialog class="project-modal"
+                id="modal-amber"
+                aria-labelledby="modal-amber-title">
 
             <div class="project-modal-content">
 
@@ -1941,7 +2106,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-amber-title">
                             Amber
                         </h3>
 
@@ -1951,7 +2116,8 @@
 
 
                         <img src="assets/img/logic/amber/gallery-1.webp"
-                             alt="Imagen del proyecto Amber">
+                             alt="Imagen del proyecto Amber"
+                             loading="lazy">
 
                     </div>
 
@@ -2002,13 +2168,16 @@
                     <div class="project-modal-gallery-grid">
 
                         <img src="assets/img/logic/amber/gallery-2.webp"
-                             alt="Amber">
+                             alt="Amber"
+                             loading="lazy">
 
                         <img src="assets/img/logic/amber/gallery-3.webp"
-                             alt="Amber">
+                             alt="Amber"
+                             loading="lazy">
 
                         <img src="assets/img/logic/amber/gallery-4.webp"
-                             alt="Amber">
+                             alt="Amber"
+                             loading="lazy">
 
                     </div>
 
@@ -2016,7 +2185,7 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
 
@@ -2024,8 +2193,9 @@
              MODAL — i2LUMEN
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-i2lumen">
+        <dialog class="project-modal"
+                id="modal-i2lumen"
+                aria-labelledby="modal-i2lumen-title">
 
             <div class="project-modal-content">
 
@@ -2039,7 +2209,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-i2lumen-title">
                             i2lumen
                         </h3>
 
@@ -2049,7 +2219,8 @@
 
 
                         <img src="assets/img/create/i2lumen/gallery-1.webp"
-                             alt="Imagen del proyecto i2lumen">
+                             alt="Imagen del proyecto i2lumen"
+                             loading="lazy">
 
                     </div>
 
@@ -2102,13 +2273,16 @@
                     <div class="project-modal-gallery-grid">
 
                         <img src="assets/img/create/i2lumen/gallery-2.webp"
-                             alt="i2lumen">
+                             alt="i2lumen"
+                             loading="lazy">
 
                         <img src="assets/img/create/i2lumen/gallery-3.webp"
-                             alt="i2lumen">
+                             alt="i2lumen"
+                             loading="lazy">
 
                         <img src="assets/img/create/i2lumen/gallery-4.webp"
-                             alt="i2lumen">
+                             alt="i2lumen"
+                             loading="lazy">
 
                     </div>
 
@@ -2116,7 +2290,7 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
 
@@ -2124,8 +2298,9 @@
              MODAL — PORTFOLIO
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-portfolio">
+        <dialog class="project-modal"
+                id="modal-portfolio"
+                aria-labelledby="modal-portfolio-title">
 
             <div class="project-modal-content">
 
@@ -2139,7 +2314,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-portfolio-title">
                             Portfolio
                         </h3>
 
@@ -2149,7 +2324,8 @@
 
 
                         <img src="assets/img/create/portfolio/gallery-1.webp"
-                             alt="Imagen del portfolio">
+                             alt="Imagen del portfolio"
+                             loading="lazy">
 
                     </div>
 
@@ -2202,16 +2378,20 @@
 
                     <div class="project-modal-gallery-grid">
                         <img src="assets/img/create/portfolio/gallery-2.webp"
-                             alt="Portfolio">
+                             alt="Portfolio"
+                             loading="lazy">
 
                         <img src="assets/img/create/portfolio/gallery-3.webp"
-                             alt="Portfolio">
+                             alt="Portfolio"
+                             loading="lazy">
 
                         <img src="assets/img/create/portfolio/gallery-4.webp"
-                             alt="Portfolio">
+                             alt="Portfolio"
+                             loading="lazy">
 
                         <img src="assets/img/create/portfolio/gallery-5.webp"
-                             alt="Portfolio">
+                             alt="Portfolio"
+                             loading="lazy">
 
                     </div>
 
@@ -2219,14 +2399,15 @@
 
             </div>
 
-        </div>
+        </dialog>
 
         <!-- =====================================================
              MODAL — RESTAURACIÓN FOTOGRÁFICA
         ====================================================== -->
 
-        <div class="project-modal"
-             id="modal-restauracion">
+        <dialog class="project-modal"
+                id="modal-restauracion"
+                aria-labelledby="modal-restauracion-title">
 
             <div class="project-modal-content">
 
@@ -2240,7 +2421,7 @@
 
                     <div class="project-modal-header">
 
-                        <h3>
+                        <h3 id="modal-restauracion-title">
                             Restauración Fotográfica
                         </h3>
 
@@ -2250,7 +2431,8 @@
 
 
                         <img src="assets/img/create/restauracion/gallery-1.webp"
-                             alt="Imagen de la restauración fotográfica">
+                             alt="Imagen de la restauración fotográfica"
+                             loading="lazy">
 
                     </div>
 
@@ -2287,16 +2469,20 @@
 
                     <div class="project-modal-gallery-grid">
                         <img src="assets/img/create/restauracion/gallery-2.webp"
-                             alt="Restauración Fotográfica">
+                             alt="Restauración Fotográfica"
+                             loading="lazy">
 
                         <img src="assets/img/create/restauracion/gallery-3.webp"
-                             alt="Restauración Fotográfica">
+                             alt="Restauración Fotográfica"
+                             loading="lazy">
 
                         <img src="assets/img/create/restauracion/gallery-4.webp"
-                             alt="Restauración Fotográfica">
+                             alt="Restauración Fotográfica"
+                             loading="lazy">
 
                         <img src="assets/img/create/restauracion/gallery-5.webp"
-                             alt="Restauración Fotográfica">
+                             alt="Restauración Fotográfica"
+                             loading="lazy">
 
                     </div>
 
@@ -2304,7 +2490,7 @@
 
             </div>
 
-        </div>
+        </dialog>
 
 
 
@@ -2327,7 +2513,7 @@
     <!-- =========================================================
          SCRIPTS
     ========================================================== -->
-    <script src="js/script.js"></script>
-    <script src="js/cables.js"></script>
+    <script src="js/script.js?v=20261013-6"></script>
+    <script src="js/cables.js?v=20261013-6"></script>
 </body>
 </html>
