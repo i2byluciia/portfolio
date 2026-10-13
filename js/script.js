@@ -211,6 +211,11 @@ document.addEventListener("keydown", event => {
 
     if (!svg || !lightEl || !logicEl || !lightCore || !logicCore || !lightGlass || !logicGlass) return;
 
+    // Capas de halo (opcionales): reciben el mismo trazado que su cable
+    const haloIds    = prefix => [prefix + "-halo-wide", prefix + "-halo"];
+    const lightHalos = haloIds("light").map(id => document.getElementById(id)).filter(Boolean);
+    const logicHalos = haloIds("logic").map(id => document.getElementById(id)).filter(Boolean);
+
     // ── Utilidades ────────────────────────────────────────
 
     function docRect(el) {
@@ -458,13 +463,14 @@ document.addEventListener("keydown", event => {
 
         const routes = MQ.matches ? buildMobile(r) : buildDesktop(r);
 
-        lightEl.setAttribute("d", smoothPath(routes.light));
-        lightGlass.setAttribute("d", smoothPath(routes.light));
-        lightCore.setAttribute("d", smoothPath(routes.light));
+        const lightD = smoothPath(routes.light);
+        const logicD = smoothPath(routes.logic);
 
-        logicEl.setAttribute("d", smoothPath(routes.logic));
-        logicGlass.setAttribute("d", smoothPath(routes.logic));
-        logicCore.setAttribute("d", smoothPath(routes.logic));
+        [lightEl, lightGlass, lightCore, ...lightHalos]
+            .forEach(el => el.setAttribute("d", lightD));
+
+        [logicEl, logicGlass, logicCore, ...logicHalos]
+            .forEach(el => el.setAttribute("d", logicD));
 
         // El SVG cubre exactamente el scrollHeight del documento.
         // NO añadimos margen extra: eso estiraría el body
@@ -495,5 +501,198 @@ document.addEventListener("keydown", event => {
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
     if (document.readyState === "complete") draw();
     else document.addEventListener("DOMContentLoaded", draw);
+
+})();
+
+
+// =========================================================
+// ILUMINACIÓN DE LOS CABLES POR SECCIÓN + BLACKOUT
+// ---------------------------------------------------------
+// Escribe cinco variables CSS sobre #cables-svg (ver style.css):
+//   --light-level / --logic-level   0..1  luminosidad del núcleo
+//   --light-glow  / --logic-glow    0..1  resplandor (halo)
+//   --blackout                      0..1  atenuación del cristal
+// Dos componentes se combinan:
+//   1) Nivel por sección: la sección que cruza la línea de lectura
+//      (50 % del viewport) fija el nivel objetivo de cada cable.
+//      Se suaviza en el tiempo (sube y baja igual de bien).
+//   2) Blackout: factor ligado directamente al scroll dentro de
+//      Contact; no se suaviza, así nunca va por detrás del scroll
+//      y en el footer vale exactamente 0.
+// =========================================================
+
+(() => {
+
+    const svg = document.getElementById("cables-svg");
+    if (!svg) return;
+
+    // ── Configuración ─────────────────────────────────────
+
+    const DIM = 0.32;   // "tenue"
+    const ON  = 1;      // máximo
+
+    // Nivel objetivo [light, logic] por sección
+    const LEVELS = {
+        home   : [DIM, DIM],
+        about  : [DIM, DIM],
+        light  : [ON,  DIM],
+        logic  : [DIM, ON ],
+        create : [ON,  ON ],
+        contact: [ON,  ON ],   // el apagado lo aplica el blackout
+        footer : [ON,  ON ]    // idem: blackout = 0 aquí
+    };
+
+    const SECTION_IDS = ["home", "about", "light", "logic", "create", "contact"];
+    const READ_LINE   = 0.5;   // fracción del viewport usada para detectar sección
+    const TAU         = 0.28;  // s: constante de tiempo de la transición entre secciones
+
+    // ── Referencias ───────────────────────────────────────
+
+    const sections  = SECTION_IDS
+        .map(id => [id, document.getElementById(id)])
+        .filter(([, el]) => el);
+    const contactEl = document.getElementById("contact");
+    const footerEl  = document.querySelector("footer");
+    const reduced   = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    // ── Estado ────────────────────────────────────────────
+
+    let current   = [DIM, DIM];   // niveles actuales (suavizados)
+    let target    = [DIM, DIM];   // niveles objetivo de la sección activa
+    let fade      = 1;            // factor de blackout: 1 normal, 0 apagado
+    let loopId    = 0;
+    let lastTime  = 0;
+    let booting   = true;         // hasta poco después de "load" no se anima
+    let queued    = false;
+    let forceSnap = false;
+    const written = {};
+
+    // ── Medición (solo lectura de geometría) ──────────────
+
+    function activeSection(vh) {
+        const line = vh * READ_LINE;
+        let id = "home";
+        for (const [sid, el] of sections) {
+            if (el.getBoundingClientRect().top <= line) id = sid;
+            else break;
+        }
+        if (footerEl && footerEl.getBoundingClientRect().top <= line) id = "footer";
+        return id;
+    }
+
+    // Progreso del blackout 0..1:
+    //   0 cuando Contact cruza la línea de lectura,
+    //   1 cuando la mitad del footer es visible (o más).
+    // Se calcula con posiciones relativas al viewport, no depende de
+    // la altura total ni del scroll restaurado.
+    function blackoutProgress(vh) {
+        if (!contactEl) return 0;
+        const cTop  = contactEl.getBoundingClientRect().top;
+        const start = vh * READ_LINE;
+        const done  = start - cTop;   // scroll recorrido desde el hito inicial
+        if (footerEl) {
+            const f = footerEl.getBoundingClientRect();
+            // scroll total entre el hito inicial y el final (mitad del footer visible)
+            const total = (f.top - vh + f.height * 0.5) - (cTop - start);
+            return clamp(done / Math.max(total, 1), 0, 1);
+        }
+        const c = contactEl.getBoundingClientRect();
+        return clamp(done / Math.max(c.height, 1), 0, 1);
+    }
+
+    function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+
+    // ── Escritura ─────────────────────────────────────────
+
+    function setVar(name, value) {
+        const v = value.toFixed(3);
+        if (written[name] === v) return;
+        written[name] = v;
+        svg.style.setProperty(name, v);
+    }
+
+    function render() {
+        const light = current[0] * fade;
+        const logic = current[1] * fade;
+        setVar("--light-level", light);
+        setVar("--logic-level", logic);
+        setVar("--light-glow",  light * light);   // el halo cae más rápido que el núcleo
+        setVar("--logic-glow",  logic * logic);
+        setVar("--blackout",    1 - fade);
+    }
+
+    // ── Transición suave entre secciones ──────────────────
+
+    function step(now) {
+        const dt = Math.min((now - lastTime) / 1000, 0.1);
+        lastTime = now;
+        const k = 1 - Math.exp(-dt / TAU);
+        let moving = false;
+        for (let i = 0; i < 2; i++) {
+            const diff = target[i] - current[i];
+            if (Math.abs(diff) < 0.002) current[i] = target[i];
+            else { current[i] += diff * k; moving = true; }
+        }
+        render();
+        loopId = moving ? requestAnimationFrame(step) : 0;
+    }
+
+    function update(snap) {
+        const vh = window.innerHeight;
+        const id = activeSection(vh);
+
+        target = LEVELS[id].slice();
+        const p = blackoutProgress(vh);
+        fade = p >= 1 ? 0 : (1 - p) * (1 - p) * (1 + 2 * p);   // smoothstep invertido
+        if (svg.dataset.section !== id) svg.dataset.section = id;
+
+        if (snap || reduced.matches) {
+            if (loopId) { cancelAnimationFrame(loopId); loopId = 0; }
+            current = target.slice();
+            render();
+        } else {
+            render();   // el blackout sigue al scroll sin retraso
+            if (!loopId && (current[0] !== target[0] || current[1] !== target[1])) {
+                lastTime = performance.now();
+                loopId = requestAnimationFrame(step);
+            }
+        }
+    }
+
+    // Agrupa varias señales en un único cálculo por frame
+    function schedule(snap) {
+        if (snap) forceSnap = true;
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+            queued = false;
+            const s = forceSnap || booting;
+            forceSnap = false;
+            update(s);
+        });
+    }
+
+    // ── Eventos ───────────────────────────────────────────
+
+    window.addEventListener("scroll", () => schedule(false), { passive: true });
+    window.addEventListener("resize", () => schedule(true));
+    window.addEventListener("pageshow", () => schedule(true));   // incluye bfcache
+    window.addEventListener("load", () => {
+        schedule(true);
+        // el navegador puede restaurar el scroll justo después de "load"
+        setTimeout(() => { booting = false; schedule(true); }, 400);
+    });
+
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => schedule(false));
+    if (typeof reduced.addEventListener === "function") {
+        reduced.addEventListener("change", () => schedule(true));
+    }
+    // El layout cambia al cargar imágenes: se recalcula sin tocar nada más
+    if (typeof ResizeObserver === "function") {
+        new ResizeObserver(() => schedule(false)).observe(document.body);
+    }
+
+    // Estado correcto desde el primer frame
+    update(true);
 
 })();

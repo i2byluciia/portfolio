@@ -1767,6 +1767,76 @@ img {
     stroke: url(#cable-gradient-logic);
 }
 
+/* ---------------------------------------------------------
+   ILUMINACIÓN POR SECCIONES (la controla js/script.js)
+   Variables escritas sobre #cables-svg:
+     --light-level / --logic-level : 0 (apagado) a 1 (máximo)
+     --light-glow  / --logic-glow  : resplandor (nivel al cuadrado)
+     --blackout                    : 0 normal, 1 apagón total
+   Los valores por defecto son el estado "tenue" (sin JS).
+   Nunca se aplica opacidad al grupo: solo a las capas de brillo,
+   así el cuerpo del cable (.cable-path / .cable-glass) sigue visible.
+   --------------------------------------------------------- */
+
+.cables-svg {
+    --light-level: 0.32;
+    --light-glow: 0.1;
+    --logic-level: 0.32;
+    --logic-glow: 0.1;
+    --blackout: 0;
+}
+
+/* El color del núcleo conserva su 0.9 original como máximo */
+.cable-core-light {
+    opacity: calc(0.9 * var(--light-level));
+}
+
+.cable-core-logic {
+    opacity: calc(0.9 * var(--logic-level));
+}
+
+/* Halo: dos trazos anchos y translúcidos (sin filter: el SVG
+   mide todo el documento y un blur sería muy costoso) */
+.cable-halo {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cable-halo-wide {
+    stroke-width: 26;
+}
+
+.cable-halo-mid {
+    stroke-width: 14;
+}
+
+.cable-halo-light.cable-halo-wide {
+    stroke: var(--amber-glow);
+    opacity: calc(0.2 * var(--light-glow));
+}
+
+.cable-halo-light.cable-halo-mid {
+    stroke: var(--golden-beam);
+    opacity: calc(0.4 * var(--light-glow));
+}
+
+.cable-halo-logic.cable-halo-wide {
+    stroke: var(--royal-violet);
+    opacity: calc(0.2 * var(--logic-glow));
+}
+
+.cable-halo-logic.cable-halo-mid {
+    stroke: var(--soft-lavender);
+    opacity: calc(0.4 * var(--logic-glow));
+}
+
+/* Reflejo del cristal: durante el blackout se atenúa hasta un 35 %
+   para que el cable siga viéndose como un cable apagado */
+.cable-glass {
+    opacity: calc(1 - 0.65 * var(--blackout));
+}
+
 @media (max-width: 1000px) {
 
     .cable-path {
@@ -1779,5 +1849,13 @@ img {
 
     .cable-core {
         stroke-width: 1.7;
+    }
+
+    .cable-halo-wide {
+        stroke-width: 22;
+    }
+
+    .cable-halo-mid {
+        stroke-width: 12;
     }
 }
