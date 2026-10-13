@@ -17,26 +17,34 @@
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     // Envolvemos cada letra en un <span> para poder escalarla
-    // individualmente. Los espacios se dejan como texto normal
-    // para no romper el flujo del título.
+    // individualmente. Las letras de cada palabra van dentro de otro
+    // <span> que no se parte, así la línea solo puede cortarse entre
+    // palabras (y no "Crea / te"). Los espacios se dejan como texto
+    // normal para no romper el flujo del título.
     const text = title.textContent.trim();
     title.textContent = "";
 
     // Los lectores de pantalla leen el título completo, no letra a letra
     title.setAttribute("aria-label", text);
 
-    text.split("").forEach(char => {
-        if (char === " ") {
-            title.appendChild(document.createTextNode(" "));
-        } else {
-            const span = document.createElement("span");
-            span.textContent = char;
-            span.setAttribute("aria-hidden", "true");
-            title.appendChild(span);
-        }
+    text.split(" ").forEach((word, index) => {
+        if (index > 0) title.appendChild(document.createTextNode(" "));
+
+        const wordSpan = document.createElement("span");
+        wordSpan.className = "lupa-word";
+        wordSpan.setAttribute("aria-hidden", "true");
+
+        word.split("").forEach(char => {
+            const letter = document.createElement("span");
+            letter.className = "lupa-letter";
+            letter.textContent = char;
+            wordSpan.appendChild(letter);
+        });
+
+        title.appendChild(wordSpan);
     });
 
-    const letters = title.querySelectorAll("span");
+    const letters = title.querySelectorAll(".lupa-letter");
 
     const MAX_SCALE = 1.6;   // cuánto se amplía la letra bajo el cursor
     const RADIUS = 70;       // px de radio de influencia de la "lupa"

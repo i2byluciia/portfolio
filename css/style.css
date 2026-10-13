@@ -54,8 +54,13 @@
     --hairline: rgba(52, 52, 52, 0.1);     /* borde fino de imágenes */
     --placeholder: #EDE7DB;                /* fondo mientras carga una imagen */
 
+    /* Paneles de lectura (texto sobre los cables) */
+    --text-panel-bg: rgba(245, 241, 232, 0.62);
+    --text-panel-blur: blur(1.5px);
+
     /* Tarjetas de vidrio */
-    --card-bg: rgba(255, 255, 255, 0.42);
+    --card-bg: rgba(255, 255, 255, 0.48);
+    --card-blur: blur(3px) saturate(1.1);
     --card-border: rgba(52, 52, 52, 0.08);
     --card-border-hover: rgba(52, 52, 52, 0.16);
     --card-shadow: 0 6px 22px rgba(52, 52, 52, 0.06);
@@ -99,7 +104,9 @@ html[data-theme="dark"] {
     --hairline: rgba(245, 241, 232, 0.1);
     --placeholder: #2A2730;
 
-    --card-bg: rgba(42, 39, 48, 0.5);
+    --text-panel-bg: rgba(30, 28, 33, 0.64);
+
+    --card-bg: rgba(42, 39, 48, 0.56);
     --card-border: rgba(245, 241, 232, 0.08);
     --card-border-hover: rgba(245, 241, 232, 0.16);
     --card-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
@@ -139,7 +146,10 @@ html.theme-changing *::after {
         background-color 0.3s ease,
         color 0.3s ease,
         border-color 0.3s ease,
-        stroke 0.3s ease !important;
+        stroke 0.3s ease,
+        fill-opacity 0.3s ease,
+        opacity 0.3s ease,
+        transform 0.3s ease !important;
 }
 
 
@@ -449,17 +459,29 @@ nav a:focus-visible::after {
     stroke-linejoin: round;
 }
 
-/* En claro se muestra la luna; en oscuro, el sol */
-.theme-toggle .icon-sun {
-    display: none;
+/* Bombilla: encendida (cristal dorado y rayos) en el tema claro,
+   apagada (solo contorno) en el oscuro */
+.theme-toggle .bulb-glass {
+    fill: var(--golden-beam);
+    fill-opacity: 0.55;
+    transition: fill-opacity 0.3s ease;
 }
 
-html[data-theme="dark"] .theme-toggle .icon-moon {
-    display: none;
+.theme-toggle .bulb-rays {
+    stroke: var(--accent-light-display);
+    transform-origin: 12px 10px;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
-html[data-theme="dark"] .theme-toggle .icon-sun {
-    display: block;
+html[data-theme="dark"] .theme-toggle .bulb-glass {
+    fill-opacity: 0;
+}
+
+html[data-theme="dark"] .theme-toggle .bulb-rays {
+    opacity: 0;
+    transform: scale(0.6);
 }
 
 
@@ -489,7 +511,14 @@ html[data-theme="dark"] .theme-toggle .icon-sun {
 
 /* ---------- Efecto lupa sobre el título ---------- */
 
-#home h1 span {
+/* Cada palabra es un bloque que no se parte; dentro, cada letra
+   se escala por separado */
+#home h1 .lupa-word {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#home h1 .lupa-letter {
     display: inline-block;
     transform-origin: center bottom;
     transition: transform 0.15s ease-out;
@@ -541,6 +570,32 @@ html[data-theme="dark"] .theme-toggle .icon-sun {
 .logic-text p + p,
 .create-text p + p {
     margin-top: 1em;
+}
+
+/* Paneles de lectura: papel esmerilado detrás de los bloques de
+   texto que cruzan los cables. Más opacos que las tarjetas para que
+   el texto se lea siempre bien; los cables se intuyen difuminados.
+   Los títulos quedan sin panel a propósito: el recorrido de los
+   cables está pensado para cruzarlos. */
+.about-text,
+.light-text,
+.logic-text,
+.create-text,
+.light-tools,
+.logic-tools {
+    padding: 24px 28px;
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    background-color: var(--text-panel-bg);
+    -webkit-backdrop-filter: var(--text-panel-blur);
+    backdrop-filter: var(--text-panel-blur);
+    box-shadow: var(--card-shadow);
+}
+
+.light-tools,
+.logic-tools {
+    width: fit-content;
+    max-width: 100%;
 }
 
 
@@ -659,8 +714,8 @@ html[data-theme="dark"] .theme-toggle .icon-sun {
     border: 1px solid var(--card-border);
     border-radius: 16px;
     background-color: var(--card-bg);
-    -webkit-backdrop-filter: blur(12px) saturate(1.2);
-    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: var(--card-blur);
+    backdrop-filter: var(--card-blur);
     box-shadow: var(--card-shadow);
     transition:
         transform 0.25s ease,
@@ -730,8 +785,8 @@ html[data-theme="dark"] .theme-toggle .icon-sun {
     border: 1px solid var(--card-border-hover);
     border-radius: 50%;
     background-color: var(--card-bg);
-    -webkit-backdrop-filter: blur(12px) saturate(1.2);
-    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: var(--card-blur);
+    backdrop-filter: var(--card-blur);
     box-shadow: var(--card-shadow);
     color: var(--text);
     cursor: pointer;
@@ -1498,6 +1553,16 @@ img {
         font-size: 16px;
     }
 
+    .about-text,
+    .light-text,
+    .logic-text,
+    .create-text,
+    .light-tools,
+    .logic-tools {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
     #light,
     #logic {
         padding: 0 30px 80px;
@@ -2064,6 +2129,12 @@ img {
 
     .cable-sparkles {
         display: none;
+    }
+
+    /* Bombilla del tema: cambio instantáneo */
+    .theme-toggle .bulb-glass,
+    .theme-toggle .bulb-rays {
+        transition: none;
     }
 
     /* Flechas: solo cambian de color, sin desplazamientos */
