@@ -299,7 +299,9 @@
     function show(index) {
         current = (index + photos.length) % photos.length;
         const photo = photos[current];
-        viewerImg.src = photo.currentSrc || photo.src;
+        // En las galerías se muestra la miniatura; el visor carga la
+        // versión grande (data-full) solo cuando se abre
+        viewerImg.src = photo.dataset.full || photo.currentSrc || photo.src;
         viewerImg.alt = photo.alt;
         viewerText.textContent = photo.alt;
         viewerCount.textContent = photos.length > 1 ? `${current + 1} / ${photos.length}` : "";
