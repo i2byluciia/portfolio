@@ -66,9 +66,10 @@
     --card-shadow: 0 6px 22px rgba(52, 52, 52, 0.06);
     --card-shadow-hover: 0 12px 30px rgba(52, 52, 52, 0.1);
 
-    --modal-overlay: rgba(245, 241, 232, 0.35);
-    --modal-border: transparent;
-    --modal-shadow: 0 10px 40px rgba(32, 33, 57, 0.15);
+    --modal-overlay: rgba(245, 241, 232, 0.3);
+    --modal-glass: rgba(245, 241, 232, 0.74);      /* cuadro de vidrio */
+    --modal-border: rgba(52, 52, 52, 0.1);
+    --modal-shadow: 0 18px 50px rgba(32, 33, 57, 0.16);
 
     --footer-bg: var(--charcoal);
     --footer-text: var(--paper);
@@ -116,9 +117,10 @@ html[data-theme="dark"] {
     --card-shadow: 0 6px 22px rgba(0, 0, 0, 0.25);
     --card-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.35);
 
-    --modal-overlay: rgba(15, 14, 17, 0.65);
-    --modal-border: #514C56;
-    --modal-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    --modal-overlay: rgba(15, 14, 17, 0.5);
+    --modal-glass: rgba(30, 28, 33, 0.74);
+    --modal-border: rgba(245, 241, 232, 0.1);
+    --modal-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
 
     --footer-bg: #141317;
     --footer-text: var(--paper);
@@ -220,7 +222,7 @@ html.theme-changing *::after {
     box-sizing: border-box;
 }
 
-nav ul {
+header nav ul {
     list-style: none;
 }
 
@@ -322,7 +324,7 @@ header {
     z-index: 1000;
 }
 
-nav {
+header nav {
     position: fixed;
     right: 20px;
     top: 50%;
@@ -331,13 +333,13 @@ nav {
     z-index: 1001;
 }
 
-nav ul {
+header nav ul {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-nav a {
+header nav a {
     position: relative;
 
     display: block;
@@ -355,17 +357,17 @@ nav a {
         transform 0.2s ease;
 }
 
-nav a:hover {
+header nav a:hover {
     background-color: var(--text);
     transform: scale(1.4);
 }
 
 /* Sección actual (aria-current lo pone js/script.js) */
-nav a[aria-current="true"] {
+header nav a[aria-current="true"] {
     background-color: var(--text);
 }
 
-nav a::after {
+header nav a::after {
     content: attr(data-label);
 
     position: absolute;
@@ -392,8 +394,8 @@ nav a::after {
 }
 
 /* El nombre de la sección aparece también al navegar con teclado */
-nav a:hover::after,
-nav a:focus-visible::after {
+header nav a:hover::after,
+header nav a:focus-visible::after {
     opacity: 1;
     transform: translateY(-50%) translateX(0);
 }
@@ -1212,12 +1214,17 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
 
 /* =========================================================
    MODAL DE PROYECTOS (<dialog>)
-   El <dialog> ocupa toda la pantalla y hace de capa de fondo;
-   el cuadro es .project-modal-content. Un clic en la capa
-   (fuera del cuadro) cierra el modal.
+   - ::backdrop: capa que oscurece y desenfoca la página.
+   - <dialog>: transparente, ocupa toda la pantalla; un clic fuera
+     del cuadro cierra el modal.
+   - .project-modal-content: cuadro de vidrio translúcido; deja
+     intuir la web desenfocada detrás.
+   El acento (ámbar o violeta) depende de la sección desde la que se
+   abre: js/script.js pone data-accent en el <dialog>.
    ========================================================= */
 
 .project-modal {
+    --accent: var(--accent-light);
     position: fixed;
     inset: 0;
     width: 100%;
@@ -1227,12 +1234,19 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
     margin: 0;
     border: 0;
     padding: 60px;
-    background: var(--modal-overlay);
-    backdrop-filter: blur(8px);
+    background: transparent;
     color: var(--text);
     justify-content: center;
     align-items: center;
     display: none;
+}
+
+.project-modal[data-accent="logic"] {
+    --accent: var(--accent-logic);
+}
+
+.project-modal[data-accent="create"] {
+    --accent: var(--accent-create);
 }
 
 .project-modal[open] {
@@ -1240,11 +1254,13 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
 }
 
 .project-modal::backdrop {
-    background: transparent;
+    background: var(--modal-overlay);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
 }
 
 
-/* ---------- CUADRO PRINCIPAL ---------- */
+/* ---------- CUADRO PRINCIPAL (vidrio) ---------- */
 
 .project-modal-content {
     position: relative;
@@ -1252,32 +1268,83 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
     max-width: 1200px;
     max-height: 90vh;
     padding: 50px;
-    background: var(--surface);
     border: 1px solid var(--modal-border);
+    border-radius: 24px;
+    background: var(--modal-glass);
+    -webkit-backdrop-filter: blur(22px) saturate(1.2);
+    backdrop-filter: blur(22px) saturate(1.2);
     box-shadow: var(--modal-shadow);
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+
+/* Entrada suave */
+.project-modal[open] .project-modal-content {
+    animation: modal-in 0.35s ease-out;
+}
+
+.project-modal[open]::backdrop {
+    animation: modal-backdrop-in 0.3s ease-out;
+}
+
+@keyframes modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes modal-backdrop-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 
-/* ---------- BOTÓN CERRAR ---------- */
+/* ---------- BOTÓN CERRAR (círculo de vidrio, siempre visible) ---------- */
 
+/* Pegajoso dentro del cuadro: se queda arriba a la derecha aunque
+   se baje por un proyecto largo. Los márgenes negativos lo colocan a
+   18 px de los bordes sin empujar el contenido. "top" se mide desde
+   dentro del relleno del cuadro (50 px): -32 px = 18 px del borde. */
 .project-modal-close {
-    position: absolute;
-    top: 15px;
-    right: 25px;
-    border: none;
-    background: none;
-    padding: 0;
-    margin: 0;
+    position: sticky;
+    top: -32px;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    margin: -32px -32px -12px auto;
+    padding: 0 0 3px;
+    border: 1px solid var(--card-border-hover);
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    -webkit-backdrop-filter: var(--card-blur);
+    backdrop-filter: var(--card-blur);
     font: inherit;
-    font-size: 28px;
+    font-size: 26px;
+    line-height: 1;
     color: var(--text);
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .project-modal-close:hover {
-    color: var(--accent-light);
+    color: var(--accent);
+    border-color: var(--accent);
 }
 
 
@@ -1296,10 +1363,33 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
     flex: 0.5;
 }
 
+/* Hueco para el botón de cerrar en títulos largos */
+.project-modal-header h3 {
+    padding-right: 50px;
+}
+
+/* Enlace bajo el título (p. ej. el Instagram del proyecto) */
+.project-modal-header h3 a {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--font-text);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent);
+    width: fit-content;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.project-modal-header h3 a:hover {
+    border-bottom-color: currentColor;
+}
+
 .project-modal-header img {
     width: 100%;
     margin-top: 25px;
     object-fit: cover;
+    border-radius: 14px;
 }
 
 
@@ -1311,6 +1401,33 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
     flex-direction: column;
     justify-content: center;
     gap: 15px;
+    line-height: 1.6;
+}
+
+.project-modal-body h4,
+.project-modal-gallery h4 {
+    color: var(--accent);
+}
+
+/* Enlaces externos del proyecto ("Ver proyecto en GitHub ↗"):
+   píldora con el color de la sección */
+.project-modal-body > a {
+    align-self: flex-start;
+    margin-top: 8px;
+    padding: 8px 18px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent);
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.project-modal-body > a:hover {
+    background-color: var(--accent);
+    color: var(--bg);
 }
 
 
@@ -1326,7 +1443,11 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
     display: flex;
     gap: 20px;
     margin-top: 25px;
+    padding-bottom: 10px;
     overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
 }
 
 .project-modal-gallery-grid img {
@@ -1334,11 +1455,218 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
     width: 250px;
     height: 170px;
     object-fit: cover;
+    border-radius: 12px;
+    scroll-snap-align: start;
+    transition: transform 0.25s ease;
+}
+
+.project-modal-gallery-grid img:hover {
+    transform: scale(1.02);
 }
 
 .project-modal-header img,
 .project-modal-gallery-grid img {
     border: 1px solid var(--hairline);
+    cursor: pointer;
+}
+
+
+/* ---------- PROYECTO ANTERIOR / SIGUIENTE ---------- */
+
+.project-modal-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid var(--line);
+}
+
+.project-modal-nav button {
+    flex: 0 1 48%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 14px 18px;
+    border: 1px solid var(--card-border-hover);
+    border-radius: 16px;
+    background-color: var(--card-bg);
+    font: inherit;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.project-modal-nav .project-nav-next {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.project-modal-nav button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.project-nav-label {
+    font-family: var(--font-code);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+}
+
+.project-nav-title {
+    font-family: var(--font-title);
+    font-size: 22px;
+    line-height: 1.2;
+}
+
+
+/* =========================================================
+   VISOR DE FOTOS
+   Fondo oscuro en ambos temas (como una sala a oscuras): la foto
+   se ve en grande, con flechas, contador y su texto. El acento
+   sigue a la sección del proyecto.
+   ========================================================= */
+
+.lightbox {
+    --accent: var(--amber-glow);
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: 0;
+    padding: 24px 90px;
+    background: transparent;
+    color: var(--paper);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox[data-accent="logic"],
+.lightbox[data-accent="create"] {
+    --accent: var(--soft-lavender);
+}
+
+.lightbox[open] {
+    display: flex;
+}
+
+.lightbox::backdrop {
+    background: rgba(12, 11, 14, 0.9);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+.lightbox-figure {
+    margin: 0;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.lightbox-img {
+    max-width: min(1200px, 100%);
+    max-height: calc(100vh - 140px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    background: transparent;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox[open] .lightbox-img {
+    animation: modal-in 0.3s ease-out;
+}
+
+.lightbox-caption {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    font-family: var(--font-note);
+    font-size: 20px;
+    color: rgba(245, 241, 232, 0.85);
+    text-align: center;
+}
+
+.lightbox-count {
+    font-family: var(--font-code);
+    font-size: 12px;
+    color: var(--accent);
+}
+
+/* Botones circulares de vidrio oscuro */
+.lightbox-arrow,
+.lightbox-close {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(245, 241, 232, 0.25);
+    border-radius: 50%;
+    background-color: rgba(42, 39, 48, 0.55);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: var(--paper);
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.lightbox-arrow:hover,
+.lightbox-close:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.lightbox-arrow svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.lightbox-prev {
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.lightbox-next {
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.lightbox-close {
+    top: 18px;
+    right: 18px;
+    padding-bottom: 3px;
+    font: inherit;
+    font-size: 28px;
+    line-height: 1;
+}
+
+/* Una sola foto: sin flechas */
+.lightbox.is-single .lightbox-arrow {
+    display: none;
 }
 
 
@@ -1521,15 +1849,15 @@ img {
         margin-left: -10px;
     }
 
-    nav {
+    header nav {
         right: 12px;
     }
 
-    nav ul {
+    header nav ul {
         gap: 12px;
     }
 
-    nav a {
+    header nav a {
         width: 9px;
         height: 9px;
     }
@@ -1781,12 +2109,15 @@ img {
     .project-modal-content {
         max-height: 90vh;
         padding: 35px 25px;
+        border-radius: 18px;
     }
 
     .project-modal-close {
-        top: 10px;
-        right: 15px;
-        font-size: 26px;
+        top: -23px;          /* relleno de 35 px: queda a 12 px del borde */
+        width: 40px;
+        height: 40px;
+        margin: -23px -13px -17px auto;
+        font-size: 24px;
     }
 
     .project-modal-main {
@@ -1813,6 +2144,49 @@ img {
         flex: 0 0 220px;
         width: 220px;
         height: 150px;
+    }
+
+    .project-modal-nav {
+        margin-top: 35px;
+        padding-top: 25px;
+        gap: 10px;
+    }
+
+    .project-modal-nav button {
+        padding: 12px 14px;
+    }
+
+    .project-nav-title {
+        font-size: 18px;
+    }
+
+    /* Visor: flechas abajo, la foto ocupa todo el ancho */
+    .lightbox {
+        padding: 70px 12px 96px;
+    }
+
+    .lightbox-img {
+        max-height: calc(100vh - 230px);
+    }
+
+    .lightbox-prev,
+    .lightbox-next {
+        top: auto;
+        bottom: 24px;
+        transform: none;
+    }
+
+    .lightbox-prev {
+        left: calc(50% - 64px);
+    }
+
+    .lightbox-next {
+        right: calc(50% - 64px);
+    }
+
+    .lightbox-close {
+        top: 14px;
+        right: 14px;
     }
 
     footer {
@@ -2021,12 +2395,13 @@ img {
    EXTREMOS DE LOS CABLES
    - Toma de inicio: donde nacen los dos cables, bajo el logo i²
      (se intuye a través de su círculo de vidrio).
-   - Conector XLR de panel en el punto de encuentro del footer.
-     El footer es oscuro en ambos temas: colores claros fijos.
+   - Foco final: los cables terminan en él; al llegar la señal se
+     enciende e ilumina las palabras del footer. El footer es
+     oscuro en ambos temas: colores claros fijos.
    --------------------------------------------------------- */
 
 .cable-socket,
-.cable-connector {
+.cable-foco {
     pointer-events: none;
 }
 
@@ -2040,97 +2415,118 @@ img {
     fill: var(--tube-wall);
 }
 
-/* Círculo de vidrio, gemelo del logo i² sobre el fondo del footer */
-.connector-glass {
-    fill: rgba(245, 241, 232, 0.07);
-    stroke: rgba(245, 241, 232, 0.28);
+/* Foco PAR: cuerpo oscuro (los cables desaparecen dentro), aletas,
+   aro frontal, eje y lente. Apagado, la lente apenas se ve. */
+.foco-can {
+    fill: #1F1D22;
+    stroke: rgba(245, 241, 232, 0.5);
+    stroke-width: 1.1;
+}
+
+.foco-fins {
+    fill: none;
+    stroke: rgba(245, 241, 232, 0.4);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+}
+
+.foco-shine {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.5);
     stroke-width: 1;
-}
-
-/* Anillo de señal: cada mitad sigue la intensidad de su cable.
-   Se enciende cuando llegan las chispas del cierre y se apaga con
-   el blackout (las variables las escribe js/cables.js) */
-.connector-signal,
-.connector-signal-glow {
-    fill: none;
     stroke-linecap: round;
 }
 
-.connector-signal {
-    stroke-width: 2.2;
+.foco-pivot,
+.foco-rim {
+    fill: #2A2730;
+    stroke: rgba(245, 241, 232, 0.6);
+    stroke-width: 1.1;
 }
 
-.connector-signal-glow {
-    stroke-width: 7;
+.foco-lens {
+    opacity: 0.3;
+    transition: opacity 0.5s ease;
 }
 
-.connector-signal-light {
-    stroke: var(--amber-glow);
+.foco-lens-glow {
+    opacity: 0;
+    transition: opacity 0.6s ease;
 }
 
-/* Sobre el footer oscuro el violeta legible es Soft Lavender */
-.connector-signal-logic {
-    stroke: var(--soft-lavender);
+/* Haz de luz: atraviesa las palabras y se pierde en el aire.
+   El desenfoque difumina sus bordes (solo afecta a esta zona; en
+   navegadores sin filter en SVG se ve con bordes nítidos) */
+.foco-light {
+    opacity: 0;
+    transition: opacity 0.9s ease;
 }
 
-.connector-signal.connector-signal-light {
-    opacity: calc(0.25 + 0.75 * var(--light-level));
+/* Mucho desenfoque en los tres conos: sus bordes interiores se
+   funden entre sí y no se ve ningún corte */
+.foco-beam-wide {
+    filter: blur(20px);
+    opacity: 0.7;
 }
 
-.connector-signal.connector-signal-logic {
-    opacity: calc(0.25 + 0.75 * var(--logic-level));
+.foco-beam-mid {
+    filter: blur(12px);
+    opacity: 0.65;
 }
 
-.connector-signal-glow.connector-signal-light {
-    opacity: calc(0.35 * var(--light-glow));
+.foco-beam-core {
+    filter: blur(7px);
+    opacity: 0.65;
 }
 
-.connector-signal-glow.connector-signal-logic {
-    opacity: calc(0.35 * var(--logic-glow));
+.cable-foco.is-on .foco-lens,
+.cable-foco.is-on .foco-light {
+    opacity: 1;
 }
 
-/* Toma XLR: carcasa metálica, cara oscura, pestaña y 5 pines */
-.connector-shell {
-    fill: rgba(245, 241, 232, 0.08);
-    stroke: rgba(245, 241, 232, 0.55);
-    stroke-width: 1.2;
+.cable-foco.is-on .foco-lens-glow {
+    opacity: 0.8;
 }
 
-.connector-face {
-    fill: rgba(20, 19, 23, 0.7);
-    stroke: rgba(245, 241, 232, 0.22);
-    stroke-width: 0.8;
+/* Encendido: golpe de luz breve en la lente */
+.cable-foco.is-igniting .foco-lens-glow {
+    animation: foco-ignite 0.9s ease-out;
 }
 
-.connector-pin,
-.connector-latch {
-    fill: rgba(245, 241, 232, 0.7);
-}
+@keyframes foco-ignite {
+    0% {
+        opacity: 0;
+    }
 
-/* Brillo del cristal, como el reflejo de los tubos */
-.connector-shine {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.6);
-    stroke-width: 1.2;
-    stroke-linecap: round;
-}
+    25% {
+        opacity: 1;
+    }
 
-/* En móvil el footer es más bajo: la pieza se reduce */
-@media (max-width: 1000px) {
-    .connector-body {
-        transform: scale(0.78);
+    100% {
+        opacity: 0.8;
     }
 }
 
+/* Las palabras del footer, bañadas por la luz del foco */
+footer p {
+    transition:
+        color 0.8s ease,
+        text-shadow 0.8s ease;
+}
+
+footer.foco-on p {
+    color: #FFF4D6;
+    text-shadow:
+        0 0 14px rgba(255, 196, 81, 0.55),
+        0 0 3px rgba(255, 196, 81, 0.45);
+}
+
 /* ---------------------------------------------------------
-   CHISPAS Y DESTELLO FINAL
+   CHISPAS
    Las chispas las mueve js/cables.js sobre el trazado real.
-   El destello nace en el punto de encuentro de los dos cables
-   (footer) y se anima aquí, una sola vez por llegada.
    --------------------------------------------------------- */
 
-.cable-pulse,
-.cable-flash {
+.cable-pulse {
     pointer-events: none;
 }
 
@@ -2241,33 +2637,6 @@ img {
 .cable-pulse-logic .pulse-core { stroke: #DCD6FA; }
 .cable-pulse-logic .pulse-head { stroke: #F8F6FF; }
 
-.cable-flash-body {
-    opacity: 0;
-    transform-box: fill-box;
-    transform-origin: center;
-}
-
-.cable-flash.is-flashing .cable-flash-body {
-    animation: cable-flash 0.9s ease-out forwards;
-}
-
-@keyframes cable-flash {
-    0% {
-        opacity: 0;
-        transform: scale(0.5);
-    }
-
-    20% {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(1.6);
-    }
-}
-
 @media (max-width: 1000px) {
 
     .cable-path {
@@ -2323,9 +2692,16 @@ img {
         scroll-behavior: auto;
     }
 
-    /* Sin destello: el cierre se resuelve con el fundido de las luces */
-    .cable-flash {
-        display: none;
+    /* Foco: se enciende sin golpe de luz ni transición */
+    .cable-foco.is-igniting .foco-lens-glow {
+        animation: none;
+    }
+
+    .foco-lens,
+    .foco-lens-glow,
+    .foco-light,
+    footer p {
+        transition: none;
     }
 
     /* La chispa sigue al scroll, pero sin respiración, centelleo
@@ -2343,6 +2719,17 @@ img {
     .theme-toggle .bulb-glass,
     .theme-toggle .bulb-rays {
         transition: none;
+    }
+
+    /* Modales y visor: aparecen sin animación */
+    .project-modal[open] .project-modal-content,
+    .project-modal[open]::backdrop,
+    .lightbox[open] .lightbox-img {
+        animation: none;
+    }
+
+    .project-modal-gallery-grid img:hover {
+        transform: none;
     }
 
     /* Flechas: solo cambian de color, sin desplazamientos */

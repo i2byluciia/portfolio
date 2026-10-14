@@ -33,7 +33,7 @@
 
     <!-- ?v=… : cambia el valor al publicar para que el navegador no
          mezcle un CSS antiguo en caché con un JS nuevo (o al revés) -->
-    <link rel="stylesheet" href="css/style.css?v=20261014-6">
+    <link rel="stylesheet" href="css/style.css?v=20261014-16">
 </head>
 
 <body>
@@ -190,6 +190,32 @@
                 <stop offset="100%" style="stop-color:var(--royal-violet)" />
             </radialGradient>
 
+            <!-- Foco final: degradado radial que nace en la lente y decae de
+                 forma exponencial con la distancia, con un fundido suave a 0
+                 al final (js/cables.js ajusta el radio al alcance del haz).
+                 Lo comparten los tres conos. -->
+            <radialGradient id="foco-beam" gradientUnits="userSpaceOnUse" cx="22" cy="0" r="500" fx="22" fy="0">
+                <stop offset="0%" stop-color="#FFF6DE" stop-opacity="0.6" />
+                <stop offset="4%" stop-color="#FFE7A3" stop-opacity="0.501" />
+                <stop offset="8%" stop-color="#FFE7A3" stop-opacity="0.419" />
+                <stop offset="14%" style="stop-color:var(--golden-beam);stop-opacity:0.32" />
+                <stop offset="22%" style="stop-color:var(--golden-beam);stop-opacity:0.223" />
+                <stop offset="30%" style="stop-color:var(--golden-beam);stop-opacity:0.156" />
+                <stop offset="40%" style="stop-color:var(--golden-beam);stop-opacity:0.099" />
+                <stop offset="50%" style="stop-color:var(--golden-beam);stop-opacity:0.063" />
+                <stop offset="60%" style="stop-color:var(--golden-beam);stop-opacity:0.04" />
+                <stop offset="70%" style="stop-color:var(--golden-beam);stop-opacity:0.026" />
+                <stop offset="80%" style="stop-color:var(--golden-beam);stop-opacity:0.016" />
+                <stop offset="90%" style="stop-color:var(--golden-beam);stop-opacity:0.005" />
+                <stop offset="100%" style="stop-color:var(--golden-beam);stop-opacity:0.0" />
+            </radialGradient>
+
+            <radialGradient id="foco-lens">
+                <stop offset="0%"   stop-color="#FFFBEF" />
+                <stop offset="55%"  style="stop-color:var(--golden-beam)" />
+                <stop offset="100%" style="stop-color:var(--amber-glow)" />
+            </radialGradient>
+
         </defs>
 
 
@@ -246,34 +272,10 @@
 
         <!-- Extremos de los cables (los coloca js/cables.js):
              - toma de inicio, bajo el logo i² (los cables nacen "enchufados" a él)
-             - conector XLR de panel en el punto de encuentro del footer -->
+             - el final es el foco del footer (más abajo, por encima de las chispas) -->
         <g id="cables-socket" class="cable-socket">
             <circle class="socket-ring" r="5"></circle>
             <circle class="socket-pin" r="1.8"></circle>
-        </g>
-
-        <g id="cables-connector" class="cable-connector">
-            <g class="connector-body">
-                <!-- Círculo de vidrio, gemelo del logo i² -->
-                <circle class="connector-glass" r="30"></circle>
-                <!-- Anillo de señal: mitad LIGHT (ámbar) y mitad LOGIC (violeta);
-                     se encienden con la intensidad de cada cable -->
-                <path class="connector-signal-glow connector-signal-light" d="M-4.17 -23.64 A24 24 0 0 0 -4.17 23.64"></path>
-                <path class="connector-signal-glow connector-signal-logic" d="M4.17 -23.64 A24 24 0 0 1 4.17 23.64"></path>
-                <path class="connector-signal connector-signal-light" d="M-4.17 -23.64 A24 24 0 0 0 -4.17 23.64"></path>
-                <path class="connector-signal connector-signal-logic" d="M4.17 -23.64 A24 24 0 0 1 4.17 23.64"></path>
-                <!-- Toma XLR de 5 pines: carcasa, cara, pestaña y pines -->
-                <circle class="connector-shell" r="17"></circle>
-                <circle class="connector-face" r="13"></circle>
-                <rect class="connector-latch" x="-2.2" y="-16" width="4.4" height="3.6" rx="0.9"></rect>
-                <circle class="connector-pin" cx="4.23" cy="-5.82" r="1.6"></circle>
-                <circle class="connector-pin" cx="6.85" cy="2.22" r="1.6"></circle>
-                <circle class="connector-pin" cx="0.00" cy="7.20" r="1.6"></circle>
-                <circle class="connector-pin" cx="-6.85" cy="2.22" r="1.6"></circle>
-                <circle class="connector-pin" cx="-4.23" cy="-5.82" r="1.6"></circle>
-                <!-- Brillo del cristal -->
-                <path class="connector-shine" d="M-25.84 -9.41 A27.5 27.5 0 0 1 -9.41 -25.84"></path>
-            </g>
         </g>
 
         <!-- Chispas: cabeza luminosa de cada pulso de señal. js/cables.js
@@ -294,13 +296,29 @@
             <path class="spark-star" d="M0.0 -11.0 Q0.5 -1.2 3.3 -3.3 Q1.2 -0.5 11.0 -0.0 Q1.2 0.5 3.3 3.3 Q0.5 1.2 0.0 11.0 Q-0.5 1.2 -3.3 3.3 Q-1.2 0.5 -11.0 0.0 Q-1.2 -0.5 -3.3 -3.3 Q-0.5 -1.2 0.0 -11.0 Z" fill="url(#spark-star-logic)"></path>
         </g>
 
-        <!-- Destello final: nace en el punto de encuentro de los dos
-             cables (lo coloca js/cables.js) y se anima por CSS -->
-        <g id="cables-flash" class="cable-flash">
-            <g class="cable-flash-body" opacity="0">
-                <circle r="30" cx="-5" fill="url(#spark-halo-light)"></circle>
-                <circle r="30" cx="5"  fill="url(#spark-halo-logic)"></circle>
-                <circle r="4" fill="url(#spark-core-light)"></circle>
+        <!-- Foco final: los cables terminan en él. Cuando llega la señal
+             se enciende y su haz ilumina las palabras del footer.
+             js/cables.js lo coloca, lo orienta hacia el texto y ajusta
+             la longitud del haz; el encendido es una clase CSS. -->
+        <g id="cables-foco" class="cable-foco">
+            <g class="foco-aim">
+                <!-- Haz: tres conos anidados (ancho, medio y núcleo); cuanto
+                     más ancho, más difuminado, así la luz es más intensa en
+                     el centro y se apaga hacia los bordes sin escalones -->
+                <g class="foco-light">
+                    <path class="foco-beam foco-beam-wide" fill="url(#foco-beam)"></path>
+                    <path class="foco-beam foco-beam-mid" fill="url(#foco-beam)"></path>
+                    <path class="foco-beam foco-beam-core" fill="url(#foco-beam)"></path>
+                </g>
+                <g class="foco-body">
+                    <rect class="foco-can" x="-16" y="-11" width="32" height="22" rx="5"></rect>
+                    <path class="foco-fins" d="M-10 -11v-3.5M-5 -11v-3.5M0 -11v-3.5M-10 11v3.5M-5 11v3.5M0 11v3.5"></path>
+                    <path class="foco-shine" d="M-12 -7.5h15"></path>
+                    <circle class="foco-pivot" r="3.2"></circle>
+                    <rect class="foco-rim" x="15" y="-14" width="6" height="28" rx="2"></rect>
+                    <circle class="foco-lens-glow" cx="22" r="16" fill="url(#spark-halo-light)"></circle>
+                    <ellipse class="foco-lens" cx="22" rx="2.6" ry="11" fill="url(#foco-lens)"></ellipse>
+                </g>
             </g>
         </g>
 
@@ -2526,6 +2544,45 @@
 
 
         <!-- =====================================================
+             VISOR DE FOTOS (galerías de los proyectos)
+             Lo abre js/script.js al pulsar una foto de un proyecto.
+        ====================================================== -->
+        <dialog class="lightbox" id="lightbox" aria-label="Foto ampliada">
+
+            <button type="button"
+                    class="lightbox-close"
+                    aria-label="Cerrar foto">
+                ×
+            </button>
+
+            <button type="button"
+                    class="lightbox-arrow lightbox-prev"
+                    aria-label="Foto anterior">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M19 12H5M11 6l-6 6 6 6"></path>
+                </svg>
+            </button>
+
+            <figure class="lightbox-figure">
+                <img class="lightbox-img" alt="">
+                <figcaption class="lightbox-caption">
+                    <span class="lightbox-text"></span>
+                    <span class="lightbox-count"></span>
+                </figcaption>
+            </figure>
+
+            <button type="button"
+                    class="lightbox-arrow lightbox-next"
+                    aria-label="Foto siguiente">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M5 12h14M13 6l6 6-6 6"></path>
+                </svg>
+            </button>
+
+        </dialog>
+
+
+        <!-- =====================================================
              FOOTER
         ====================================================== -->
         <footer>
@@ -2544,7 +2601,7 @@
     <!-- =========================================================
          SCRIPTS
     ========================================================== -->
-    <script src="js/script.js?v=20261014-6"></script>
-    <script src="js/cables.js?v=20261014-6"></script>
+    <script src="js/script.js?v=20261014-16"></script>
+    <script src="js/cables.js?v=20261014-16"></script>
 </body>
 </html>

@@ -10,8 +10,9 @@
 //   3) Chispas: una por cable, siempre presente, que acompaña al
 //      scroll recorriendo el trazado real.
 //   4) Cue final: al llegar al footer, las dos chispas viajan
-//      hasta el punto de encuentro de los cables, destello y
-//      blackout.
+//      hasta el foco donde terminan los cables; el foco se
+//      enciende e ilumina las palabras del footer y los cables
+//      hacen blackout.
 //
 // Variables CSS escritas sobre #cables-svg (ver style.css):
 //   --light-level / --logic-level   0..1  luminosidad del núcleo
@@ -199,8 +200,10 @@
         const startY = py(r.home, 0.06);
 
         // Punto final: dentro del footer, bien visible.
-        const endX = px(r.footer, 0.88);
-        const endY = r.footer.top + r.footer.height * 0.65;
+        // El final es el foco: por encima del footer, a la derecha,
+        // inclinado hacia abajo sobre las palabras
+        const endX = px(r.footer, 0.8);
+        const endY = r.footer.top - 90;
 
 
         // ─────────────────────────────────────────────────
@@ -273,8 +276,9 @@
         light.push(pt(px(r.contact, 0.65), py(r.contact, 0.45)));
         light.push(pt(px(r.contact, 0.10), py(r.contact, 0.90)));
 
-        // FOOTER
-        light.push(pt(px(r.footer, 0.35), py(r.footer, 0.35)));
+        // FOOTER: el cable no baja hasta las palabras; pasa por
+        // encima del footer antes de subir al foco
+        light.push(pt(px(r.footer, 0.35), r.footer.top - 50));
         light.push(pt(endX, endY));
 
 
@@ -356,7 +360,9 @@
         const start  = lr && lr.width
             ? pt(lr.left + lr.width * 0.7, lr.top + lr.height * 0.75)
             : pt(px(r.home, 0.08), py(r.home, 0.08));
-        const end   = pt(px(r.footer, 0.82), py(r.footer, 0.78));
+        // Final (el foco): por encima del footer, a la derecha,
+        // inclinado hacia abajo sobre las palabras
+        const end   = pt(px(r.footer, 0.86), r.footer.top - 70);
 
         const secs  = [r.home, r.about, r.light, r.logic, r.create, r.contact];
         const light = [start];
@@ -391,9 +397,83 @@
     const BEZIER_SUBDIVISIONS = 48;   // tramos rectos por curva antes de remuestrear
     const tracks = { light: null, logic: null };
     const mainEl = document.querySelector("main");
-    const flash  = byId("cables-flash");
-    const socket    = byId("cables-socket");      // toma de inicio
-    const connector = byId("cables-connector");   // conector XLR del footer
+    const socket = byId("cables-socket");   // toma de inicio, bajo el logo
+    const foco   = byId("cables-foco");     // foco final del footer
+    const focoAim  = foco && foco.querySelector(".foco-aim");
+    const focoBeams = foco ? {
+        wide: foco.querySelector(".foco-beam-wide"),
+        mid : foco.querySelector(".foco-beam-mid"),
+        core: foco.querySelector(".foco-beam-core")
+    } : {};
+    const beamGradient = byId("foco-beam");
+
+    // Orienta el foco hacia las palabras del footer y ajusta su haz:
+    // las cubre y sigue más allá hasta desvanecerse (la luz se pierde
+    // en el aire, no choca contra nada). En coordenadas del foco
+    // apunta hacia +x y la lente está en x = 22.
+    function aimFoco(end) {
+        if (!focoAim) return;
+        const text = document.querySelector("footer p");
+        let target = null;
+        let textWidth = 200;
+        if (text) {
+            const range = document.createRange();
+            range.selectNodeContents(text);
+            const tr = range.getBoundingClientRect();
+            if (tr.width) {
+                target = {
+                    x: tr.left + tr.width / 2 + window.scrollX,
+                    y: tr.top + tr.height / 2 + window.scrollY
+                };
+                textWidth = tr.width;
+            }
+        }
+
+        const place = `translate(${end.x.toFixed(1)} ${end.y.toFixed(1)})`;
+        if (!target) {
+            focoAim.setAttribute("transform", place);
+            return;
+        }
+
+        const dx = target.x - end.x;
+        const dy = target.y - end.y;
+        const length = Math.max(Math.hypot(dx, dy), 60);
+        const angle  = Math.atan2(dy, dx) * 180 / Math.PI;
+        // Si apunta hacia la izquierda se voltea para no quedar boca abajo
+        const flip = Math.abs(angle) > 90 ? -1 : 1;
+        focoAim.setAttribute("transform", `${place} rotate(${angle.toFixed(1)}) scale(1 ${flip})`);
+
+        // Apertura a la altura de las palabras y alcance total del haz
+        const spread = clamp(Math.min(textWidth * 0.38, length * 0.45), 24, 140);
+        const reach  = length * 2;     // más allá de las palabras, para desvanecerse
+        const far    = spread * 1.9;
+        const cone = (start, end, width) =>
+            `M23 -${start} L${end.toFixed(1)} -${width.toFixed(1)} L${end.toFixed(1)} ${width.toFixed(1)} L23 ${start} Z`;
+        // Conos anidados: todos llegan hasta el final del haz (donde el
+        // degradado ya vale cero, así ningún borde final se ve) y solo
+        // cambian de anchura: [apertura inicial, anchura final]
+        const set = (el, start, widthShare) => {
+            if (el) el.setAttribute("d", cone(start, reach, far * widthShare));
+        };
+        set(focoBeams.wide, 9, 1);
+        set(focoBeams.mid,  6, 0.55);
+        set(focoBeams.core, 3, 0.25);
+        // El degradado radial nace en la lente y se apaga al final del haz
+        if (beamGradient) beamGradient.setAttribute("r", reach.toFixed(1));
+    }
+
+    // Enciende o apaga el foco y la luz sobre las palabras del footer
+    function setFoco(on, ignite) {
+        if (!foco) return;
+        foco.classList.toggle("is-on", on);
+        const footer = document.querySelector("footer");
+        if (footer) footer.classList.toggle("foco-on", on);
+        foco.classList.remove("is-igniting");
+        if (on && ignite) {
+            void foco.getBoundingClientRect();   // reinicia la animación CSS
+            foco.classList.add("is-igniting");
+        }
+    }
 
     // Polilínea fina [x0, y0, x1, y1, …] a partir de "M x y C … C …".
     // Devuelve null si el trazado no tiene ese formato.
@@ -503,8 +583,7 @@
         // mismo punto del footer; ahí nace el destello final.
         const end = routes.light[routes.light.length - 1];
         const at  = p => `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`;
-        if (flash)     flash.setAttribute("transform", at(end));
-        if (connector) connector.setAttribute("transform", at(end));
+        aimFoco(end);
 
         // Toma de inicio: los dos cables nacen en el mismo punto,
         // bajo el logo i² (en escritorio, dentro de su círculo)
@@ -675,7 +754,7 @@
         });
 
         group.appendChild(head);
-        svg.insertBefore(group, flash);
+        svg.insertBefore(group, foco);
 
         sparks[name] = {
             name, index, group, head, trail,
@@ -702,7 +781,7 @@
     const SPARKLE_REST   = [0.35, 0.8];   // s entre chispitas en reposo
     const SPARKLE_FALL   = 40;            // px/s²: caída leve
 
-    const firstPulse = sparks.light ? sparks.light.group : flash;
+    const firstPulse = sparks.light ? sparks.light.group : foco;
     const sparkleLayer = document.createElementNS(SVG_NS, "g");
     sparkleLayer.setAttribute("class", "cable-sparkles");
     svg.insertBefore(sparkleLayer, firstPulse);   // por detrás de las cabezas
@@ -913,11 +992,13 @@
     }
 
 
-    // ── Cue final: encuentro, destello y blackout ─────────
+    // ── Cue final: la señal llega al foco ─────────────────
     // Fases: idle → travel (las dos chispas viajan a velocidad
-    // constante hasta el punto de encuentro y llegan a la vez) →
-    // dark (destello + apagado). Al salir del footer se vuelve a idle,
-    // se recupera el estado de Contact y las chispas regresan.
+    // constante hasta el foco y llegan a la vez) → dark (el foco se
+    // enciende e ilumina las palabras del footer; los cables hacen
+    // blackout). El foco sigue encendido mientras se ve el footer.
+    // Al salir se apaga, vuelve a idle, se recupera el estado de
+    // Contact y las chispas regresan.
 
     const CUE_TRAVEL = 0.9;   // s que tarda la última señal en llegar
 
@@ -943,23 +1024,20 @@
         wake();
     }
 
-    function goDark(withFlash) {
+    function goDark(ignite) {
         cue.phase = "dark";
         target[0] = target[1] = 0;
         blackoutTarget = 1;
         tau = TAU_OFF;
-        if (withFlash && flash) {
-            flash.classList.remove("is-flashing");
-            void flash.getBoundingClientRect();   // reinicia la animación CSS
-            flash.classList.add("is-flashing");
-        }
+        // La señal ha llegado: el foco se enciende e ilumina el footer
+        setFoco(true, ignite);
         wake();
     }
 
     function endCue() {
         if (cue.phase === "idle") return;
         cue.phase = "idle";
-        if (flash) flash.classList.remove("is-flashing");
+        setFoco(false);
         applySection(false);
     }
 

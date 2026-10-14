@@ -135,38 +135,70 @@
 // MODALES DE PROYECTOS (<dialog> nativo)
 // ---------------------------------------------------------
 // showModal() ya resuelve: foco dentro del modal, Escape para
-// cerrar y bloqueo del contenido de detrás. Aquí solo se abre
-// desde "Ver proyecto", se cierra con × o clic fuera, y se
-// devuelve el foco al botón que lo abrió.
+// cerrar y bloqueo del contenido de detrás. Aquí:
+//   - se abre desde "Ver proyecto" con el color de su sección;
+//   - se cierra con ×, clic fuera o Escape, y el foco vuelve al
+//     botón que lo abrió;
+//   - "Proyecto anterior / siguiente" recorre los proyectos de la
+//     misma sección sin cerrar (de forma circular);
+//   - las fotos se abren en grande en el visor (más abajo).
 // =========================================================
 
 (() => {
 
+    const BUTTONS = ".light-ver-proyecto, .logic-ver-proyecto, .create-ver-proyecto";
+
     let opener = null;
 
-    document.querySelectorAll(
-        ".light-ver-proyecto, .logic-ver-proyecto, .create-ver-proyecto"
-    ).forEach(button => {
+    // Proyectos de cada sección, en el orden de sus tarjetas
+    const sections = {};
+    document.querySelectorAll(BUTTONS).forEach(button => {
+        const section = button.className.split("-")[0];   // light | logic | create
+        const modal = document.getElementById(`modal-${button.dataset.project}`);
+        if (!modal) return;
+        (sections[section] = sections[section] || []).push(modal);
+    });
 
+    // Título del proyecto (sin el enlace que va dentro del <h3>)
+    function projectTitle(modal) {
+        const h3 = modal.querySelector("h3");
+        if (!h3) return "";
+        const text = [...h3.childNodes]
+            .filter(node => node.nodeType === Node.TEXT_NODE)
+            .map(node => node.textContent)
+            .join(" ")
+            .trim();
+        return text || h3.textContent.trim();
+    }
+
+    function openModal(modal, section) {
+        if (!modal || typeof modal.showModal !== "function") return;
+        modal.dataset.accent = section;      // el modal toma el color de su sección
+        modal.dataset.section = section;
+        modal.showModal();
+        const content = modal.querySelector(".project-modal-content");
+        if (content) content.scrollTop = 0;
+        updateNav(modal);
+
+        // Bloquear scroll de la página
+        document.body.style.overflow = "hidden";
+    }
+
+    document.querySelectorAll(BUTTONS).forEach(button => {
         button.addEventListener("click", () => {
-            const project = button.dataset.project;
-            const modal = project && document.getElementById(`modal-${project}`);
-
-            if (!modal || typeof modal.showModal !== "function") return;
-
+            const modal = document.getElementById(`modal-${button.dataset.project}`);
+            if (!modal) return;
             opener = button;
-            modal.showModal();
-
-            // Bloquear scroll de la página
-            document.body.style.overflow = "hidden";
+            openModal(modal, button.className.split("-")[0]);
         });
-
     });
 
     // Recupera el scroll y devuelve el foco. Se llama desde cada vía
-    // de cierre y otra vez desde el evento "close" como respaldo:
-    // es seguro llamarla dos veces.
+    // de cierre y otra vez desde el evento "close" como respaldo: es
+    // seguro llamarla dos veces. Si sigue abierto otro modal (al pasar
+    // de un proyecto al siguiente) no hace nada.
     function release() {
+        if (document.querySelector(".project-modal[open]")) return;
         document.body.style.overflow = "";
         if (opener) {
             opener.focus();
@@ -179,7 +211,60 @@
         release();
     }
 
+    // ── Proyecto anterior / siguiente ─────────────────────
+
+    function neighbour(modal, step) {
+        const list = sections[modal.dataset.section] || [];
+        const index = list.indexOf(modal);
+        if (index < 0 || list.length < 2) return null;
+        return list[(index + step + list.length) % list.length];
+    }
+
+    function updateNav(modal) {
+        const nav = modal.querySelector(".project-modal-nav");
+        if (!nav) return;
+        const prev = neighbour(modal, -1);
+        const next = neighbour(modal, 1);
+        nav.hidden = !prev;
+        if (!prev) return;
+        nav.querySelector(".project-nav-prev .project-nav-title").textContent = projectTitle(prev);
+        nav.querySelector(".project-nav-next .project-nav-title").textContent = projectTitle(next);
+    }
+
+    function go(modal, step) {
+        const target = neighbour(modal, step);
+        if (!target) return;
+        const section = modal.dataset.section;
+        modal.close();                       // release() no actúa: se abre el siguiente
+        openModal(target, section);
+        const sameButton = target.querySelector(step > 0 ? ".project-nav-next" : ".project-nav-prev");
+        if (sameButton) sameButton.focus();  // seguir navegando con el teclado
+    }
+
+    // Cada modal recibe su navegación al final del cuadro
+    function buildNav(modal) {
+        const content = modal.querySelector(".project-modal-content");
+        if (!content) return;
+        const nav = document.createElement("nav");
+        nav.className = "project-modal-nav";
+        nav.setAttribute("aria-label", "Otros proyectos");
+        nav.innerHTML = `
+            <button type="button" class="project-nav-prev">
+                <span class="project-nav-label">← Anterior</span>
+                <span class="project-nav-title"></span>
+            </button>
+            <button type="button" class="project-nav-next">
+                <span class="project-nav-label">Siguiente →</span>
+                <span class="project-nav-title"></span>
+            </button>`;
+        nav.querySelector(".project-nav-prev").addEventListener("click", () => go(modal, -1));
+        nav.querySelector(".project-nav-next").addEventListener("click", () => go(modal, 1));
+        content.appendChild(nav);
+    }
+
     document.querySelectorAll(".project-modal").forEach(modal => {
+
+        buildNav(modal);
 
         const close = modal.querySelector(".project-modal-close");
         if (close) close.addEventListener("click", () => closeModal(modal));
@@ -194,6 +279,98 @@
         modal.addEventListener("close", release);
 
     });
+
+
+    // ── Visor de fotos ────────────────────────────────────
+    // Las fotos de cada proyecto (principal y galería) se abren en
+    // grande sobre el modal. Flechas, teclado (← → Escape) y
+    // deslizamiento con el dedo. Las fotos son enfocables.
+
+    const viewer = document.getElementById("lightbox");
+    if (!viewer || typeof viewer.showModal !== "function") return;
+
+    const viewerImg     = viewer.querySelector(".lightbox-img");
+    const viewerText    = viewer.querySelector(".lightbox-text");
+    const viewerCount   = viewer.querySelector(".lightbox-count");
+    let photos = [];
+    let current = 0;
+    let photoOpener = null;
+
+    function show(index) {
+        current = (index + photos.length) % photos.length;
+        const photo = photos[current];
+        viewerImg.src = photo.currentSrc || photo.src;
+        viewerImg.alt = photo.alt;
+        viewerText.textContent = photo.alt;
+        viewerCount.textContent = photos.length > 1 ? `${current + 1} / ${photos.length}` : "";
+        viewer.classList.toggle("is-single", photos.length < 2);
+    }
+
+    function openViewer(modal, photo) {
+        photos = [...modal.querySelectorAll(".project-modal-header img, .project-modal-gallery-grid img")];
+        photoOpener = photo;
+        viewer.dataset.accent = modal.dataset.accent || "light";
+        show(photos.indexOf(photo));
+        viewer.showModal();
+    }
+
+    function closeViewer() {
+        if (viewer.open) viewer.close();
+        if (photoOpener) {
+            photoOpener.focus();
+            photoOpener = null;
+        }
+    }
+
+    document.querySelectorAll(".project-modal").forEach(modal => {
+        modal.querySelectorAll(".project-modal-header img, .project-modal-gallery-grid img").forEach(photo => {
+            photo.tabIndex = 0;
+            photo.setAttribute("role", "button");
+            photo.setAttribute("aria-label", `Ver en grande: ${photo.alt}`);
+            photo.addEventListener("click", () => openViewer(modal, photo));
+            photo.addEventListener("keydown", event => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    openViewer(modal, photo);
+                }
+            });
+        });
+    });
+
+    viewer.querySelector(".lightbox-prev").addEventListener("click", () => show(current - 1));
+    viewer.querySelector(".lightbox-next").addEventListener("click", () => show(current + 1));
+    viewer.querySelector(".lightbox-close").addEventListener("click", closeViewer);
+
+    // Clic en el fondo (fuera de la foto y de los botones)
+    viewer.addEventListener("click", event => {
+        if (event.target === viewer || event.target.classList.contains("lightbox-figure")) closeViewer();
+    });
+
+    viewer.addEventListener("keydown", event => {
+        if (event.key === "ArrowLeft")  { event.preventDefault(); show(current - 1); }
+        if (event.key === "ArrowRight") { event.preventDefault(); show(current + 1); }
+    });
+
+    // Escape cierra solo el visor (el modal del proyecto sigue abierto)
+    viewer.addEventListener("cancel", () => {
+        if (photoOpener) {
+            setTimeout(() => {
+                if (photoOpener) { photoOpener.focus(); photoOpener = null; }
+            }, 0);
+        }
+    });
+
+    // Deslizar con el dedo
+    let touchX = null;
+    viewer.addEventListener("touchstart", event => {
+        touchX = event.touches[0].clientX;
+    }, { passive: true });
+    viewer.addEventListener("touchend", event => {
+        if (touchX === null) return;
+        const dx = event.changedTouches[0].clientX - touchX;
+        touchX = null;
+        if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+    }, { passive: true });
 
 })();
 
@@ -216,7 +393,7 @@
         .filter(Boolean);
 
     const navLinks = new Map(
-        [...document.querySelectorAll('nav a[href^="#"]')]
+        [...document.querySelectorAll('header nav a[href^="#"]')]
             .map(link => [link.getAttribute("href").slice(1), link])
     );
 
