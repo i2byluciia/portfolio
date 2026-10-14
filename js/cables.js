@@ -347,7 +347,15 @@
     // ── Móvil ≤ 1000 px ───────────────────────────────────
 
     function buildMobile(r) {
-        const start = pt(px(r.home, 0.08), py(r.home, 0.08));
+        // Inicio: dentro del círculo del logo i² (abajo a la derecha),
+        // para que los cables nazcan "enchufados" a él como en
+        // escritorio. El logo es fijo: se usa su posición en pantalla
+        // sin sumar el scroll (con scroll 0 coincide con el documento).
+        const logoEl = document.querySelector(".logo");
+        const lr     = logoEl ? logoEl.getBoundingClientRect() : null;
+        const start  = lr && lr.width
+            ? pt(lr.left + lr.width * 0.7, lr.top + lr.height * 0.75)
+            : pt(px(r.home, 0.08), py(r.home, 0.08));
         const end   = pt(px(r.footer, 0.82), py(r.footer, 0.78));
 
         const secs  = [r.home, r.about, r.light, r.logic, r.create, r.contact];
@@ -384,6 +392,8 @@
     const tracks = { light: null, logic: null };
     const mainEl = document.querySelector("main");
     const flash  = byId("cables-flash");
+    const socket    = byId("cables-socket");      // toma de inicio
+    const connector = byId("cables-connector");   // conector XLR del footer
 
     // Polilínea fina [x0, y0, x1, y1, …] a partir de "M x y C … C …".
     // Devuelve null si el trazado no tiene ese formato.
@@ -492,7 +502,13 @@
         // Punto de encuentro: los dos recorridos terminan en el
         // mismo punto del footer; ahí nace el destello final.
         const end = routes.light[routes.light.length - 1];
-        if (flash) flash.setAttribute("transform", `translate(${end.x.toFixed(1)} ${end.y.toFixed(1)})`);
+        const at  = p => `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`;
+        if (flash)     flash.setAttribute("transform", at(end));
+        if (connector) connector.setAttribute("transform", at(end));
+
+        // Toma de inicio: los dos cables nacen en el mismo punto,
+        // bajo el logo i² (en escritorio, dentro de su círculo)
+        if (socket) socket.setAttribute("transform", at(routes.light[0]));
 
         // Las chispas se recolocan sobre el trazado nuevo
         resetSparks();

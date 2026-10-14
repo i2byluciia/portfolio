@@ -33,7 +33,7 @@
 
     <!-- ?v=… : cambia el valor al publicar para que el navegador no
          mezcle un CSS antiguo en caché con un JS nuevo (o al revés) -->
-    <link rel="stylesheet" href="css/style.css?v=20261014-3">
+    <link rel="stylesheet" href="css/style.css?v=20261014-6">
 </head>
 
 <body>
@@ -243,6 +243,38 @@
               id="logic-hot"
               class="cable-hot cable-hot-logic"></path>
 
+
+        <!-- Extremos de los cables (los coloca js/cables.js):
+             - toma de inicio, bajo el logo i² (los cables nacen "enchufados" a él)
+             - conector XLR de panel en el punto de encuentro del footer -->
+        <g id="cables-socket" class="cable-socket">
+            <circle class="socket-ring" r="5"></circle>
+            <circle class="socket-pin" r="1.8"></circle>
+        </g>
+
+        <g id="cables-connector" class="cable-connector">
+            <g class="connector-body">
+                <!-- Círculo de vidrio, gemelo del logo i² -->
+                <circle class="connector-glass" r="30"></circle>
+                <!-- Anillo de señal: mitad LIGHT (ámbar) y mitad LOGIC (violeta);
+                     se encienden con la intensidad de cada cable -->
+                <path class="connector-signal-glow connector-signal-light" d="M-4.17 -23.64 A24 24 0 0 0 -4.17 23.64"></path>
+                <path class="connector-signal-glow connector-signal-logic" d="M4.17 -23.64 A24 24 0 0 1 4.17 23.64"></path>
+                <path class="connector-signal connector-signal-light" d="M-4.17 -23.64 A24 24 0 0 0 -4.17 23.64"></path>
+                <path class="connector-signal connector-signal-logic" d="M4.17 -23.64 A24 24 0 0 1 4.17 23.64"></path>
+                <!-- Toma XLR de 5 pines: carcasa, cara, pestaña y pines -->
+                <circle class="connector-shell" r="17"></circle>
+                <circle class="connector-face" r="13"></circle>
+                <rect class="connector-latch" x="-2.2" y="-16" width="4.4" height="3.6" rx="0.9"></rect>
+                <circle class="connector-pin" cx="4.23" cy="-5.82" r="1.6"></circle>
+                <circle class="connector-pin" cx="6.85" cy="2.22" r="1.6"></circle>
+                <circle class="connector-pin" cx="0.00" cy="7.20" r="1.6"></circle>
+                <circle class="connector-pin" cx="-6.85" cy="2.22" r="1.6"></circle>
+                <circle class="connector-pin" cx="-4.23" cy="-5.82" r="1.6"></circle>
+                <!-- Brillo del cristal -->
+                <path class="connector-shine" d="M-25.84 -9.41 A27.5 27.5 0 0 1 -9.41 -25.84"></path>
+            </g>
+        </g>
 
         <!-- Chispas: cabeza luminosa de cada pulso de señal. js/cables.js
              las clona, les añade la estela y las mueve sobre el trazado real -->
@@ -2512,7 +2544,7 @@
     <!-- =========================================================
          SCRIPTS
     ========================================================== -->
-    <script src="js/script.js?v=20261014-3"></script>
-    <script src="js/cables.js?v=20261014-3"></script>
+    <script src="js/script.js?v=20261014-6"></script>
+    <script src="js/cables.js?v=20261014-6"></script>
 </body>
 </html>
