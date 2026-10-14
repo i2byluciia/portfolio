@@ -80,6 +80,34 @@
 
 
 // =========================================================
+// FOTOS PENDIENTES: logo i² provisional
+// ---------------------------------------------------------
+// Si una foto aún no existe, en su lugar se ve el logo i² sobre el
+// fondo de la tarjeta (en vez del icono de imagen rota). Cuando se
+// suba la foto real aparecerá sola, sin tocar el código.
+// =========================================================
+
+(() => {
+
+    const PLACEHOLDER = "assets/img/placeholder-i2.svg";
+
+    function usePlaceholder(img) {
+        if (img.classList.contains("is-placeholder")) return;
+        img.classList.add("is-placeholder");
+        img.removeAttribute("data-full");
+        img.src = PLACEHOLDER;
+    }
+
+    // Todas las fotos se cargan en diferido: aún no se han pedido
+    // cuando se ejecuta este script, así que basta con el evento error
+    document.querySelectorAll("main img").forEach(img => {
+        img.addEventListener("error", () => usePlaceholder(img));
+    });
+
+})();
+
+
+// =========================================================
 // CARRUSELES
 // =========================================================
 
@@ -309,7 +337,10 @@
     }
 
     function openViewer(modal, photo) {
-        photos = [...modal.querySelectorAll(".project-modal-header img, .project-modal-gallery-grid img")];
+        // Las fotos pendientes (logo provisional) no se amplían
+        if (photo.classList.contains("is-placeholder")) return;
+        photos = [...modal.querySelectorAll(".project-modal-header img, .project-modal-gallery-grid img")]
+            .filter(img => !img.classList.contains("is-placeholder"));
         photoOpener = photo;
         viewer.dataset.accent = modal.dataset.accent || "light";
         show(photos.indexOf(photo));

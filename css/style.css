@@ -2807,3 +2807,19 @@ footer.foco-on p {
         transform: none;
     }
 }
+
+
+/* =========================================================
+   FOTOS PENDIENTES
+   Logo i² provisional (js/script.js) sobre el fondo de la tarjeta
+   mientras la foto real no existe.
+   ========================================================= */
+
+img.is-placeholder {
+    object-fit: contain;
+    cursor: default;
+}
+
+.project-modal-gallery-grid img.is-placeholder:hover {
+    transform: none;
+}
