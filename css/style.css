@@ -658,18 +658,33 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
 
 /* ---------- Flujo (Preparar → Actuar / Pensar → Resolver) ---------- */
 
+/* Panel de lectura, como el resto de textos: centrado y ajustado a
+   las palabras, para que los cables pasen por detrás sin chocar */
 .light-process,
 .logic-process {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
+    width: fit-content;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 40px;
 
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    gap: 6px 40px;
 
     font-family: var(--font-note);
     font-size: 40px;
     color: var(--accent-display);
+    text-align: center;
+
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    background-color: var(--text-panel-bg);
+    -webkit-backdrop-filter: var(--text-panel-blur);
+    backdrop-filter: var(--text-panel-blur);
+    box-shadow: var(--card-shadow);
 }
 
 .light-process span,
@@ -680,7 +695,7 @@ html[data-theme="dark"] .theme-toggle .bulb-rays {
 .light-process span:not(:last-child)::after,
 .logic-process span:not(:last-child)::after {
     content: "→";
-    margin-left: 100px;
+    margin-left: 40px;
 }
 
 
@@ -1770,6 +1785,49 @@ img {
 
 
 /* =========================================================
+   RESPONSIVE: PORTÁTILES PEQUEÑOS (≤ 1280 px)
+   Con 200 px de margen lateral y la foto de 400 px, el texto
+   quedaba en una columna de ~160 px a 1024 px de ancho.
+   ========================================================= */
+
+@media (max-width: 1280px) {
+
+    #home,
+    #about,
+    #light,
+    #logic,
+    #create {
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+
+    .about-content,
+    .light-intro,
+    .logic-content {
+        gap: 50px;
+    }
+
+    .about-img img,
+    .light-img img,
+    .logic-img img {
+        width: 340px;
+    }
+
+    /* El flujo cabe en una línea dentro de su panel */
+    .light-process,
+    .logic-process {
+        font-size: 34px;
+        gap: 6px 28px;
+    }
+
+    .light-process span:not(:last-child)::after,
+    .logic-process span:not(:last-child)::after {
+        margin-left: 28px;
+    }
+}
+
+
+/* =========================================================
    RESPONSIVE: TABLET Y PANTALLAS MEDIANAS (≤ 1000 px)
    Texto y foto se apilan: en fila, la foto fija dejaba columnas
    de texto de menos de 200 px en tablet.
@@ -1813,15 +1871,12 @@ img {
         width: 100%;
     }
 
-    /* El flujo deja de caber en una línea: se reparte en varias */
+    /* El flujo deja de caber en una línea: se reparte en varias
+       dentro de su panel */
     .light-process,
     .logic-process {
-        width: 100%;
-        margin-left: 0;
-        flex-wrap: wrap;
-        justify-content: center;
         gap: 10px 25px;
-        text-align: center;
+        padding: 12px 28px;
     }
 
     .light-process span:not(:last-child)::after,
