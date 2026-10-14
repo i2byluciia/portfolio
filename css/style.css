@@ -80,9 +80,13 @@
     --accent-create: var(--royal-violet);
     --focus-ring: var(--amber-text);
 
-    /* Cuerpo y cristal de los cables (la luz no cambia de tema) */
-    --cable-body: rgba(65, 65, 65, 0.18);
-    --cable-glass: rgba(255, 255, 255, 0.65);
+    /* Tubo de cristal de los cables (la luz no cambia de tema):
+       pared exterior nítida e interior de vidrio claro */
+    --tube-wall: rgba(52, 52, 52, 0.32);
+    --tube-glass: rgba(255, 255, 255, 0.45);
+    --tube-shade: rgba(52, 52, 52, 0.07);          /* sombra interior */
+    --tube-specular: rgba(255, 255, 255, 0.95);    /* reflejo principal */
+    --tube-specular-soft: rgba(255, 255, 255, 0.55);
 
     /* Chispitas: sobre Paper se leen por saturación */
     --sparkle-light: var(--amber-glow);
@@ -125,8 +129,13 @@ html[data-theme="dark"] {
     --accent-create: var(--soft-lavender);
     --focus-ring: var(--golden-beam);
 
-    --cable-body: rgba(220, 215, 230, 0.22);
-    --cable-glass: rgba(255, 255, 255, 0.28);
+    /* Sobre fondo oscuro la pared del tubo brilla como el cristal
+       que refleja la luz y el interior apenas se aclara */
+    --tube-wall: rgba(235, 230, 245, 0.35);
+    --tube-glass: rgba(255, 255, 255, 0.05);
+    --tube-shade: rgba(0, 0, 0, 0.35);
+    --tube-specular: rgba(255, 255, 255, 0.85);
+    --tube-specular-soft: rgba(255, 255, 255, 0.3);
 
     /* Sobre fondo oscuro las chispitas pueden ser más claras */
     --sparkle-light: var(--golden-beam);
@@ -1805,25 +1814,76 @@ img {
     overflow: hidden;
 }
 
+/* Tubo de cristal, de fuera adentro (anchos apilados: cada capa
+   deja ver un borde de la anterior):
+   - pared (.cable-path, 10 px): 1 px nítido a cada lado
+   - vidrio (.cable-glass, 8 px): interior claro del tubo
+   - luz (.cable-tint, 6 px): el color llena el interior sin tocar
+     la pared, dejando 1 px de cristal limpio
+   - núcleo y filamento en el centro */
 .cable-path {
     fill: none;
-    stroke: var(--cable-body);
-    stroke-width: 8;
+    stroke: var(--tube-wall);
+    stroke-width: 10;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .cable-glass {
     fill: none;
-    stroke: var(--cable-glass);
-    stroke-width: 5;
+    stroke: var(--tube-glass);
+    stroke-width: 8;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
+/* Volumen del cilindro (capas creadas por js/cables.js con el mismo
+   trazado, desplazadas como si la luz llegara de arriba a la
+   izquierda):
+   - sombra interior hacia el lado contrario a la luz
+   - reflejo especular nítido sobre el vidrio, por encima de la luz
+   - reflejo secundario tenue en el borde opuesto */
+.cable-shade,
+.cable-specular {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cable-shade {
+    stroke: var(--tube-shade);
+    stroke-width: 2;
+    transform: translate(1.2px, 1.2px);
+}
+
+/* La pared del cristal se tiñe con la luz de dentro según la
+   intensidad de su cable (en navegadores sin color-mix con calc se
+   queda con el color neutro) */
+@supports (stroke: color-mix(in srgb, red calc(50%), blue)) {
+    .cable-light {
+        stroke: color-mix(in srgb, var(--amber-glow) calc(var(--light-level) * 45%), var(--tube-wall));
+    }
+
+    .cable-logic {
+        stroke: color-mix(in srgb, var(--royal-violet) calc(var(--logic-level) * 45%), var(--tube-wall));
+    }
+}
+
+.cable-specular-main {
+    stroke: var(--tube-specular);
+    stroke-width: 1.3;
+    transform: translate(-1.9px, -1.9px);
+}
+
+.cable-specular-soft {
+    stroke: var(--tube-specular-soft);
+    stroke-width: 0.8;
+    transform: translate(2.4px, 2.4px);
+}
+
 .cable-core {
     fill: none;
-    stroke-width: 3;
+    stroke-width: 2.4;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
@@ -1844,7 +1904,7 @@ img {
      --blackout                    : 0 normal, 1 apagón total
    Los valores por defecto son el estado "tenue" (sin JS).
    Nunca se aplica opacidad al grupo: solo a las capas de brillo,
-   así el cuerpo del cable (.cable-path / .cable-glass) sigue visible.
+   así el tubo de cristal (.cable-path / .cable-glass) sigue visible.
    --------------------------------------------------------- */
 
 .cables-svg {
@@ -1878,23 +1938,23 @@ img {
     stroke-linejoin: round;
 }
 
-/* Tinte: el cristal se llena del color de su cable al encenderse,
-   así la luz parece nacer dentro del tubo y no encima de él */
+/* Luz dentro del tubo: al encenderse, el color llena el interior
+   del cristal sin llegar a la pared */
 .cable-tint {
     fill: none;
-    stroke-width: 5;
+    stroke-width: 6;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .cable-tint-light {
     stroke: var(--golden-beam);
-    opacity: calc(0.45 * var(--light-level));
+    opacity: calc(0.55 * var(--light-level));
 }
 
 .cable-tint-logic {
     stroke: var(--soft-lavender);
-    opacity: calc(0.45 * var(--logic-level));
+    opacity: calc(0.55 * var(--logic-level));
 }
 
 /* Filamento: punto caliente del LED, tintado y suave. Solo aparece
@@ -1916,10 +1976,9 @@ img {
     opacity: calc(0.55 * var(--logic-glow));
 }
 
-/* Cristal: al encenderse se vuelve más transparente para que el
-   tubo parezca lleno de luz de color. Durante el blackout se atenúa
-   hasta un 35 %: sin luz de color, el cable apagado se lee gris
-   sobre el fondo oscuro del footer */
+/* Vidrio interior: al encenderse deja paso al color de la luz.
+   Durante el blackout se atenúa hasta un 35 %: sin luz de color, el
+   tubo apagado se lee gris sobre el fondo oscuro del footer */
 .cable-glass-light {
     opacity: calc((1 - 0.6 * var(--light-level)) * (1 - 0.65 * var(--blackout)));
 }
@@ -2077,15 +2136,15 @@ img {
 @media (max-width: 1000px) {
 
     .cable-path {
-        stroke-width: 7;
+        stroke-width: 9;
     }
 
     .cable-glass {
-        stroke-width: 4.5;
+        stroke-width: 7;
     }
 
     .cable-core {
-        stroke-width: 2.5;
+        stroke-width: 2.2;
     }
 
     .cable-hot {
@@ -2093,7 +2152,21 @@ img {
     }
 
     .cable-tint {
-        stroke-width: 4.5;
+        stroke-width: 5;
+    }
+
+    .cable-shade {
+        stroke-width: 1.8;
+        transform: translate(1px, 1px);
+    }
+
+    .cable-specular-main {
+        stroke-width: 1.1;
+        transform: translate(-1.6px, -1.6px);
+    }
+
+    .cable-specular-soft {
+        transform: translate(2px, 2px);
     }
 
     .cables-svg {

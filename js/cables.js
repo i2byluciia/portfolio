@@ -103,10 +103,30 @@
         });
     }
 
+    // ── Volumen del tubo de cristal ───────────────────────
+    // Copias del mismo trazado, desplazadas unos px por CSS (luz que
+    // llega desde arriba a la izquierda): sombra interior en el lado
+    // opuesto a la luz, y reflejos especulares sobre la superficie
+    // del vidrio. Sin geometría nueva ni filtros.
+    function buildTube(name) {
+        const glass = byId(name + "-glass");
+        const hot   = byId(name + "-hot");
+        if (!glass || !hot) return [];
+
+        const shade = makePath(`cable-shade cable-shade-${name}`);
+        glass.after(shade);                    // dentro del vidrio, bajo la luz
+
+        const soft = makePath("cable-specular cable-specular-soft");
+        const main = makePath("cable-specular cable-specular-main");
+        hot.after(soft, main);                 // por encima de la luz: brillo del vidrio
+
+        return [shade, soft, main];
+    }
+
     // Todas las capas de un cable comparten el mismo trazado
     const layers = {
-        light: [...layersOf("light"), ...buildHalo("light")],
-        logic: [...layersOf("logic"), ...buildHalo("logic")]
+        light: [...layersOf("light"), ...buildTube("light"), ...buildHalo("light")],
+        logic: [...layersOf("logic"), ...buildTube("logic"), ...buildHalo("logic")]
     };
 
 
