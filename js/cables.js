@@ -352,11 +352,40 @@
     // Las chispas no llaman a getPointAtLength() en cada frame:
     // cada vez que se dibuja el cable se guarda una tabla de
     // puntos cada SAMPLE_STEP px y luego se interpola sobre ella.
+    //
+    // La tabla se calcula evaluando directamente las curvas Bézier
+    // del atributo d (las mismas que dibuja el navegador): pedir
+    // miles de puntos con getPointAtLength() en un trazado tan largo
+    // bloqueaba la carga ~0,5 s. Solo se pide al navegador la
+    // longitud total, para que coincida al píxel con la de la estela.
 
     const SAMPLE_STEP = 12;
+    const BEZIER_SUBDIVISIONS = 48;   // tramos rectos por curva antes de remuestrear
     const tracks = { light: null, logic: null };
     const mainEl = document.querySelector("main");
     const flash  = byId("cables-flash");
+
+    // Polilínea fina [x0, y0, x1, y1, …] a partir de "M x y C … C …".
+    // Devuelve null si el trazado no tiene ese formato.
+    function flattenPath(d) {
+        const n = (d.match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi) || []).map(Number);
+        if (!/^\s*M/i.test(d) || n.length < 8 || (n.length - 2) % 6 !== 0) return null;
+
+        const poly = [n[0], n[1]];
+        for (let i = 2; i < n.length; i += 6) {
+            const x0 = poly[poly.length - 2], y0 = poly[poly.length - 1];
+            const x1 = n[i],     y1 = n[i + 1];
+            const x2 = n[i + 2], y2 = n[i + 3];
+            const x3 = n[i + 4], y3 = n[i + 5];
+            for (let s = 1; s <= BEZIER_SUBDIVISIONS; s++) {
+                const t = s / BEZIER_SUBDIVISIONS, mt = 1 - t;
+                const a = mt * mt * mt, b = 3 * mt * mt * t, c = 3 * mt * t * t, e = t * t * t;
+                poly.push(a * x0 + b * x1 + c * x2 + e * x3,
+                          a * y0 + b * y1 + c * y2 + e * y3);
+            }
+        }
+        return poly;
+    }
 
     function sample(path) {
         const length = path.getTotalLength();
@@ -364,12 +393,42 @@
         const step   = length / (count - 1);
         const pts    = new Float32Array(count * 2);
         const yMax   = new Float32Array(count);   // altura máxima alcanzada hasta cada muestra
-        for (let i = 0; i < count; i++) {
-            const p = path.getPointAtLength(i * step);
-            pts[i * 2]     = p.x;
-            pts[i * 2 + 1] = p.y;
-            yMax[i] = i ? Math.max(yMax[i - 1], p.y) : p.y;
+
+        const poly = flattenPath(path.getAttribute("d") || "");
+
+        if (poly) {
+            // Longitudes acumuladas de la polilínea, escaladas a la
+            // longitud que mide el navegador
+            const segs = poly.length / 2 - 1;
+            const cum = new Float64Array(segs + 1);
+            for (let k = 1; k <= segs; k++) {
+                cum[k] = cum[k - 1] + Math.hypot(poly[k * 2] - poly[k * 2 - 2], poly[k * 2 + 1] - poly[k * 2 - 1]);
+            }
+            const scale = cum[segs] > 0 ? length / cum[segs] : 1;
+
+            // Remuestreo uniforme cada `step` px recorriendo la polilínea
+            let k = 1;
+            for (let i = 0; i < count; i++) {
+                const target = (i * step) / scale;
+                while (k < segs && cum[k] < target) k++;
+                const span = cum[k] - cum[k - 1];
+                const t = span > 0 ? clamp((target - cum[k - 1]) / span, 0, 1) : 0;
+                const x = poly[k * 2 - 2] + (poly[k * 2]     - poly[k * 2 - 2]) * t;
+                const y = poly[k * 2 - 1] + (poly[k * 2 + 1] - poly[k * 2 - 1]) * t;
+                pts[i * 2]     = x;
+                pts[i * 2 + 1] = y;
+                yMax[i] = i ? Math.max(yMax[i - 1], y) : y;
+            }
+        } else {
+            // Respaldo: el navegador calcula cada punto (más lento)
+            for (let i = 0; i < count; i++) {
+                const p = path.getPointAtLength(i * step);
+                pts[i * 2]     = p.x;
+                pts[i * 2 + 1] = p.y;
+                yMax[i] = i ? Math.max(yMax[i - 1], p.y) : p.y;
+            }
         }
+
         return { pts, yMax, count, step, length };
     }
 
